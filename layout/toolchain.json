@@ -1,58 +1,37 @@
 {
   "_comment": [
-    "Toolchain pin for the layout/ verification flow (klt drc / klt extract /",
-    "klt lvs), checked -- not merely recorded -- before any layout/ runner",
-    "does anything. This is a CAPABILITY list, not a version number: `klt",
-    "--version` reports klayout-tools' own static pyproject.toml version,",
-    "which can lag well behind what commands an install actually has.",
-    "`klt_required_commands` is the drift-detectable pin instead --",
-    "every layout/ runner should look each entry up in `klt --help`'s",
-    "subcommand list before doing anything else and fail loudly, naming",
-    "the missing command and the install command to fix it, rather than",
-    "skip the check silently. Keep ONE shared implementation (conventionally",
-    "`layout/toolchain_pin.py`) that every DRC/LVS/extraction runner",
-    "imports, rather than re-deriving this check per runner -- otherwise",
-    "the runners can drift apart on what they check.",
-    "",
-    "THIS FILE IS A BOOTSTRAP STARTER: sg13cmos5l-stdcells has not chosen a klt pin",
-    "yet, so klt_install / klt_last_verified_commit below are placeholders,",
-    "not a foreign repo's history. Fill them in with the exact commit you",
-    "verify `klt drc` (and `extract` / `lvs`, once those runners exist)",
-    "against when this repo's layout/ harness first comes up (the standard",
-    "opening issue #2), and re-check klayout_package_min against",
-    "klayout-tools' current pyproject.toml floor at the same time. From",
-    "that point on, keep this comment APPEND-ONLY: record each later pin",
-    "bump as a new paragraph naming the issue, what changed upstream, and",
-    "why, rather than editing or deleting an earlier one. A correction to",
-    "an earlier paragraph gets its own new paragraph too -- never an edit",
-    "to the one it corrects -- so a later reader can see why the pin is",
-    "where it is without re-deriving it from git blame.",
-    "",
-    "Field reference:",
-    "  klt_install            exact commit to install `klt` from -- a",
-    "                         `pip`/`uv tool install` VCS URL pinned with",
-    "                         `@<sha>` (no PyPI release yet), never a",
-    "                         floating branch reference.",
-    "  klt_required_commands  every `klt <command>` this repo's layout/",
-    "                         runners invoke. A missing one should be a",
-    "                         tooling error (exit 1) from any runner that",
-    "                         needs it, not a silently-skipped check.",
-    "                         Starts with just `drc` -- the first thing a",
-    "                         fresh layout/ harness wires up -- and grows",
-    "                         as `extract`/`lvs` runners are added.",
-    "  klt_last_verified_commit  the exact commit klt_install resolves to,",
-    "                         restated here so it is visible without",
-    "                         parsing the install URL. Update both",
-    "                         together and re-run every runner's --check",
-    "                         when bumping.",
-    "  klayout_package_min    floor for the pip `klayout` package version",
-    "                         (klayout-tools' own pyproject.toml pins a",
-    "                         floor of its own; recorded here so a drift",
-    "                         in *this* repo's pin is visible next to",
-    "                         klt's)."
+    "Physical-verification toolchain pin (issue #4). Read by scripts/setup-env.sh, which installs klt at this exact commit into the checkout's .venv (never on the host) and fetches the klayout-tools fetch scripts at the same commit, sha256-checked.",
+    "klt.klt_required_commands is a CAPABILITY list, not a version number: `klt --version` reports klayout-tools' static pyproject.toml version, which can lag what commands an install actually has. Every layout/ runner should look each entry up in `klt --help` and fail loudly (exit 1, naming the missing command and the install fix) rather than skip a check silently. Keep one shared implementation of that check (conventionally layout/toolchain_pin.py) that every DRC/LVS/extraction runner imports.",
+    "This comment is APPEND-ONLY: record each later pin bump as a new paragraph naming the issue, what changed upstream, and why; a correction gets its own new paragraph, never an edit to the one it corrects.",
+    "Issue #4: first pin, klt at dce956c3c399; drc and lvs are the required commands (smoke evidence in layout/smoke/)."
   ],
-  "klt_install": "TODO-unpinned: set to git+https://github.com/2AMLogic/klayout-tools@<sha> when PDK bring-up (#4) verifies one",
-  "klt_required_commands": ["drc"],
-  "klt_last_verified_commit": "TODO-unverified: set to the sha klt_install resolves to",
-  "klayout_package_min": "0.30"
+  "klt": {
+    "repo": "2AMLogic/klayout-tools",
+    "commit": "dce956c3c39995643ff2a5c31b53c474b3c2aada",
+    "install_spec": "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada",
+    "version_reported": "0.7.1.dev1755+gdce956c3c399",
+    "klt_required_commands": [
+      "drc",
+      "lvs"
+    ]
+  },
+  "klayout": {
+    "python_floor": "0.30",
+    "note": "klt pulls the klayout Python wheel itself; the curated drc/lvs engines need no klayout application. The PDK-native LVS runset (engine klayout-runset) needs the klayout application on PATH, which the host has at 0.28.16 (below the wheel); see layout/smoke/README.md."
+  },
+  "klt_fetch_scripts": {
+    "_comment": "Downloaded from raw.githubusercontent.com/2AMLogic/klayout-tools/<commit>/scripts/<name>; a sha256 mismatch aborts setup.",
+    "base_url": "https://raw.githubusercontent.com/2AMLogic/klayout-tools/dce956c3c39995643ff2a5c31b53c474b3c2aada/scripts",
+    "sha256": {
+      "_install_common.sh": "d3c045f1ae6510a7078e8202b99f6236a6258c1a9471e4799b34d8b42f8d1d3f",
+      "fetch-ihp-sg13g2.sh": "bdb2c8debbe345797fa4334d5272a99f9596a932891f8d9da01b0c14b33140f7",
+      "fetch-ihp-sg13cmos5l.sh": "ce9526c8ffd7db9edc1a8b4ec37edff45fe1c786e58bf382dd9e581886cabc2c",
+      "fetch-sg13g2-sim-toolchain.sh": "b5fcb0e5dba09c8e204c85ffe62ebb4499c0670590b5cfd8b0e41a1c39a64712"
+    }
+  },
+  "smoke": {
+    "cell": "sg13cmos5l_inv_1",
+    "source": "libs.ref/sg13cmos5l_stdcell of the PDK pinned in sim/pdk.json",
+    "drc_deck": "sg13cmos5l"
+  }
 }

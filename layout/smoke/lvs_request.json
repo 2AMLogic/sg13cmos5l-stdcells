@@ -1,0 +1,14 @@
+{
+  "schema": "klt.lvs.request/1",
+  "engine": "klayout",
+  "layout": {
+    "file": "sg13cmos5l_inv_1.gds",
+    "deck": "sg13cmos5l",
+    "top": "sg13cmos5l_inv_1"
+  },
+  "reference": {
+    "netlist": "sg13cmos5l_inv_1.spice",
+    "form": "subckt-call",
+    "deck": "sg13cmos5l"
+  }
+}

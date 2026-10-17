@@ -107,6 +107,31 @@ layout/        generated GDS + DRC/LVS reports (klayout-tools driven)
 measurements/  silicon characterization (empty until tape-out)
 ```
 
+## Bring-up
+
+A fresh clone reaches a runnable state with one script and no manual PDK step:
+
+```
+scripts/setup-env.sh        # fetch + build into pdks/, .cache/, .venv/ (all gitignored)
+source .cache/env.sh        # PDK_ROOT, PDK=ihp-sg13cmos5l, PATH
+```
+
+It fetches the SG13G2 sibling and the pinned SG13CMOS5L subtree of
+IHP-Open-PDK (the CMOS5L models are symlinks into the sibling), builds ngspice
+47 (the host ngspice-42 cannot load the OSDI models), compiles the Verilog-A
+models to OSDI, and installs `klt` at a pinned commit in `.venv`. It needs
+`curl`, `tar`, `make`, `gcc`, `bison`, `flex`, `python3` >= 3.10 and `uv`, about
+1 GB of disk and several minutes (`SETUP_JOBS`, default 2, sets the ngspice
+`make -j`). It installs nothing host-wide and fails closed on any checksum
+mismatch. Pins: [`sim/pdk.json`](sim/pdk.json), [`sim/toolchain.json`](sim/toolchain.json),
+[`layout/toolchain.json`](layout/toolchain.json). `scripts/test_setup_env.sh`
+checks the fail-closed behaviour without the large downloads.
+
+Smoke evidence: [`sim/smoke`](sim/smoke/README.md) (inverter simulation;
+single-corner probe recorded, five-corner run blocked on the batch fleet) and
+[`layout/smoke`](layout/smoke/README.md) (`klt drc` clean, `klt lvs` mismatch
+on the PDK's own reference inverter).
+
 ## License
 
 Apache License 2.0 — see [LICENSE](LICENSE).

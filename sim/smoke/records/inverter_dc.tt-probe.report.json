@@ -1,0 +1,201 @@
+{
+  "schema_version": 3,
+  "netlist": {
+    "path": "sim/smoke/inverter_dc.cir",
+    "scope": "repo"
+  },
+  "status": "pass",
+  "corner_count": 1,
+  "passed": 1,
+  "failed": 0,
+  "errored": 0,
+  "inconclusive": 0,
+  "diagnostic_counts": {
+    "by_code": {},
+    "by_severity": {},
+    "corners_with_diagnostics": 0
+  },
+  "metrics": {
+    "sim__corner__count": 1,
+    "sim__corner__passed_count": 1,
+    "sim__corner__failed_count": 0,
+    "sim__corner__errored_count": 0,
+    "sim__corner__inconclusive_count": 0
+  },
+  "environment": {
+    "engine": "ngspice",
+    "engine_version": "47",
+    "ngspice_binary": null,
+    "engine_build": {
+      "version_banner": "******\n** ngspice-47 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2026, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html\n** Creation Date: Sat Oct 17 21:50:19 UTC 2026\n******",
+      "binary_sha256": "1dd3bc31d888bfb84bef94a086a484b622760af0321ddf11cdd8c3f8e2ce06f7",
+      "probe": "ok",
+      "reason": null
+    },
+    "models_lib": {
+      "path": "pdks/ihp-open-pdk/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib",
+      "scope": "repo"
+    },
+    "models_lib_sha256": "03d505847c880d233b341be115a1e5460edf4d8e9b3e8a7df791a52fa4455d67",
+    "models_lib_sha256_scope": "local",
+    "netlist_sha256": "679273088aec583ab9c5c264924696963f82ed983d51b68250c239eeb8809295",
+    "netlist_closure": [
+      {
+        "path": "sim/smoke/inverter_dc.cir",
+        "scope": "repo",
+        "sha256": "679273088aec583ab9c5c264924696963f82ed983d51b68250c239eeb8809295"
+      }
+    ],
+    "netlist_identity": "sha256:a56300e16c11dc0050c1f922537f1339548f7faf7a78c7c9613391d0046b6cf3",
+    "osdi_preload": [
+      {
+        "name": "psp103.osdi",
+        "path": "pdks/ihp-open-pdk/ihp-sg13cmos5l/libs.tech/ngspice/osdi/psp103.osdi",
+        "scope": "repo",
+        "sha256": "85cec3566d96ab28814897f94f3ef5dddb35155bb5d53a92ae4c0a3d68c109b7"
+      }
+    ],
+    "engine_host": "local",
+    "backend": {
+      "resolved": "local",
+      "source": "flag",
+      "requested": "local"
+    }
+  },
+  "coverage": {
+    "corners_simulated": 1,
+    "measurements_declared": 3,
+    "measurements_with_limits": 0,
+    "unrecognized_limit_keys": [],
+    "schema_version": 1,
+    "known": true,
+    "checked": [
+      "measurement:[0,\"tt/novdd/27C\",\"voh_v\"]/observation",
+      "measurement:[0,\"tt/novdd/27C\",\"vol_v\"]/observation",
+      "measurement:[0,\"tt/novdd/27C\",\"vtrip_v\"]/observation"
+    ],
+    "skipped": [],
+    "inapplicable": [
+      {
+        "id": "measurement:[0,\"tt/novdd/27C\",\"voh_v\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/27C\",\"vol_v\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/27C\",\"vtrip_v\"]/limits",
+        "reason": "characterization_without_limits"
+      }
+    ],
+    "unknown": [],
+    "nothing_checked": false,
+    "nothing_checked_reasons": []
+  },
+  "provenance": {
+    "klt_version": "0.7.1.dev1755+gdce956c3c399",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "ihp-sg13cmos5l",
+      "source": "PDK_ROOT environment variable",
+      "version": "fetched:f7bca32694fe3d58be0cc7d9df4b9f5db7161a14",
+      "ambiguous_sources": [
+        "search root: ~/share/pdk"
+      ],
+      "linked_trees": [
+        {
+          "name": "ihp-sg13g2",
+          "version": "fetched:0.3.0"
+        }
+      ]
+    },
+    "deck": {
+      "name": "cornerMOSlv.lib",
+      "content_hash": "sha256:03d505847c880d233b341be115a1e5460edf4d8e9b3e8a7df791a52fa4455d67",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:679273088aec583ab9c5c264924696963f82ed983d51b68250c239eeb8809295",
+      "role": "netlist"
+    }
+  },
+  "measurements": [
+    {
+      "name": "voh_v",
+      "unit": null,
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/27C",
+        "value": 1.2,
+        "margin": null
+      }
+    },
+    {
+      "name": "vol_v",
+      "unit": null,
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/27C",
+        "value": 5.9158e-08,
+        "margin": null
+      }
+    },
+    {
+      "name": "vtrip_v",
+      "unit": null,
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/27C",
+        "value": 0.605841,
+        "margin": null
+      }
+    }
+  ],
+  "corners": [
+    {
+      "corner_id": "tt/novdd/27C",
+      "process": "tt",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 3.642,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "voh_v",
+          "value": 1.2,
+          "unit": null,
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vol_v",
+          "value": 5.9158e-08,
+          "unit": null,
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "vtrip_v",
+          "value": 0.605841,
+          "unit": null,
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    }
+  ]
+}
