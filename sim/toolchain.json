@@ -1,0 +1,21 @@
+{
+  "_comment": "Simulation tool floors and pins (issue #4). Read by scripts/setup-env.sh. The ngspice floor is 44 because openvaf-r emits OSDI ABI 0.4, which ngspice-43 and earlier reject; Ubuntu 24.04's apt ngspice-42 is below it, so setup-env.sh builds the pinned ngspice inside the checkout (never on the host).",
+  "python": { "floor": "3.10", "note": "klayout-tools requires >=3.10" },
+  "ngspice": {
+    "floor_major": 44,
+    "pinned_version": "47",
+    "tarball_url": "https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/47/ngspice-47.tar.gz",
+    "tarball_sha256": "894e649651f1838a14095e5a5439e7d3aa63e87ede14d283173fda4fcdef675f",
+    "configure_flags": ["--with-x=no", "--with-readline=no", "--enable-xspice", "--enable-osdi", "--disable-debug"],
+    "install_prefix": ".cache/ngspice-47"
+  },
+  "openvaf": {
+    "compiler": "openvaf-r (OpenVAF-Reloaded)",
+    "tag": "osdi_0.4-153-g2e066436",
+    "url": "https://fides.fe.uni-lj.si/openvaf/download/openvaf-reloaded-osdi_0.4-153-g2e066436-linux_x64.tar.gz",
+    "sha256": "9c570bf8f3e29fed5bac66298bf0b631a40a9075c5fe1ce3f6754cadd106df04",
+    "osdi_abi": "0.4",
+    "install_prefix": ".cache/klt/openvaf-r",
+    "source": "fetched and sha256-verified by klayout-tools scripts/fetch-sg13g2-sim-toolchain.sh; these values are cross-checked against that script by scripts/setup-env.sh"
+  }
+}

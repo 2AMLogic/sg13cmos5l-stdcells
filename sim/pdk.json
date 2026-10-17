@@ -1,0 +1,28 @@
+{
+  "_comment": "SG13CMOS5L PDK pin fact sheet for this repo (issue #4). Read by scripts/setup-env.sh, which fails closed when these values disagree with the checksum-pinned klayout-tools fetch scripts or with the tarball it downloads. Every recorded result under sim/ and layout/ must trace to this file (or a later commit that bumps it).",
+  "source": "IHP-GmbH/IHP-Open-PDK",
+  "branch": "dev",
+  "release_tag": null,
+  "release_tag_note": "No IHP-Open-PDK release carries SG13CMOS5L (latest v0.3.0 predates the merge), so the pin is a dev-branch commit SHA plus the codeload tarball sha256. The standalone IHP-GmbH/ihp-sg13cmos5l repository was archived 2026-09-23 and is not used.",
+  "pinned_commit": "f7bca32694fe3d58be0cc7d9df4b9f5db7161a14",
+  "tarball_url": "https://codeload.github.com/IHP-GmbH/IHP-Open-PDK/tar.gz/f7bca32694fe3d58be0cc7d9df4b9f5db7161a14",
+  "tarball_sha256": "5eb6f8a9b0b2ecc4fa08cc30627668406f85b1a97834f278036c43f0c0dbc70b",
+  "subtree": "ihp-sg13cmos5l/",
+  "variant": "ihp-sg13cmos5l",
+  "install_layout": "pdks/ihp-open-pdk/ihp-sg13cmos5l (this tree) next to pdks/ihp-open-pdk/ihp-sg13g2 (sibling). PDK_ROOT=pdks/ihp-open-pdk PDK=ihp-sg13cmos5l. pdks/ is gitignored.",
+  "sibling": {
+    "_comment": "The CMOS5L subtree's shared device models (psp103, r3_cmc, mosvar Verilog-A sources and cornerMOSlv.lib among others) are relative symlinks into a sibling ihp-sg13g2/ tree. Without it they dangle (klayout-tools#1406). The sibling is whatever scripts/fetch-ihp-sg13g2.sh installs.",
+    "variant": "ihp-sg13g2",
+    "required": true,
+    "release_tag": "0.3.0",
+    "tarball_sha256": "f6afb7a8d2adf3e40acd3fd2c7892fc93510e6f760565409a8df2b5b242254fc",
+    "known_incomplete": "v0.3.0 predates the dev commit above, so 262 symlinks of the CMOS5L subtree dangle at this pin (klayout-tools#3133, closed as documented). The ones that matter: the moscap model libraries and the LVS cap_cmomi/cap_cmomf rule-deck includes (see layout/smoke/README.md). The LV MOS models and the Verilog-A sources used by the smoke simulation resolve."
+  },
+  "fetch_method": "klayout-tools scripts/fetch-ihp-sg13g2.sh then scripts/fetch-ihp-sg13cmos5l.sh, fetched by commit SHA and sha256-checked by scripts/setup-env.sh (see layout/toolchain.json for the klayout-tools commit and the script hashes).",
+  "osdi": {
+    "_comment": "Prebuilt cap_cmomi/cap_cmomf OSDI were removed upstream (IHP-Open-PDK#1239/#1260): all six models are compiled from the PDK's Verilog-A with the PDK's own libs.tech/verilog-a/openvaf-compile-va.sh. Nothing under sim/ commits a .osdi binary.",
+    "models": ["psp103", "psp103_nqs", "r3_cmc", "mosvar", "cap_cmomi", "cap_cmomf"],
+    "install_dir": "pdks/ihp-open-pdk/ihp-sg13cmos5l/libs.tech/ngspice/osdi"
+  },
+  "runtime_compatibility": "VERIFIED in this repo at this pin on linux-x86_64 / ngspice-47 / openvaf-r osdi_0.4-153-g2e066436: all six models compile and load in ngspice (devhelp), and the smoke inverter simulates at tt (sim/smoke/records/). Five-corner and fleet (batch) execution are NOT verified: the batch fleet publishes no ihp-sg13cmos5l image (supported: sky130A, gf180mcu, sg13g2)."
+}

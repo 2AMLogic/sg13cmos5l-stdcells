@@ -1,0 +1,46 @@
+{
+  "_comment": "Single-corner (tt) local debug probe of inverter_dc.request.json (issue #4). The five-corner request is blocked: the batch fleet has no ihp-sg13cmos5l image; see records/README.md. SIMULATED, never measured.",
+  "engine": "ngspice",
+  "netlist": "../inverter_dc.cir",
+  "models": {
+    "pdk": "ihp-sg13cmos5l",
+    "lib": "libs.tech/ngspice/models/cornerMOSlv.lib"
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "tt",
+        "sections": [
+          "mos_tt"
+        ]
+      }
+    ],
+    "temperature_c": [
+      27
+    ]
+  },
+  "analysis": {
+    "kind": "dc",
+    "args": "Vin 0 1.2 0.01"
+  },
+  "measurements": [
+    {
+      "name": "voh_v",
+      "spice": ".meas dc voh_v find v(out) at=0"
+    },
+    {
+      "name": "vol_v",
+      "spice": ".meas dc vol_v find v(out) at=1.2"
+    },
+    {
+      "name": "vtrip_v",
+      "spice": ".meas dc vtrip_v when v(out)=0.6 cross=1"
+    }
+  ],
+  "options": {
+    "osdi_preload": [
+      "$PDK_ROOT/ihp-sg13cmos5l/libs.tech/ngspice/osdi/psp103.osdi"
+    ],
+    "timeout_s": 300
+  }
+}

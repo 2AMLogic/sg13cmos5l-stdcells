@@ -1,0 +1,9 @@
+* sg13cmos5l-stdcells -- toolchain smoke (issue #4): DC transfer of the
+* PDK reference inverter sizing (sg13cmos5l_inv_1: N 0.74u/0.13u, P 1.12u/0.13u)
+* built from the PDK's core LV devices. Circuit body only: `klt sim` owns the
+* .lib / .control cards. Supply is the 1.2 V nominal of the PDK stdcell library.
+Vdd vdd 0 1.2
+Vin in 0 0
+XN0 out in 0 0 sg13_lv_nmos w=740n l=130n ng=1 m=1
+XP0 out in vdd vdd sg13_lv_pmos w=1.12u l=130n ng=1 m=1
+Cl out 0 10f

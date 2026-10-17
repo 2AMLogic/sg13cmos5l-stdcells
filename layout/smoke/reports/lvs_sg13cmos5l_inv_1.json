@@ -1,0 +1,240 @@
+{
+  "schema_version": 1,
+  "engine": "klayout",
+  "layout": "sg13cmos5l_inv_1.gds",
+  "reference": "sg13cmos5l_inv_1.spice",
+  "top": "sg13cmos5l_inv_1",
+  "reference_top": "SG13CMOS5L_INV_1",
+  "reference_conversion": {
+    "form": "subckt-call",
+    "deck": "sg13cmos5l",
+    "device_map": null
+  },
+  "parameter_tolerance": null,
+  "options": {
+    "combine_devices": false,
+    "combine_devices_per_circuit": null,
+    "combine_devices_max_attempts": 5,
+    "flatten_layout": false,
+    "flatten_reference": false,
+    "netgen_setup": null,
+    "parameter_tolerance": null,
+    "compare_parameters": null,
+    "power_connectivity": null,
+    "anchor_top_level_pins": null,
+    "strict_top_level_pin_count": false,
+    "compare_mos_flavour": false,
+    "supply_nets": [
+      "GND",
+      "VCC",
+      "VDD",
+      "VGND",
+      "VPWR",
+      "VSS"
+    ],
+    "finfet_bulk": null
+  },
+  "hints_applied": null,
+  "constant_nets_applied": null,
+  "status": "mismatch",
+  "power_connectivity": {
+    "status": "unchecked",
+    "reason": "reference.form is 'subckt-call', whose reference netlist carries its own power/ground pins and nets -- they take part in the ordinary compare, so this check (which exists to cover the signal-only 'gate-level-verilog' form) does not apply",
+    "power_pins": [],
+    "power_pins_derivation": null,
+    "instance_count": 0,
+    "expected_nets": null,
+    "unchecked_expected_pins": [],
+    "findings": [],
+    "finding_count": 0
+  },
+  "body_verification": {
+    "status": "unverified",
+    "reason": null,
+    "device_classes": [
+      "nfet",
+      "pfet"
+    ],
+    "device_count": 2,
+    "findings": [
+      {
+        "class": "nfet",
+        "device_count": 1
+      },
+      {
+        "class": "pfet",
+        "device_count": 1
+      }
+    ],
+    "finding_count": 2
+  },
+  "device_parameter_coverage": [],
+  "mismatch_count": 6,
+  "error_count": 4,
+  "category_counts": {
+    "device.body_unverified": 2,
+    "device.unmatched": 1,
+    "net.merged": 1,
+    "net.split": 2
+  },
+  "category_error_counts": {
+    "device.unmatched": 1,
+    "net.merged": 1,
+    "net.split": 2
+  },
+  "counts": {
+    "nets": {
+      "layout": 5,
+      "reference": 4,
+      "matched": 1
+    },
+    "devices": {
+      "layout": 2,
+      "reference": 2,
+      "matched": 1
+    },
+    "pins": {
+      "layout": 1,
+      "reference": 4,
+      "matched": 4
+    }
+  },
+  "device_classes": [
+    "nfet",
+    "pfet",
+    "cap_cmomi",
+    "cap_cmomf",
+    "resistor"
+  ],
+  "environment": {
+    "engine": "klayout",
+    "engine_version": "0.30.12",
+    "netgen_binary": null,
+    "layout_sha256": "a382e7af9e00bebbf711b4cb2a45ccc5e59a2f01a5c04afe9371139852c3c749",
+    "reference_sha256": "1088dc13d8a91cde09da1e53a62fd521a75beebbb8603ae8437800bf7ba94258",
+    "extracted_netlist": null
+  },
+  "provenance": {
+    "klt_version": "0.7.1.dev1755+gdce956c3c399",
+    "klayout_version": "0.30.12",
+    "pdk": null,
+    "deck": {
+      "name": "sg13cmos5l",
+      "content_hash": "sha256:f31d94eb2324a5db7b20b286760312e0835eb1dbaae4a46fc05699c4a52619d3",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:a382e7af9e00bebbf711b4cb2a45ccc5e59a2f01a5c04afe9371139852c3c749",
+      "role": "layout"
+    },
+    "klayout_version_mismatch": false
+  },
+  "mismatches": [
+    {
+      "category": "device.body_unverified",
+      "severity": "warning",
+      "description": "1 NMOS device body terminal(s) were compared against the 'vsubs' deck-synthesized substrate net, not a real schematic net -- no drawn substrate-tap geometry resolved these device(s)' body terminal to a real net (see docs/cli/extract.md, \"Coverage\")",
+      "side": "layout",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "nfet"
+      },
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.body_unverified",
+      "severity": "warning",
+      "description": "1 PMOS device body terminal(s) were compared against an anonymous, KLayout-synthesized well net, not a real schematic net -- no drawn or derived well-tap geometry resolved these device(s)' body terminal to a real net (see docs/cli/extract.md, \"Coverage\")",
+      "side": "layout",
+      "net": null,
+      "device": {
+        "layout": null,
+        "reference": null,
+        "class": "pfet"
+      },
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "device.unmatched",
+      "severity": "error",
+      "description": "device has no counterpart on the other side",
+      "side": "reference",
+      "net": null,
+      "device": {
+        "layout": "\\$2",
+        "reference": "P0",
+        "class": "pfet"
+      },
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "net.merged",
+      "severity": "error",
+      "description": "multiple reference nets were collapsed into one layout net",
+      "side": "reference",
+      "net": {
+        "layout": null,
+        "reference": "VDD"
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "net.split",
+      "severity": "error",
+      "description": "a reference net's role is divided across multiple layout nets",
+      "side": "layout",
+      "net": {
+        "layout": "\\$3",
+        "reference": null
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    },
+    {
+      "category": "net.split",
+      "severity": "error",
+      "description": "a reference net's role is divided across multiple layout nets",
+      "side": "layout",
+      "net": {
+        "layout": "\\$5",
+        "reference": null
+      },
+      "device": null,
+      "property": null,
+      "details": null,
+      "circuit": null,
+      "instance": null,
+      "subcircuit": null
+    }
+  ],
+  "net_correspondence": [
+    {
+      "layout": "vsubs",
+      "reference": "VSS",
+      "pin": true
+    }
+  ]
+}

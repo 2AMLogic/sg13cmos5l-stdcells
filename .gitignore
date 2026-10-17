@@ -13,6 +13,9 @@ sim/build/
 flow/build/
 # local klt install, created by the setup script
 .venv/
+# PDK, built tools and scratch downloads, created by scripts/setup-env.sh
+pdks/
+.cache/
 # >>> loom-managed (do not edit) >>>
 # Loom runtime state (don't commit these)
 .loom-in-use

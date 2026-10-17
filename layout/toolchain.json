@@ -1,0 +1,29 @@
+{
+  "_comment": "Physical-verification toolchain pin (issue #4). Read by scripts/setup-env.sh, which installs klt at this exact commit into the checkout's .venv (never on the host) and fetches the klayout-tools fetch scripts at the same commit, sha256-checked.",
+  "klt": {
+    "repo": "2AMLogic/klayout-tools",
+    "commit": "dce956c3c39995643ff2a5c31b53c474b3c2aada",
+    "install_spec": "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada",
+    "version_reported": "0.7.1.dev1755+gdce956c3c399",
+    "klt_required_commands": ["drc", "lvs"]
+  },
+  "klayout": {
+    "python_floor": "0.30",
+    "note": "klt pulls the klayout Python wheel itself; the curated drc/lvs engines need no klayout application. The PDK-native LVS runset (engine klayout-runset) needs the klayout application on PATH, which the host has at 0.28.16 (below the wheel); see layout/smoke/README.md."
+  },
+  "klt_fetch_scripts": {
+    "_comment": "Downloaded from raw.githubusercontent.com/2AMLogic/klayout-tools/<commit>/scripts/<name>; a sha256 mismatch aborts setup.",
+    "base_url": "https://raw.githubusercontent.com/2AMLogic/klayout-tools/dce956c3c39995643ff2a5c31b53c474b3c2aada/scripts",
+    "sha256": {
+      "_install_common.sh": "d3c045f1ae6510a7078e8202b99f6236a6258c1a9471e4799b34d8b42f8d1d3f",
+      "fetch-ihp-sg13g2.sh": "bdb2c8debbe345797fa4334d5272a99f9596a932891f8d9da01b0c14b33140f7",
+      "fetch-ihp-sg13cmos5l.sh": "ce9526c8ffd7db9edc1a8b4ec37edff45fe1c786e58bf382dd9e581886cabc2c",
+      "fetch-sg13g2-sim-toolchain.sh": "b5fcb0e5dba09c8e204c85ffe62ebb4499c0670590b5cfd8b0e41a1c39a64712"
+    }
+  },
+  "smoke": {
+    "cell": "sg13cmos5l_inv_1",
+    "source": "libs.ref/sg13cmos5l_stdcell of the PDK pinned in sim/pdk.json",
+    "drc_deck": "sg13cmos5l"
+  }
+}
