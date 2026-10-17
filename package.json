@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "worktree:return": "./.loom/scripts/worktree-return.sh",
-    "check:ci": "echo 'No CI checks configured. Customize this script for your project.' && exit 0",
-    "check:all": "echo 'No checks configured. Customize this script for your project.' && exit 0",
-    "test": "echo 'No tests configured. Customize this script for your project.' && exit 0",
-    "lint": "echo 'No linter configured. Customize this script for your project.' && exit 0"
+    "check:ci": "npm run check:json && npm run check:signoff",
+    "check:all": "npm run check:ci",
+    "test": "npm run check:json",
+    "lint": "npm run check:json",
+    "check:json": "python3 -I scripts/check_json.py",
+    "check:signoff": "scripts/check_signoff.sh"
   }
 }

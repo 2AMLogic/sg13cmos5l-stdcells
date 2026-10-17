@@ -61,7 +61,7 @@ benchmark baseline here exactly as `sg13g2_stdcell` is for the origin repo.
 - **Deferred with the origin repo**: sequential cells, which wait on the same
   setup/hold characterization machinery sg13g2-stdcells waits on.
 
-## Target specification (DRAFT — engineering to ratify, see issue #1)
+## Target specification (DRAFT — engineering to ratify, see issue #2)
 
 Port parity: the rows below mirror the sg13g2-stdcells draft. Ratification
 must confirm each against SG13CMOS5L's own rules and metal stack; where the
@@ -100,6 +100,16 @@ sim/           per-cell SPICE characterization + PVT corner results (ngspice)
 verification/  cocotb checks of the functional models and the benchmark
 layout/        generated GDS + DRC/LVS reports (klayout-tools driven)
 measurements/  silicon characterization (empty until tape-out)
+```
+
+## Reproduce
+
+Every recorded result appends the exact commands that regenerate it here.
+
+Repo checks (JSON/evidence formats, README links, graded signoff record):
+
+```
+npm run check:ci
 ```
 
 ## License
