@@ -61,26 +61,31 @@ benchmark baseline here exactly as `sg13g2_stdcell` is for the origin repo.
 - **Deferred with the origin repo**: sequential cells, which wait on the same
   setup/hold characterization machinery sg13g2-stdcells waits on.
 
-## Target specification (DRAFT — engineering to ratify, see issue #1)
+## Target specification (ratified — see [spec/](spec/target-spec.md))
 
-Port parity: the rows below mirror the sg13g2-stdcells draft. Ratification
-must confirm each against SG13CMOS5L's own rules and metal stack; where the
-PDK makes a row wrong rather than merely harder, it changes through a decision
-record that says why.
+Ratified by [decision record 0001](spec/decision-records/0001-ratify-target-spec.md)
+from the [PDK comparison](spec/pdk-comparison.md). The rows mirror the
+sg13g2-stdcells draft; each is confirmed against SG13CMOS5L's own rules and
+metal stack, and the spec records the risks that confirmation does not remove
+(row-height feasibility, pin access onto the Metal2/4 tracks, `klt` deck
+coverage). A row changes only through a new decision record.
 
 | Parameter | Target | Fallback | Stretch |
 |---|---|---|---|
-| Row height | 3.36 µm (8 tracks), as origin — confirm against SG13CMOS5L rules | as `sg13cmos5l_stdcell` | — |
-| Routing grid | 0.42 µm × 0.42 µm, as origin — confirm | — | — |
+| Row height | 3.36 µm (8 tracks of 0.42 µm) | 3.78 µm (9 tracks), the `sg13cmos5l_stdcell` site height | — |
+| Routing grid | 0.42 µm × 0.42 µm | — | — |
 | Intra-cell routing | Metal1 only | — | — |
 | Pin access | every pin on a routing-grid point | — | — |
 | Combinational cells | 40 | 20 | 120 |
-| Sequential cells | 0 (deferred, as origin) | — | 8 |
+| Sequential cells | 0 (deferred) | — | 8 |
 | DRC | clean, `klt drc`, SG13CMOS5L deck | — | — |
 | LVS | layout-vs-schematic match, `klt lvs` | — | — |
-| Liberty corners | TT / nominal supply / 25 °C | — | + FF/−40 °C, SS/125 °C |
+| Core supply | 1.20 V (`sg13_lv` devices) | — | — |
+| Liberty corners | TT / 1.20 V / 25 °C | — | + FF / 1.32 V / −40 °C, SS / 1.08 V / 125 °C |
+| Characterization grid | input slew 0.0186–2.5074 ns, output load 0.001–0.3 pF (7 × 7, the baseline's index set) | — | — |
 | Benchmark cell area vs `sg13cmos5l_stdcell` | ≤ 1.00× | ≤ 1.20× | ≤ 0.80× |
-| Benchmark clock period vs `sg13cmos5l_stdcell` | within 10% | within 20% | within 5% |
+| Benchmark energy vs `sg13cmos5l_stdcell` | ≤ 1.00× | — | ≤ 0.80× |
+| Benchmark clock period vs `sg13cmos5l_stdcell` | within 10 % | within 20 % | within 5 % |
 
 All benchmark rows compare like with like: same PDK, same open flow, same
 benchmark designs. No cross-library or cross-PDK comparison is a result of
@@ -88,7 +93,7 @@ this repo.
 
 Maturity ladder: spec ratified → generator retargeted → cells DRC/LVS-clean →
 views characterized → synthesis benchmark recorded → shuttle seat → measured
-silicon. **Current position: pre-spec.**
+silicon. **Current position: spec ratified.**
 
 ## Repo layout
 
