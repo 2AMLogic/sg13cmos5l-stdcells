@@ -1,11 +1,19 @@
 {
-  "_comment": "Physical-verification toolchain pin (issue #4). Read by scripts/setup-env.sh, which installs klt at this exact commit into the checkout's .venv (never on the host) and fetches the klayout-tools fetch scripts at the same commit, sha256-checked.",
+  "_comment": [
+    "Physical-verification toolchain pin (issue #4). Read by scripts/setup-env.sh, which installs klt at this exact commit into the checkout's .venv (never on the host) and fetches the klayout-tools fetch scripts at the same commit, sha256-checked.",
+    "klt.klt_required_commands is a CAPABILITY list, not a version number: `klt --version` reports klayout-tools' static pyproject.toml version, which can lag what commands an install actually has. Every layout/ runner should look each entry up in `klt --help` and fail loudly (exit 1, naming the missing command and the install fix) rather than skip a check silently. Keep one shared implementation of that check (conventionally layout/toolchain_pin.py) that every DRC/LVS/extraction runner imports.",
+    "This comment is APPEND-ONLY: record each later pin bump as a new paragraph naming the issue, what changed upstream, and why; a correction gets its own new paragraph, never an edit to the one it corrects.",
+    "Issue #4: first pin, klt at dce956c3c399; drc and lvs are the required commands (smoke evidence in layout/smoke/)."
+  ],
   "klt": {
     "repo": "2AMLogic/klayout-tools",
     "commit": "dce956c3c39995643ff2a5c31b53c474b3c2aada",
     "install_spec": "git+https://github.com/2AMLogic/klayout-tools@dce956c3c39995643ff2a5c31b53c474b3c2aada",
     "version_reported": "0.7.1.dev1755+gdce956c3c399",
-    "klt_required_commands": ["drc", "lvs"]
+    "klt_required_commands": [
+      "drc",
+      "lvs"
+    ]
   },
   "klayout": {
     "python_floor": "0.30",
