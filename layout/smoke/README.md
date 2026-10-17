@@ -68,4 +68,11 @@ envelope is committed for it.
 
 ## Gaps for klayout-tools
 
-See the issue links in the PR description; they are worded generically there.
+Filed on 2AMLogic/klayout-tools, worded generically:
+
+- [#3831](https://github.com/2AMLogic/klayout-tools/issues/3831): the curated
+  `sg13cmos5l` LVS does not match the PDK's own reference inverter.
+- [#3832](https://github.com/2AMLogic/klayout-tools/issues/3832): dangling
+  sibling links leave the PDK-native LVS runset unrunnable.
+- [#2727](https://github.com/2AMLogic/klayout-tools/issues/2727) (existing,
+  commented): the batch backend refuses `ihp-sg13cmos5l` (see `sim/smoke/README.md`).

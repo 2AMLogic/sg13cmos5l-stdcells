@@ -37,7 +37,8 @@ request, so the same request would have run all five corners on this host; that
 was not done, by the host rule. The only local run is the single-corner debug
 probe below. Closing this needs a fleet image that carries `ihp-sg13cmos5l`
 (or a documented way to run a staged-PDK request on an existing image); it is
-a change to the fleet spec, not to this repo. Re-run when it exists:
+a change to the fleet spec, not to this repo (tracked as
+[klayout-tools#2727](https://github.com/2AMLogic/klayout-tools/issues/2727)). Re-run when it exists:
 
 ```
 source .cache/env.sh
