@@ -37,3 +37,9 @@ because it held an absolute host path; the binary's identity is its
 
 The five-corner record (`inverter_dc.report.json`, `inverter_tran.report.json`)
 does not exist yet.
+
+## Clean-clone bring-up
+
+[`setup-env.clean-clone.2026-10-18.md`](setup-env.clean-clone.2026-10-18.md)
+records `scripts/setup-env.sh` run end to end from a fresh clone (pass, no manual
+PDK step).
