@@ -21,7 +21,7 @@ parameter (those belong to #2) and chooses no PDK pin (that belongs to #4).
 | `sim/harness/README.md` | adopted | `sim/harness/README.md` | vendored, byte-identical |
 | `sim/README.md` | not applicable | `sim/README.md` | this repo keeps its own placeholder README |
 | `layout/README.md` | not applicable | `layout/README.md` | this repo keeps its own README |
-| `layout/toolchain.json` | diverged (template only) | `layout/toolchain.json` | taken as a template, not vendored, so it is not in the lock. `klt_install` and `klt_last_verified_commit` are explicit placeholders, since no `klt` commit has been verified on this PDK. The origin's pin is not carried over. No decision record: a template is not a divergence from a shared file. |
+| `layout/toolchain.json` | diverged (template only) | `layout/toolchain.json` | taken as a template, not vendored, so it is not in the lock. This repo's copy carries its own `klt` pin (`klt.commit`, `klt.install_spec`, plus `klt.klt_required_commands`), set from the first `klt` commit verified on this PDK (issue #4). The origin's pin is not carried over. No decision record: a template is not a divergence from a shared file. |
 
 No vendored file differs from upstream, so no decision record is needed and
 no lock entry carries `"diverged"`.
