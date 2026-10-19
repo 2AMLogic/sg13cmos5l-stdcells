@@ -32,7 +32,6 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#4**: PDK and toolchain bring-up: pin SG13CMOS5L, commit an ngspice smoke run and a klt DRC/LVS smoke on a reference cell
 - **#5**: Repo hygiene and CI (T1 item 10): real CI checks, a graded klt signoff manifest, README spec-issue fix
 
 ## PRs Awaiting Review
@@ -75,7 +74,7 @@ _None._
 | Very important | 0 |
 | Important | 0 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 2 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
 | Curated | 3 |
