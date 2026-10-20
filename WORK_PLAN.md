@@ -20,7 +20,7 @@ _None._
 
 `loom:important`; taken before unlabelled work.
 
-_None._
+- **#4**: PDK and toolchain bring-up: pin SG13CMOS5L, commit an ngspice smoke run and a klt DRC/LVS smoke on a reference cell
 
 ## Ready
 
@@ -72,7 +72,7 @@ _None._
 |------|-------|
 | Operator merge-risk holds | 1 |
 | Very important | 0 |
-| Important | 0 |
+| Important | 1 |
 | Ready (`loom:issue`) | 0 |
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
