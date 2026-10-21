@@ -9,7 +9,6 @@ Only the region between the markers is machine-generated.
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
 - **#8**: ci: validate JSON evidence and graded klt signoff record
-- **#17**: Bump Repo Skills 0.24.3 -> 0.24.7
 
 ## Very Important
 
@@ -46,7 +45,6 @@ _None._
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
 - **#8**: ci: validate JSON evidence and graded klt signoff record
-- **#17**: Bump Repo Skills 0.24.3 -> 0.24.7
 
 ## Proposed
 
@@ -72,13 +70,13 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 2 |
+| Operator merge-risk holds | 1 |
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 0 |
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 2 |
+| Approved PRs awaiting merge | 1 |
 | Curated | 3 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 0 |
