@@ -61,26 +61,31 @@ benchmark baseline here exactly as `sg13g2_stdcell` is for the origin repo.
 - **Deferred with the origin repo**: sequential cells, which wait on the same
   setup/hold characterization machinery sg13g2-stdcells waits on.
 
-## Target specification (DRAFT — engineering to ratify, see issue #2)
+## Target specification (ratified — see [spec/](spec/target-spec.md))
 
-Port parity: the rows below mirror the sg13g2-stdcells draft. Ratification
-must confirm each against SG13CMOS5L's own rules and metal stack; where the
-PDK makes a row wrong rather than merely harder, it changes through a decision
-record that says why.
+Ratified by [decision record 0001](spec/decision-records/0001-ratify-target-spec.md)
+from the [PDK comparison](spec/pdk-comparison.md). The rows mirror the
+sg13g2-stdcells draft; each is confirmed against SG13CMOS5L's own rules and
+metal stack, and the spec records the risks that confirmation does not remove
+(row-height feasibility, pin access onto the Metal2/4 tracks, `klt` deck
+coverage). A row changes only through a new decision record.
 
 | Parameter | Target | Fallback | Stretch |
 |---|---|---|---|
-| Row height | 3.36 µm (8 tracks), as origin — confirm against SG13CMOS5L rules | as `sg13cmos5l_stdcell` | — |
-| Routing grid | 0.42 µm × 0.42 µm, as origin — confirm | — | — |
+| Row height | 3.36 µm (8 tracks of 0.42 µm) | 3.78 µm (9 tracks), the `sg13cmos5l_stdcell` site height | — |
+| Routing grid | 0.42 µm × 0.42 µm | — | — |
 | Intra-cell routing | Metal1 only | — | — |
 | Pin access | every pin on a routing-grid point | — | — |
 | Combinational cells | 40 | 20 | 120 |
-| Sequential cells | 0 (deferred, as origin) | — | 8 |
+| Sequential cells | 0 (deferred) | — | 8 |
 | DRC | clean, `klt drc`, SG13CMOS5L deck | — | — |
 | LVS | layout-vs-schematic match, `klt lvs` | — | — |
-| Liberty corners | TT / nominal supply / 25 °C | — | + FF/−40 °C, SS/125 °C |
+| Core supply | 1.20 V (`sg13_lv` devices) | — | — |
+| Liberty corners | TT / 1.20 V / 25 °C | — | + FF / 1.32 V / −40 °C, SS / 1.08 V / 125 °C |
+| Characterization grid | input slew 0.0186–2.5074 ns, output load 0.001–0.3 pF (7 × 7, the baseline's index set) | — | — |
 | Benchmark cell area vs `sg13cmos5l_stdcell` | ≤ 1.00× | ≤ 1.20× | ≤ 0.80× |
-| Benchmark clock period vs `sg13cmos5l_stdcell` | within 10% | within 20% | within 5% |
+| Benchmark energy vs `sg13cmos5l_stdcell` | ≤ 1.00× | — | ≤ 0.80× |
+| Benchmark clock period vs `sg13cmos5l_stdcell` | within 10 % | within 20 % | within 5 % |
 
 All benchmark rows compare like with like: same PDK, same open flow, same
 benchmark designs. No cross-library or cross-PDK comparison is a result of
@@ -88,7 +93,7 @@ this repo.
 
 Maturity ladder: spec ratified → generator retargeted → cells DRC/LVS-clean →
 views characterized → synthesis benchmark recorded → shuttle seat → measured
-silicon. **Current position: pre-spec.**
+silicon. **Current position: spec ratified.**
 
 ## Repo layout
 
@@ -101,6 +106,31 @@ verification/  cocotb checks of the functional models and the benchmark
 layout/        generated GDS + DRC/LVS reports (klayout-tools driven)
 measurements/  silicon characterization (empty until tape-out)
 ```
+
+## Bring-up
+
+A fresh clone reaches a runnable state with one script and no manual PDK step:
+
+```
+scripts/setup-env.sh        # fetch + build into pdks/, .cache/, .venv/ (all gitignored)
+source .cache/env.sh        # PDK_ROOT, PDK=ihp-sg13cmos5l, PATH
+```
+
+It fetches the SG13G2 sibling and the pinned SG13CMOS5L subtree of
+IHP-Open-PDK (the CMOS5L models are symlinks into the sibling), builds ngspice
+47 (the host ngspice-42 cannot load the OSDI models), compiles the Verilog-A
+models to OSDI, and installs `klt` at a pinned commit in `.venv`. It needs
+`curl`, `tar`, `make`, `gcc`, `bison`, `flex`, `python3` >= 3.10 and `uv`, about
+1 GB of disk and several minutes (`SETUP_JOBS`, default 2, sets the ngspice
+`make -j`). It installs nothing host-wide and fails closed on any checksum
+mismatch. Pins: [`sim/pdk.json`](sim/pdk.json), [`sim/toolchain.json`](sim/toolchain.json),
+[`layout/toolchain.json`](layout/toolchain.json). `scripts/test_setup_env.sh`
+checks the fail-closed behaviour without the large downloads.
+
+Smoke evidence: [`sim/smoke`](sim/smoke/README.md) (inverter simulation;
+single-corner probe recorded, five-corner run blocked on the batch fleet) and
+[`layout/smoke`](layout/smoke/README.md) (`klt drc` clean, `klt lvs` mismatch
+on the PDK's own reference inverter).
 
 ## Reproduce
 

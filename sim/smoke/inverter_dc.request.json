@@ -1,0 +1,71 @@
+{
+  "_comment": "Toolchain smoke (issue #4): DC transfer of the reference inverter, five process corners at 27 C, 1.2 V. SIMULATED, never measured. Needs $PDK_ROOT (see scripts/setup-env.sh).",
+  "engine": "ngspice",
+  "netlist": "inverter_dc.cir",
+  "models": {
+    "pdk": "ihp-sg13cmos5l",
+    "lib": "libs.tech/ngspice/models/cornerMOSlv.lib"
+  },
+  "corners": {
+    "process": [
+      {
+        "name": "tt",
+        "sections": [
+          "mos_tt"
+        ]
+      },
+      {
+        "name": "ff",
+        "sections": [
+          "mos_ff"
+        ]
+      },
+      {
+        "name": "ss",
+        "sections": [
+          "mos_ss"
+        ]
+      },
+      {
+        "name": "fs",
+        "sections": [
+          "mos_fs"
+        ]
+      },
+      {
+        "name": "sf",
+        "sections": [
+          "mos_sf"
+        ]
+      }
+    ],
+    "temperature_c": [
+      27
+    ]
+  },
+  "analysis": {
+    "kind": "dc",
+    "args": "Vin 0 1.2 0.01"
+  },
+  "measurements": [
+    {
+      "name": "voh_v",
+      "spice": ".meas dc voh_v find v(out) at=0"
+    },
+    {
+      "name": "vol_v",
+      "spice": ".meas dc vol_v find v(out) at=1.2"
+    },
+    {
+      "name": "vtrip_v",
+      "spice": ".meas dc vtrip_v when v(out)=0.6 cross=1"
+    }
+  ],
+  "options": {
+    "osdi_preload": [
+      "$PDK_ROOT/ihp-sg13cmos5l/libs.tech/ngspice/osdi/psp103.osdi"
+    ],
+    "timeout_s": 300,
+    "stage_model_inputs": true
+  }
+}

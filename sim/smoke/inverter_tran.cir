@@ -1,0 +1,8 @@
+* sg13cmos5l-stdcells -- toolchain smoke (issue #4): transient of the PDK
+* reference inverter sizing into a fixed 10 fF load, 100 ps input edges.
+* Circuit body only: `klt sim` owns the .lib / .control cards.
+Vdd vdd 0 1.2
+Vin in 0 PULSE(0 1.2 1n 100p 100p 2n 4n)
+XN0 out in 0 0 sg13_lv_nmos w=740n l=130n ng=1 m=1
+XP0 out in vdd vdd sg13_lv_pmos w=1.12u l=130n ng=1 m=1
+Cl out 0 10f
