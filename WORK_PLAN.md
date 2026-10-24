@@ -8,7 +8,7 @@ Only the region between the markers is machine-generated.
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-- **#8**: ci: validate JSON evidence and graded klt signoff record
+_None._
 
 ## Very Important
 
@@ -70,7 +70,7 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 1 |
+| Operator merge-risk holds | 0 |
 | Very important | 0 |
 | Important | 1 |
 | Ready (`loom:issue`) | 0 |
