@@ -58,7 +58,7 @@ Issues carrying `loom:curated`.
 
 
 
-_None._
+- **#21**: Remove placeholder package.json scripts that always succeed *(hermit)*
 
 ## Epics
 
@@ -78,6 +78,6 @@ _None._
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 1 |
 | Curated | 3 |
-| Architect / Hermit proposals | 0 |
+| Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
