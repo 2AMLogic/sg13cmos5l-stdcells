@@ -5,9 +5,13 @@ Maintained by the Guide triage role.
 
 ### 2026-10-27
 
+- **PR #42**: feat(design): add netlist generator and 40 derived sg13_lv netlists
+- **PR #41**: feat(rtl): generate functional Verilog models from the cell catalog
 - **PR #39**: feat(design): ratify 40-cell combinational catalog with count check
 - **PR #38**: feat(sim): attest T1 item 9 testbenches with klt signoff inventory
 - **PR #37**: feat: add item 6 not_applicable statement with spec hash check
+- **Issue #35** (closed): T1 item 1c: generated functional Verilog models for the 40 cells with exhaustive cocotb test
+- **Issue #34** (closed): T1 item 1b: committed netlist generator and 40 derived sg13_lv netlists with freshness check
 - **Issue #33** (closed): T1 item 1a: ratify the 40-cell combinational list (catalog and decision record)
 
 ### 2026-10-21
