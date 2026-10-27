@@ -28,3 +28,14 @@ in `reuse.lock.json` and reduce this file to the sizing configuration.
   environment). The ngspice tests use logic-level stub models, not PDK models.
 - Row fit is a finger-width constraint, not a layout claim; the row height
   stays the 3.36 µm target with the 3.78 µm fallback.
+
+## Addendum (#46): one Liberty-function parser
+
+`design/gen_netlists.py:parse` is the single parser for catalog output
+expressions; `rtl/gen_models.py` imports it and only adds the pin-name check
+and the Verilog rendering. The grammar is the strict one the Verilog view
+already enforced: `*`, `+`, `^` may not be mixed at one nesting level without
+parentheses. No new module and no new divergence: the parser stays inside the
+file this record already keeps local. When `2AMLogic/sg13g2-stdcells#5` lands,
+the parser moves upstream with the topology code, and `rtl/gen_models.py`
+follows the pin.
