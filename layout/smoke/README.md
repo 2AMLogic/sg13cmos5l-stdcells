@@ -18,10 +18,14 @@ about any cell this repo designs, and nothing here is a measurement.
 Reproduce (after `scripts/setup-env.sh` and `source .cache/env.sh`), from this
 directory: `klt drc --deck sg13cmos5l --top sg13cmos5l_inv_1 sg13cmos5l_inv_1.gds --format json`
 and `klt lvs lvs_request.json --format json`. klt is pinned in
-[`layout/toolchain.json`](../toolchain.json): `"0.8.0"`,
-klayout `0.30.12`. The deck is the curated
+[`layout/toolchain.json`](../toolchain.json). The recorded evidence below was
+produced with klt `0.7.1.dev1755+gdce956c3c399`, klayout `0.30.12`. The deck is the curated
 `sg13cmos5l` deck, content hash `sha256:f31d94eb2324a5db7b20b286760312e0835eb1dbaae4a46fc05699c4a52619d3`,
 `released: false`.
+
+> Note (2026-10-27): the toolchain pin has since moved to klt `0.8.0`
+> (deck hash `sha256:5a43b8eb…`, `released: True`). This evidence was not
+> regenerated and still describes the build above.
 
 ## DRC: `clean`, 0 violations
 

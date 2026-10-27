@@ -46,7 +46,7 @@ the citation.
 | Track grid (`tracks.info`) | M1 0.42, M2 0.48, M3 0.42, M4 0.48, TM1 offset 1.64 pitch 2.28 | not read | M2/M4 tracks (0.48) do not align with a 0.42 pin grid; see target-spec "Pin access" | `$PDK/libs.tech/librelane/sg13cmos5l_stdcell/tracks.info` |
 | TopMetal1 pitch | tech LEF `PITCH 3.28`; `tracks.info` 2.28; release notes say the tech-LEF value was changed 2.28 → 3.28 (#722) | tech LEF 3.28 | Internal PDK inconsistency; affects PDN, not cells. Recorded, not resolved here | tech LEF; `tracks.info`; `ReleaseNotes.txt` |
 | Library supply options | 1.2 V family (1.08 / 1.20 / 1.32 V) **and** a 1.5 V family (1.35 / 1.50 / 1.65 V) | not compared | Origin has no 1.5 V row; see target-spec "Supply" | `$PDK/libs.ref/sg13cmos5l_stdcell/lib/*.lib` (`nom_voltage`) |
-| `klt` deck | built-in `sg13cmos5l` deck, `released: False`, device classes nfet, pfet, cap_cmomi, cap_cmomf, resistor (no `dantenna`/`dpantenna`, which the `sg13g2` deck has) | built-in `sg13g2` deck, `released: False` | Antenna diode cell (`antennanp`) is not extractable by device class; actual DRC/LVS behavior **not verified** here (issue #4) | `klt deck info` (klt 0.8.0) |
+| `klt` deck | built-in `sg13cmos5l` deck, `released: False`, device classes nfet, pfet, cap_cmomi, cap_cmomf, resistor (no `dantenna`/`dpantenna`, which the `sg13g2` deck has) | built-in `sg13g2` deck, `released: False` | Antenna diode cell (`antennanp`) is not extractable by device class; actual DRC/LVS behavior **not verified** here (issue #4) | `klt deck info` (klt 0.7.1.dev1755+gdce956c3c399) |
 | Rule-document wording | SG13G2-only rows: TM1Fil.d, NW.f1 revision note | | none for the cell set | diff described above |
 
 ## The baseline, `sg13cmos5l_stdcell`
