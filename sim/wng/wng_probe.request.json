@@ -1,0 +1,26 @@
+{
+  "_comment": "w/ng semantics probe (issue #44), tt/27C, local single corner. SIMULATED, never measured. Needs $PDK_ROOT (source .cache/env.sh).",
+  "engine": "ngspice",
+  "netlist": "wng_probe.cir",
+  "models": {
+    "pdk": "ihp-sg13cmos5l",
+    "lib": "libs.tech/ngspice/models/cornerMOSlv.lib"
+  },
+  "corners": {
+    "process": [{"name": "tt", "sections": ["mos_tt"]}],
+    "temperature_c": [27]
+  },
+  "analysis": {"kind": "dc", "args": "Vg 0 1.2 0.6"},
+  "measurements": [
+    {"name": "id_n_a_w2u_ng1", "spice": ".meas dc id_n_a_w2u_ng1 find i(Vdn1) at=1.2"},
+    {"name": "id_n_b_w2u_ng4", "spice": ".meas dc id_n_b_w2u_ng4 find i(Vdn2) at=1.2"},
+    {"name": "id_n_d_w500n_ng1", "spice": ".meas dc id_n_d_w500n_ng1 find i(Vdn3) at=1.2"},
+    {"name": "id_p_e_w2u_ng1", "spice": ".meas dc id_p_e_w2u_ng1 find i(Vdp1) at=1.2"},
+    {"name": "id_p_f_w2u_ng4", "spice": ".meas dc id_p_f_w2u_ng4 find i(Vdp2) at=1.2"}
+  ],
+  "options": {
+    "osdi_preload": ["$PDK_ROOT/ihp-sg13cmos5l/libs.tech/ngspice/osdi/psp103.osdi"],
+    "timeout_s": 300,
+    "stage_model_inputs": true
+  }
+}

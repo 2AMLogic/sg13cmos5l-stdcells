@@ -1,0 +1,22 @@
+* sg13cmos5l-stdcells -- w/ng semantics probe (issue #44). Identical-bias LV
+* devices, each with its own supply so currents are separable:
+*   A: nmos w=2u   ng=1     B: nmos w=2u ng=4     D: nmos w=500n ng=1
+*   E: pmos w=2u   ng=1     F: pmos w=2u ng=4
+* If `w` is the TOTAL width: Id(B) ~= Id(A) and Id(D) ~= Id(A)/4.
+* If `w` is PER-FINGER:      Id(B) ~= 4*Id(A) and Id(D) ~= Id(A)/4.
+* Circuit body only: `klt sim` owns the .lib / .control cards. Vg is swept
+* 0..1.2 V; the PMOS gate is driven to 1.2 - Vg so Vg = 1.2 V is full drive
+* for both polarities.
+Vg g 0 0
+Vdn1 d1 0 1.2
+Vdn2 d2 0 1.2
+Vdn3 d3 0 1.2
+Vdp1 p1 0 0
+Vdp2 p2 0 0
+Vdd vdd 0 1.2
+Egp gp 0 vol='1.2-v(g)'
+XA d1 g 0 0 sg13_lv_nmos w=2u l=130n ng=1 m=1
+XB d2 g 0 0 sg13_lv_nmos w=2u l=130n ng=4 m=1
+XD d3 g 0 0 sg13_lv_nmos w=500n l=130n ng=1 m=1
+XE p1 gp vdd vdd sg13_lv_pmos w=2u l=130n ng=1 m=1
+XF p2 gp vdd vdd sg13_lv_pmos w=2u l=130n ng=4 m=1

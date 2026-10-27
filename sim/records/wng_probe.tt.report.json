@@ -1,0 +1,247 @@
+{
+  "schema_version": 3,
+  "netlist": {
+    "path": "sim/wng/wng_probe.cir",
+    "scope": "repo"
+  },
+  "status": "pass",
+  "corner_count": 1,
+  "passed": 1,
+  "failed": 0,
+  "errored": 0,
+  "inconclusive": 0,
+  "diagnostic_counts": {
+    "by_code": {},
+    "by_severity": {},
+    "corners_with_diagnostics": 0
+  },
+  "metrics": {
+    "sim__corner__count": 1,
+    "sim__corner__passed_count": 1,
+    "sim__corner__failed_count": 0,
+    "sim__corner__errored_count": 0,
+    "sim__corner__inconclusive_count": 0
+  },
+  "environment": {
+    "engine": "ngspice",
+    "engine_version": "47",
+    "ngspice_binary": "/home/ubuntu/GitHub/sg13cmos5l-stdcells/.loom/worktrees/issue-44/.cache/ngspice-47/bin/ngspice",
+    "engine_build": {
+      "version_banner": "******\n** ngspice-47 : Circuit level simulation program\n** Compiled with KLU Direct Linear Solver\n** The U. C. Berkeley CAD Group\n** Copyright 1985-1994, Regents of the University of California.\n** Copyright 2001-2026, The ngspice team.\n** Please get your ngspice manual from https://ngspice.sourceforge.io/docs.html\n** Please file your bug-reports at http://ngspice.sourceforge.net/bugrep.html\n** Creation Date: Tue Oct 27 05:47:59 UTC 2026\n******",
+      "binary_sha256": "07a367aff515af0d6a0bbf1117fccfee50833a1f19a4250eac5940aeef956c8b",
+      "probe": "ok",
+      "reason": null
+    },
+    "models_lib": {
+      "path": "pdks/ihp-open-pdk/ihp-sg13g2/libs.tech/ngspice/models/cornerMOSlv.lib",
+      "scope": "repo"
+    },
+    "models_lib_sha256": "03d505847c880d233b341be115a1e5460edf4d8e9b3e8a7df791a52fa4455d67",
+    "models_lib_sha256_scope": "local",
+    "netlist_sha256": "adecb9e1bcd82759ebb7c98827807ce0cd59e5356b14f782c088b38764478718",
+    "netlist_closure": [
+      {
+        "path": "sim/wng/wng_probe.cir",
+        "scope": "repo",
+        "sha256": "adecb9e1bcd82759ebb7c98827807ce0cd59e5356b14f782c088b38764478718"
+      }
+    ],
+    "netlist_identity": "sha256:79c123039d019890461c62dd464d7053cdd1a48c6c1e1a3b0ac57b9e423c29b5",
+    "osdi_preload": [
+      {
+        "name": "psp103.osdi",
+        "path": "pdks/ihp-open-pdk/ihp-sg13cmos5l/libs.tech/ngspice/osdi/psp103.osdi",
+        "scope": "repo",
+        "sha256": "85cec3566d96ab28814897f94f3ef5dddb35155bb5d53a92ae4c0a3d68c109b7"
+      }
+    ],
+    "engine_host": "local",
+    "backend": {
+      "resolved": "local",
+      "source": "flag",
+      "requested": "local"
+    }
+  },
+  "coverage": {
+    "corners_simulated": 1,
+    "measurements_declared": 5,
+    "measurements_with_limits": 0,
+    "unrecognized_limit_keys": [],
+    "schema_version": 1,
+    "known": true,
+    "checked": [
+      "measurement:[0,\"tt/novdd/27C\",\"id_n_a_w2u_ng1\"]/observation",
+      "measurement:[0,\"tt/novdd/27C\",\"id_n_b_w2u_ng4\"]/observation",
+      "measurement:[0,\"tt/novdd/27C\",\"id_n_d_w500n_ng1\"]/observation",
+      "measurement:[0,\"tt/novdd/27C\",\"id_p_e_w2u_ng1\"]/observation",
+      "measurement:[0,\"tt/novdd/27C\",\"id_p_f_w2u_ng4\"]/observation"
+    ],
+    "skipped": [],
+    "inapplicable": [
+      {
+        "id": "measurement:[0,\"tt/novdd/27C\",\"id_n_a_w2u_ng1\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/27C\",\"id_n_b_w2u_ng4\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/27C\",\"id_n_d_w500n_ng1\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/27C\",\"id_p_e_w2u_ng1\"]/limits",
+        "reason": "characterization_without_limits"
+      },
+      {
+        "id": "measurement:[0,\"tt/novdd/27C\",\"id_p_f_w2u_ng4\"]/limits",
+        "reason": "characterization_without_limits"
+      }
+    ],
+    "unknown": [],
+    "nothing_checked": false,
+    "nothing_checked_reasons": []
+  },
+  "provenance": {
+    "klt_version": "0.7.1.dev1755+gdce956c3c399",
+    "klayout_version": "0.30.12",
+    "pdk": {
+      "name": "ihp-sg13cmos5l",
+      "source": "PDK_ROOT environment variable",
+      "version": "fetched:f7bca32694fe3d58be0cc7d9df4b9f5db7161a14",
+      "ambiguous_sources": [
+        "search root: ~/share/pdk"
+      ],
+      "linked_trees": [
+        {
+          "name": "ihp-sg13g2",
+          "version": "fetched:0.3.0"
+        }
+      ]
+    },
+    "deck": {
+      "name": "cornerMOSlv.lib",
+      "content_hash": "sha256:03d505847c880d233b341be115a1e5460edf4d8e9b3e8a7df791a52fa4455d67",
+      "released": false
+    },
+    "input": {
+      "content_hash": "sha256:adecb9e1bcd82759ebb7c98827807ce0cd59e5356b14f782c088b38764478718",
+      "role": "netlist"
+    }
+  },
+  "measurements": [
+    {
+      "name": "id_n_a_w2u_ng1",
+      "unit": null,
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/27C",
+        "value": -0.000847173,
+        "margin": null
+      }
+    },
+    {
+      "name": "id_n_b_w2u_ng4",
+      "unit": null,
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/27C",
+        "value": -0.000765451,
+        "margin": null
+      }
+    },
+    {
+      "name": "id_n_d_w500n_ng1",
+      "unit": null,
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/27C",
+        "value": -0.000191363,
+        "margin": null
+      }
+    },
+    {
+      "name": "id_p_e_w2u_ng1",
+      "unit": null,
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/27C",
+        "value": 0.000417582,
+        "margin": null
+      }
+    },
+    {
+      "name": "id_p_f_w2u_ng4",
+      "unit": null,
+      "limits": null,
+      "status": "pass",
+      "worst_case": {
+        "corner_id": "tt/novdd/27C",
+        "value": 0.000424322,
+        "margin": null
+      }
+    }
+  ],
+  "corners": [
+    {
+      "corner_id": "tt/novdd/27C",
+      "process": "tt",
+      "supply_v": {},
+      "temperature_c": 27,
+      "status": "pass",
+      "runtime_s": 0.065,
+      "engine_exit_code": 0,
+      "engine_killed_by_signal": null,
+      "measurements": [
+        {
+          "name": "id_n_a_w2u_ng1",
+          "value": -0.000847173,
+          "unit": null,
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "id_n_b_w2u_ng4",
+          "value": -0.000765451,
+          "unit": null,
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "id_n_d_w500n_ng1",
+          "value": -0.000191363,
+          "unit": null,
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "id_p_e_w2u_ng1",
+          "value": 0.000417582,
+          "unit": null,
+          "status": "pass",
+          "margin": null
+        },
+        {
+          "name": "id_p_f_w2u_ng4",
+          "value": 0.000424322,
+          "unit": null,
+          "status": "pass",
+          "margin": null
+        }
+      ],
+      "diagnostics": [],
+      "artifacts": {
+        "log": null,
+        "raw": null,
+        "waveform": null,
+        "deck": null
+      },
+      "monte_carlo": null
+    }
+  ]
+}
