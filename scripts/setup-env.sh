@@ -176,15 +176,15 @@ done
 
 # 6. klt at the pinned commit, in a venv inside the checkout.
 VENV="$ROOT/.venv"
-want_tag="g${KLT_COMMIT:0:12}"
-if [[ ! -x "$VENV/bin/klt" ]] || ! "$VENV/bin/klt" --version 2>/dev/null | grep -q "$want_tag"; then
+KLT_VERSION="$(json_get "$ROOT/layout/toolchain.json" klt.version_reported)"
+klt_at_pin() { [[ -x "$VENV/bin/klt" && "$("$VENV/bin/klt" --version 2>/dev/null)" == "klt $KLT_VERSION" ]]; }
+if ! klt_at_pin; then
     command -v uv >/dev/null || die "uv not found (needed to create the klt venv)"
-    log "installing klt @ ${KLT_COMMIT:0:12} into $VENV"
-    uv venv --quiet "$VENV"
+    log "installing klt $KLT_VERSION ($KLT_SPEC) into $VENV"
+    uv venv --quiet --clear "$VENV"
     uv pip install --quiet --python "$VENV/bin/python" "$KLT_SPEC"
 fi
-"$VENV/bin/klt" --version | grep -q "$want_tag" \
-    || die "klt in $VENV is not at the pinned commit ${KLT_COMMIT:0:12}"
+klt_at_pin || die "klt in $VENV reports '$("$VENV/bin/klt" --version 2>&1)', not the pinned klt $KLT_VERSION"
 for c in $(python3 -I -c 'import json,sys; print(" ".join(json.load(open(sys.argv[1]))["klt"]["klt_required_commands"]))' "$ROOT/layout/toolchain.json"); do
     "$VENV/bin/klt" "$c" --help >/dev/null 2>&1 || die "klt lacks required command: $c"
 done
