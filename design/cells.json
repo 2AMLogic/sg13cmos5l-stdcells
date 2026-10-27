@@ -1,0 +1,554 @@
+{
+ "schema_version": 1,
+ "library": "sg13cmos5l-stdcells",
+ "scope": "combinational",
+ "count": 40,
+ "cells": [
+  {
+   "name": "s5l_a21o_1",
+   "pdk_counterpart": "sg13cmos5l_a21o_1",
+   "family": "a21o",
+   "drive": 1,
+   "inputs": [
+    "A1",
+    "A2",
+    "B1"
+   ],
+   "outputs": {
+    "X": "((A1*A2)+B1)"
+   }
+  },
+  {
+   "name": "s5l_a21o_2",
+   "pdk_counterpart": "sg13cmos5l_a21o_2",
+   "family": "a21o",
+   "drive": 2,
+   "inputs": [
+    "A1",
+    "A2",
+    "B1"
+   ],
+   "outputs": {
+    "X": "((A1*A2)+B1)"
+   }
+  },
+  {
+   "name": "s5l_a21oi_1",
+   "pdk_counterpart": "sg13cmos5l_a21oi_1",
+   "family": "a21oi",
+   "drive": 1,
+   "inputs": [
+    "A1",
+    "A2",
+    "B1"
+   ],
+   "outputs": {
+    "Y": "!((A1*A2)+B1)"
+   }
+  },
+  {
+   "name": "s5l_a21oi_2",
+   "pdk_counterpart": "sg13cmos5l_a21oi_2",
+   "family": "a21oi",
+   "drive": 2,
+   "inputs": [
+    "A1",
+    "A2",
+    "B1"
+   ],
+   "outputs": {
+    "Y": "!((A1*A2)+B1)"
+   }
+  },
+  {
+   "name": "s5l_a22oi_1",
+   "pdk_counterpart": "sg13cmos5l_a22oi_1",
+   "family": "a22oi",
+   "drive": 1,
+   "inputs": [
+    "A1",
+    "A2",
+    "B1",
+    "B2"
+   ],
+   "outputs": {
+    "Y": "!((A1*A2)+(B1*B2))"
+   }
+  },
+  {
+   "name": "s5l_a221oi_1",
+   "pdk_counterpart": "sg13cmos5l_a221oi_1",
+   "family": "a221oi",
+   "drive": 1,
+   "inputs": [
+    "A1",
+    "A2",
+    "B1",
+    "B2",
+    "C1"
+   ],
+   "outputs": {
+    "Y": "!((A1*A2)+(B1*B2)+C1)"
+   }
+  },
+  {
+   "name": "s5l_and2_1",
+   "pdk_counterpart": "sg13cmos5l_and2_1",
+   "family": "and2",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B"
+   ],
+   "outputs": {
+    "X": "(A*B)"
+   }
+  },
+  {
+   "name": "s5l_and2_2",
+   "pdk_counterpart": "sg13cmos5l_and2_2",
+   "family": "and2",
+   "drive": 2,
+   "inputs": [
+    "A",
+    "B"
+   ],
+   "outputs": {
+    "X": "(A*B)"
+   }
+  },
+  {
+   "name": "s5l_and3_1",
+   "pdk_counterpart": "sg13cmos5l_and3_1",
+   "family": "and3",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B",
+    "C"
+   ],
+   "outputs": {
+    "X": "(A*B*C)"
+   }
+  },
+  {
+   "name": "s5l_and3_2",
+   "pdk_counterpart": "sg13cmos5l_and3_2",
+   "family": "and3",
+   "drive": 2,
+   "inputs": [
+    "A",
+    "B",
+    "C"
+   ],
+   "outputs": {
+    "X": "(A*B*C)"
+   }
+  },
+  {
+   "name": "s5l_and4_1",
+   "pdk_counterpart": "sg13cmos5l_and4_1",
+   "family": "and4",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "outputs": {
+    "X": "(A*B*C*D)"
+   }
+  },
+  {
+   "name": "s5l_buf_1",
+   "pdk_counterpart": "sg13cmos5l_buf_1",
+   "family": "buf",
+   "drive": 1,
+   "inputs": [
+    "A"
+   ],
+   "outputs": {
+    "X": "A"
+   }
+  },
+  {
+   "name": "s5l_buf_2",
+   "pdk_counterpart": "sg13cmos5l_buf_2",
+   "family": "buf",
+   "drive": 2,
+   "inputs": [
+    "A"
+   ],
+   "outputs": {
+    "X": "A"
+   }
+  },
+  {
+   "name": "s5l_buf_4",
+   "pdk_counterpart": "sg13cmos5l_buf_4",
+   "family": "buf",
+   "drive": 4,
+   "inputs": [
+    "A"
+   ],
+   "outputs": {
+    "X": "A"
+   }
+  },
+  {
+   "name": "s5l_inv_1",
+   "pdk_counterpart": "sg13cmos5l_inv_1",
+   "family": "inv",
+   "drive": 1,
+   "inputs": [
+    "A"
+   ],
+   "outputs": {
+    "Y": "!(A)"
+   }
+  },
+  {
+   "name": "s5l_inv_2",
+   "pdk_counterpart": "sg13cmos5l_inv_2",
+   "family": "inv",
+   "drive": 2,
+   "inputs": [
+    "A"
+   ],
+   "outputs": {
+    "Y": "!(A)"
+   }
+  },
+  {
+   "name": "s5l_inv_4",
+   "pdk_counterpart": "sg13cmos5l_inv_4",
+   "family": "inv",
+   "drive": 4,
+   "inputs": [
+    "A"
+   ],
+   "outputs": {
+    "Y": "!(A)"
+   }
+  },
+  {
+   "name": "s5l_mux2_1",
+   "pdk_counterpart": "sg13cmos5l_mux2_1",
+   "family": "mux2",
+   "drive": 1,
+   "inputs": [
+    "A0",
+    "A1",
+    "S"
+   ],
+   "outputs": {
+    "X": "(!S*A0)+(S*A1)"
+   }
+  },
+  {
+   "name": "s5l_mux2_2",
+   "pdk_counterpart": "sg13cmos5l_mux2_2",
+   "family": "mux2",
+   "drive": 2,
+   "inputs": [
+    "A0",
+    "A1",
+    "S"
+   ],
+   "outputs": {
+    "X": "(!S*A0)+(S*A1)"
+   }
+  },
+  {
+   "name": "s5l_mux4_1",
+   "pdk_counterpart": "sg13cmos5l_mux4_1",
+   "family": "mux4",
+   "drive": 1,
+   "inputs": [
+    "A0",
+    "A1",
+    "A2",
+    "A3",
+    "S0",
+    "S1"
+   ],
+   "outputs": {
+    "X": "(A0*(!S0*!S1))+(A1*(S0*!S1))+(A2*(!S0*S1))+(A3*(S0*S1))"
+   }
+  },
+  {
+   "name": "s5l_nand2_1",
+   "pdk_counterpart": "sg13cmos5l_nand2_1",
+   "family": "nand2",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B"
+   ],
+   "outputs": {
+    "Y": "!(A*B)"
+   }
+  },
+  {
+   "name": "s5l_nand2_2",
+   "pdk_counterpart": "sg13cmos5l_nand2_2",
+   "family": "nand2",
+   "drive": 2,
+   "inputs": [
+    "A",
+    "B"
+   ],
+   "outputs": {
+    "Y": "!(A*B)"
+   }
+  },
+  {
+   "name": "s5l_nand2b_1",
+   "pdk_counterpart": "sg13cmos5l_nand2b_1",
+   "family": "nand2b",
+   "drive": 1,
+   "inputs": [
+    "A_N",
+    "B"
+   ],
+   "outputs": {
+    "Y": "!(!A_N*B)"
+   }
+  },
+  {
+   "name": "s5l_nand3_1",
+   "pdk_counterpart": "sg13cmos5l_nand3_1",
+   "family": "nand3",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B",
+    "C"
+   ],
+   "outputs": {
+    "Y": "!(A*B*C)"
+   }
+  },
+  {
+   "name": "s5l_nand3b_1",
+   "pdk_counterpart": "sg13cmos5l_nand3b_1",
+   "family": "nand3b",
+   "drive": 1,
+   "inputs": [
+    "A_N",
+    "B",
+    "C"
+   ],
+   "outputs": {
+    "Y": "!(!A_N*B*C)"
+   }
+  },
+  {
+   "name": "s5l_nand4_1",
+   "pdk_counterpart": "sg13cmos5l_nand4_1",
+   "family": "nand4",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "outputs": {
+    "Y": "!(A*B*C*D)"
+   }
+  },
+  {
+   "name": "s5l_nor2_1",
+   "pdk_counterpart": "sg13cmos5l_nor2_1",
+   "family": "nor2",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B"
+   ],
+   "outputs": {
+    "Y": "!(A+B)"
+   }
+  },
+  {
+   "name": "s5l_nor2_2",
+   "pdk_counterpart": "sg13cmos5l_nor2_2",
+   "family": "nor2",
+   "drive": 2,
+   "inputs": [
+    "A",
+    "B"
+   ],
+   "outputs": {
+    "Y": "!(A+B)"
+   }
+  },
+  {
+   "name": "s5l_nor2b_1",
+   "pdk_counterpart": "sg13cmos5l_nor2b_1",
+   "family": "nor2b",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B_N"
+   ],
+   "outputs": {
+    "Y": "!(A+!B_N)"
+   }
+  },
+  {
+   "name": "s5l_nor3_1",
+   "pdk_counterpart": "sg13cmos5l_nor3_1",
+   "family": "nor3",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B",
+    "C"
+   ],
+   "outputs": {
+    "Y": "!(A+B+C)"
+   }
+  },
+  {
+   "name": "s5l_nor3_2",
+   "pdk_counterpart": "sg13cmos5l_nor3_2",
+   "family": "nor3",
+   "drive": 2,
+   "inputs": [
+    "A",
+    "B",
+    "C"
+   ],
+   "outputs": {
+    "Y": "!(A+B+C)"
+   }
+  },
+  {
+   "name": "s5l_nor4_1",
+   "pdk_counterpart": "sg13cmos5l_nor4_1",
+   "family": "nor4",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "outputs": {
+    "Y": "!(A+B+C+D)"
+   }
+  },
+  {
+   "name": "s5l_o21ai_1",
+   "pdk_counterpart": "sg13cmos5l_o21ai_1",
+   "family": "o21ai",
+   "drive": 1,
+   "inputs": [
+    "A1",
+    "A2",
+    "B1"
+   ],
+   "outputs": {
+    "Y": "!((A1+A2)*B1)"
+   }
+  },
+  {
+   "name": "s5l_or2_1",
+   "pdk_counterpart": "sg13cmos5l_or2_1",
+   "family": "or2",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B"
+   ],
+   "outputs": {
+    "X": "(A+B)"
+   }
+  },
+  {
+   "name": "s5l_or2_2",
+   "pdk_counterpart": "sg13cmos5l_or2_2",
+   "family": "or2",
+   "drive": 2,
+   "inputs": [
+    "A",
+    "B"
+   ],
+   "outputs": {
+    "X": "(A+B)"
+   }
+  },
+  {
+   "name": "s5l_or3_1",
+   "pdk_counterpart": "sg13cmos5l_or3_1",
+   "family": "or3",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B",
+    "C"
+   ],
+   "outputs": {
+    "X": "(A+B+C)"
+   }
+  },
+  {
+   "name": "s5l_or3_2",
+   "pdk_counterpart": "sg13cmos5l_or3_2",
+   "family": "or3",
+   "drive": 2,
+   "inputs": [
+    "A",
+    "B",
+    "C"
+   ],
+   "outputs": {
+    "X": "(A+B+C)"
+   }
+  },
+  {
+   "name": "s5l_or4_1",
+   "pdk_counterpart": "sg13cmos5l_or4_1",
+   "family": "or4",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B",
+    "C",
+    "D"
+   ],
+   "outputs": {
+    "X": "(A+B+C+D)"
+   }
+  },
+  {
+   "name": "s5l_xnor2_1",
+   "pdk_counterpart": "sg13cmos5l_xnor2_1",
+   "family": "xnor2",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B"
+   ],
+   "outputs": {
+    "Y": "!(A^B)"
+   }
+  },
+  {
+   "name": "s5l_xor2_1",
+   "pdk_counterpart": "sg13cmos5l_xor2_1",
+   "family": "xor2",
+   "drive": 1,
+   "inputs": [
+    "A",
+    "B"
+   ],
+   "outputs": {
+    "X": "(A^B)"
+   }
+  }
+ ]
+}
