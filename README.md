@@ -102,7 +102,7 @@ spec/          ratified spec + decision records
 design/        per-cell schematics (xschem)
 rtl/           functional Verilog models of each cell
 sim/           per-cell SPICE characterization + PVT corner results (ngspice)
-verification/  cocotb checks of the functional models and the benchmark
+verification/  checks of the synthesis benchmark (model tests live in rtl/tests/)
 layout/        generated GDS + DRC/LVS reports (klayout-tools driven)
 measurements/  silicon characterization (empty until tape-out)
 ```
