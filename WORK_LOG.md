@@ -5,11 +5,15 @@ Maintained by the Guide triage role.
 
 ### 2026-10-27
 
+- **PR #48**: refactor: share one strict Liberty-function parser between SPICE and Verilog generators
+- **PR #47**: test(sim): verify w/ng semantics and 40 netlists against PDK models
 - **PR #42**: feat(design): add netlist generator and 40 derived sg13_lv netlists
 - **PR #41**: feat(rtl): generate functional Verilog models from the cell catalog
 - **PR #39**: feat(design): ratify 40-cell combinational catalog with count check
 - **PR #38**: feat(sim): attest T1 item 9 testbenches with klt signoff inventory
 - **PR #37**: feat: add item 6 not_applicable statement with spec hash check
+- **Issue #46** (closed): Consolidate duplicate Liberty-function parsers in gen_models.py and gen_netlists.py
+- **Issue #44** (closed): Verify generated netlists against the pinned PDK sg13_lv models (w total vs per-finger)
 - **Issue #35** (closed): T1 item 1c: generated functional Verilog models for the 40 cells with exhaustive cocotb test
 - **Issue #34** (closed): T1 item 1b: committed netlist generator and 40 derived sg13_lv netlists with freshness check
 - **Issue #33** (closed): T1 item 1a: ratify the 40-cell combinational list (catalog and decision record)
