@@ -5,6 +5,8 @@ Maintained by the Guide triage role.
 
 ### 2026-10-27
 
+- **PR #51**: build: pin klayout-tools 0.8.0 release and check klt by version
+- **Issue #49** (closed): Bump klayout-tools pin dce956c3c399 → 0.8.0
 - **PR #48**: refactor: share one strict Liberty-function parser between SPICE and Verilog generators
 - **PR #47**: test(sim): verify w/ng semantics and 40 netlists against PDK models
 - **PR #42**: feat(design): add netlist generator and 40 derived sg13_lv netlists
