@@ -105,6 +105,17 @@ class GeneratorTest(unittest.TestCase):
                 self.assertLessEqual(w / ng, cap, p.name)
                 self.assertEqual(w % ng, 0, p.name)
 
+    def test_rejects_mixed_operators_like_the_verilog_view(self):
+        sys.path.insert(0, str(DESIGN.parent / "rtl"))
+        import gen_models as gm
+
+        for bad in ("A^B*C", "A+B^C", "A*B+C", "!(A*B+C)"):
+            with self.assertRaises(ValueError, msg=bad):
+                gn.parse(bad)
+            with self.assertRaises(ValueError, msg=bad):
+                gm.parse(bad, {"A", "B", "C"})
+        self.assertEqual(gn.evaluate(gn.parse("A^B^C"), {"A": 1, "B": 1, "C": 1}), 1)
+
     def test_widest_stacks_present(self):
         for name in ("s5l_nor4_1", "s5l_nand4_1", "s5l_mux4_1", "s5l_xor2_1", "s5l_xnor2_1"):
             self.assertTrue((NETLISTS / f"{name}.spice").exists())

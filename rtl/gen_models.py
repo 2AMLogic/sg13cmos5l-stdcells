@@ -8,87 +8,44 @@ exits 1 if any committed model is missing, stale, or has no catalog cell.
 
 Catalog functions are Liberty style: `!` not, `*` and, `+` or, `^` xor, with
 parentheses. `^` may not be mixed with `*` or `+` at one nesting level without
-parentheses, so no precedence between them is assumed.
+parentheses, so no precedence between them is assumed. The parser is
+design/gen_netlists.py's `parse`, shared so both views accept the same grammar.
 """
 import argparse
 import json
 import pathlib
-import re
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
-TOKEN_RE = re.compile(r"\s*(?:([A-Za-z][A-Za-z0-9_]*)|(.))")
-VERILOG_OP = {"*": "&", "+": "|", "^": "^"}
+sys.path.insert(0, str(HERE.parent / "design"))
+import gen_netlists as gn  # noqa: E402  (the one shared Liberty-function parser)
+VERILOG_OP = {"and": "&", "or": "|", "xor": "^"}
 
 
-def tokenize(expr):
-    toks, pos = [], 0
-    while pos < len(expr):
-        m = TOKEN_RE.match(expr, pos)
-        if not m or m.end() == pos:
-            break
-        toks.append(m.group(1) or m.group(2))
-        pos = m.end()
-    if expr[pos:].strip():
-        raise ValueError(f"cannot tokenize {expr!r}")
-    return toks
+def check_pins(node, pins, expr):
+    if node[0] == "var":
+        if node[1] not in pins:
+            raise ValueError(f"unknown token {node[1]!r} in {expr!r}")
+    elif node[0] == "not":
+        check_pins(node[1], pins, expr)
+    else:
+        for x in node[1]:
+            check_pins(x, pins, expr)
 
 
 def parse(expr, pins):
-    """Return an AST: pin name, ('!', x), or (op, [operands]) with op in * + ^."""
-    toks = tokenize(expr)
-    pos = 0
-
-    def peek():
-        return toks[pos] if pos < len(toks) else None
-
-    def take():
-        nonlocal pos
-        t = peek()
-        if t is None:
-            raise ValueError(f"unexpected end of {expr!r}")
-        pos += 1
-        return t
-
-    def atom():
-        t = take()
-        if t == "!":
-            return ("!", atom())
-        if t == "(":
-            node = chain()
-            if take() != ")":
-                raise ValueError(f"missing ')' in {expr!r}")
-            return node
-        if t in pins:
-            return t
-        raise ValueError(f"unknown token {t!r} in {expr!r}")
-
-    def chain():
-        first = atom()
-        op = peek()
-        if op not in VERILOG_OP:
-            return first
-        operands = [first]
-        while peek() == op:
-            take()
-            operands.append(atom())
-        if peek() in VERILOG_OP:
-            raise ValueError(f"mixed operators without parentheses in {expr!r}")
-        return (op, operands)
-
-    node = chain()
-    if pos != len(toks):
-        raise ValueError(f"trailing tokens in {expr!r}")
+    """Parse with the strict grammar shared with gen_netlists; check pin names."""
+    node = gn.parse(expr)
+    check_pins(node, pins, expr)
     return node
 
 
 def to_verilog(node):
-    if isinstance(node, str):
-        return node
-    op, arg = node
-    if op == "!":
-        return f"~{to_verilog(arg)}"
-    return "(" + f" {VERILOG_OP[op]} ".join(to_verilog(a) for a in arg) + ")"
+    if node[0] == "var":
+        return node[1]
+    if node[0] == "not":
+        return f"~{to_verilog(node[1])}"
+    return "(" + f" {VERILOG_OP[node[0]]} ".join(to_verilog(a) for a in node[1]) + ")"
 
 
 def render(cell):

@@ -10,8 +10,10 @@ declared freshness check for `klt signoff --attest 1`. Output is
 deterministic (sorted, no timestamps), so the check is a byte compare.
 
 Topology (PDK-independent). Each output function is parsed into an AST
-(`!` `*` `^` `+`, `!` binds tightest, then `*`, `^`, `+`) and put in negation
-normal form over literals; XOR is expanded to (a*!b)+(!a*b). A literal that
+(`!` `*` `^` `+`) and put in negation normal form over literals; XOR is
+expanded to (a*!b)+(!a*b). The parser is strict and is shared with
+rtl/gen_models.py: `*`, `+` and `^` may not be mixed at one nesting level
+without parentheses, so no precedence between them is assumed. A literal that
 appears inverted gets one shared unit inverter per cell. The remaining
 function g is positive in its literals, so static CMOS applies directly:
 pull-down = g (AND series, OR parallel), pull-up = the dual, stage output = !g.
@@ -54,6 +56,7 @@ DIFF_RESERVE_UM = 0.70
 assert (FINGER_MAX_N + FINGER_MAX_P) / 1000 <= ROW_UM - RAIL_UM - DIFF_RESERVE_UM
 
 TOKEN_RE = re.compile(r"\s*(?:([A-Z][A-Z0-9_]*)|(.))")
+OPS = {"*": "and", "+": "or", "^": "xor"}
 
 
 # ---------------------------------------------------------------- parsing
@@ -75,41 +78,31 @@ def parse(expr):
         pos[0] += 1
         return toks[pos[0] - 1][1]
 
-    def nary(op, sub, sym):
-        items = [sub()]
-        while peek() == sym:
-            take(sym)
-            items.append(sub())
-        return items[0] if len(items) == 1 else (op, items)
-
     def atom():
         if peek() == "!":
             take("!")
             return ("not", atom())
         if peek() == "(":
             take("(")
-            e = or_()
+            e = chain()
             take(")")
             return e
         return ("var", take("id"))
 
-    def and_():
-        return nary("and", atom, "*")
+    def chain():
+        first = atom()
+        sym = peek()
+        if sym not in OPS:
+            return first
+        items = [first]
+        while peek() == sym:
+            take(sym)
+            items.append(atom())
+        if peek() in OPS:
+            raise ValueError(f"mixed operators without parentheses in {expr!r}")
+        return (OPS[sym], items)
 
-    def xor_():
-        items = [and_()]
-        while peek() == "^":
-            take("^")
-            items.append(and_())
-        e = items[0]
-        for r in items[1:]:
-            e = ("xor", e, r)
-        return e
-
-    def or_():
-        return nary("or", xor_, "+")
-
-    e = or_()
+    e = chain()
     if pos[0] != len(toks):
         raise ValueError(f"trailing input in {expr!r}")
     return e
@@ -125,7 +118,10 @@ def evaluate(e, env):
         return int(all(evaluate(x, env) for x in e[1]))
     if k == "or":
         return int(any(evaluate(x, env) for x in e[1]))
-    return evaluate(e[1], env) ^ evaluate(e[2], env)
+    r = 0
+    for x in e[1]:
+        r ^= evaluate(x, env)
+    return r
 
 
 def nnf(e, neg=False):
@@ -136,8 +132,10 @@ def nnf(e, neg=False):
     if k == "not":
         return nnf(e[1], not neg)
     if k == "xor":
-        a, b = e[1], e[2]
-        return nnf(("or", [("and", [a, ("not", b)]), ("and", [("not", a), b])]), neg)
+        a = e[1][0]
+        for b in e[1][1:]:
+            a = ("or", [("and", [a, ("not", b)]), ("and", [("not", a), b])])
+        return nnf(a, neg)
     op = k if not neg else ("or" if k == "and" else "and")
     kids = [nnf(x, neg) for x in e[1]]
     flat = []
