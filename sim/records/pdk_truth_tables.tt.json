@@ -1,0 +1,249 @@
+{
+ "corner": "tt",
+ "temp_c": 27,
+ "vdd_v": 1.2,
+ "tol_v": 0.1,
+ "status": "simulated",
+ "cells": [
+  {
+   "cell": "s5l_a21o_1",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_a21o_2",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_a21oi_1",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_a21oi_2",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_a22oi_1",
+   "vectors_x_outputs": 16,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_a221oi_1",
+   "vectors_x_outputs": 32,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_and2_1",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_and2_2",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_and3_1",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_and3_2",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_and4_1",
+   "vectors_x_outputs": 16,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_buf_1",
+   "vectors_x_outputs": 2,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_buf_2",
+   "vectors_x_outputs": 2,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_buf_4",
+   "vectors_x_outputs": 2,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_inv_1",
+   "vectors_x_outputs": 2,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_inv_2",
+   "vectors_x_outputs": 2,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_inv_4",
+   "vectors_x_outputs": 2,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_mux2_1",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_mux2_2",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_mux4_1",
+   "vectors_x_outputs": 64,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nand2_1",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nand2_2",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nand2b_1",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nand3_1",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nand3b_1",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nand4_1",
+   "vectors_x_outputs": 16,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nor2_1",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nor2_2",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nor2b_1",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nor3_1",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nor3_2",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_nor4_1",
+   "vectors_x_outputs": 16,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_o21ai_1",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_or2_1",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_or2_2",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_or3_1",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_or3_2",
+   "vectors_x_outputs": 8,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_or4_1",
+   "vectors_x_outputs": 16,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_xnor2_1",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  },
+  {
+   "cell": "s5l_xor2_1",
+   "vectors_x_outputs": 4,
+   "worst_logic_error_v": 0.0,
+   "failures": []
+  }
+ ]
+}
