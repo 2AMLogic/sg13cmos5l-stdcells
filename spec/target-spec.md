@@ -81,6 +81,8 @@ decision record, not a reason to edit this row.
 **Combinational cells — confirmed.** 40 / 20 / 120 are cell-count targets and
 do not depend on the PDK. The baseline has 84 macros including sequential,
 fill, decap and tie cells; the count is not a target for this library.
+The 40-cell list is ratified by [decision record 0002](decision-records/0002-cell-list.md)
+(catalog: [`design/cells.json`](../design/cells.json)).
 
 **Sequential cells — confirmed deferred.** Same deferral as the origin: the
 setup/hold characterization machinery does not exist yet. The 8-cell stretch is
