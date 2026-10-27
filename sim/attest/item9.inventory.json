@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 9,
+  "description": "T1 item 9 (testbenches shipped) for the benches on main: the inverter DC and transient toolchain smokes. These are smoke benches, not claimed characterization numbers; every result they produce is SIMULATED, never measured. The five-corner requests are committed but blocked on the batch fleet (sim/smoke/README.md), so the cold start runs the single-corner tt probe requests locally. Item-5 characterization benches are added by the PRs that land them.",
+  "testbenches": [
+    "sim/smoke/inverter_dc.cir",
+    "sim/smoke/inverter_dc.request.json",
+    "sim/smoke/inverter_tran.cir",
+    "sim/smoke/inverter_tran.request.json",
+    "sim/smoke/records/inverter_dc.tt-probe.request.json",
+    "sim/smoke/records/inverter_tran.tt-probe.request.json"
+  ],
+  "cold_start": {"argv": ["bash", "sim/attest/cold-start.sh"]},
+  "pins": {
+    "pdk": {"name": "ihp-sg13cmos5l", "revision": "f7bca32694fe3d58be0cc7d9df4b9f5db7161a14"},
+    "tools": {"ngspice": "47", "openvaf-r": "osdi_0.4-153-g2e066436", "klt": "dce956c3c39995643ff2a5c31b53c474b3c2aada"}
+  }
+}

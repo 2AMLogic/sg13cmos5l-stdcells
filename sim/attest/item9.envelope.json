@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 9,
+  "summary": "T1 item 9 (Testbenches shipped): 9/9 attestation checks passed (klt signoff --attest)",
+  "source": "sim/attest/item9.inventory.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 9,
+    "passed_count": 9,
+    "checks": [
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/smoke/inverter_dc.cir",
+        "passed": true,
+        "content_hash": "sha256:679273088aec583ab9c5c264924696963f82ed983d51b68250c239eeb8809295"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/smoke/inverter_dc.request.json",
+        "passed": true,
+        "content_hash": "sha256:2f9d73b8c232c98f8c311d013e959bd7be0243a063a7c408c65ad44746fb7874"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/smoke/inverter_tran.cir",
+        "passed": true,
+        "content_hash": "sha256:e461f3fde9678c26da44a8defdb7a50495762080ba06ce1d7cd2140e99d95f2e"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/smoke/inverter_tran.request.json",
+        "passed": true,
+        "content_hash": "sha256:362db7465df3607f79ef44b0cfe73ed181e12bfc71209b1c0bb8589e63556dd9"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/smoke/records/inverter_dc.tt-probe.request.json",
+        "passed": true,
+        "content_hash": "sha256:f4539a30d97425b4f8ed144b7472f171c5e7582d5eccc0c1d779508a19bef4de"
+      },
+      {
+        "check": "present",
+        "role": "testbench",
+        "path": "sim/smoke/records/inverter_tran.tt-probe.request.json",
+        "passed": true,
+        "content_hash": "sha256:24215469e5d6232408f2e42582ea9329a18dd02d588debb2023603950735136d"
+      },
+      {
+        "check": "command",
+        "role": "cold_start",
+        "argv": [
+          "bash",
+          "sim/attest/cold-start.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "pin",
+        "role": "pdk",
+        "passed": true,
+        "value": {
+          "name": "ihp-sg13cmos5l",
+          "revision": "f7bca32694fe3d58be0cc7d9df4b9f5db7161a14"
+        }
+      },
+      {
+        "check": "pin",
+        "role": "tools",
+        "passed": true,
+        "value": {
+          "klt": "dce956c3c39995643ff2a5c31b53c474b3c2aada",
+          "ngspice": "47",
+          "openvaf-r": "osdi_0.4-153-g2e066436"
+        }
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.8.1.dev58+g78f36d8f316c",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "sim/attest/item9.inventory.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:bbe1d198aaae978cd7b0b7e22aae26a73f47ee05b7f9dc3eb51193b7a720f759"
+    }
+  }
+}
