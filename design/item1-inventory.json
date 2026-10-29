@@ -1,0 +1,973 @@
+{
+  "schema_version": 1,
+  "kind": "t1-attestation-inventory",
+  "t1_item": 1,
+  "description": "T1 item 1 (design sources), full-custom digital sub-case: the ratified 40-cell catalog (design/cells.json) and the two generators that derive from it (design/gen_netlists.py for the SG13CMOS5L transistor-level netlists; rtl/gen_models.py for the functional Verilog models, which imports the shared Liberty-function parser from gen_netlists.py), plus every derived file. Each derived entry declares its generator's own --check as the freshness check (it rewrites nothing). No schematic capture and no synthesis step: the cells are generated, not hand-drawn.",
+  "sources": [
+    "design/cells.json",
+    "design/gen_netlists.py",
+    "rtl/gen_models.py"
+  ],
+  "derived": [
+    {
+      "path": "design/netlists/s5l_a21o_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_a21o_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_a21oi_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_a21oi_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_a221oi_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_a22oi_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_and2_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_and2_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_and3_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_and3_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_and4_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_buf_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_buf_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_buf_4.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_inv_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_inv_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_inv_4.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_mux2_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_mux2_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_mux4_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nand2_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nand2_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nand2b_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nand3_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nand3b_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nand4_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nor2_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nor2_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nor2b_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nor3_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nor3_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_nor4_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_o21ai_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_or2_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_or2_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_or3_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_or3_2.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_or4_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_xnor2_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "design/netlists/s5l_xor2_1.spice",
+      "generator": "design/gen_netlists.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_a21o_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_a21o_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_a21oi_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_a21oi_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_a221oi_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_a22oi_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_and2_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_and2_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_and3_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_and3_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_and4_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_buf_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_buf_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_buf_4.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_inv_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_inv_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_inv_4.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_mux2_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_mux2_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_mux4_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nand2_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nand2_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nand2b_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nand3_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nand3b_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nand4_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nor2_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nor2_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nor2b_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nor3_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nor3_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_nor4_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_o21ai_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_or2_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_or2_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_or3_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_or3_2.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_or4_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_xnor2_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    },
+    {
+      "path": "rtl/s5l_xor2_1.v",
+      "generator": "rtl/gen_models.py",
+      "check": {
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ]
+      }
+    }
+  ]
+}
