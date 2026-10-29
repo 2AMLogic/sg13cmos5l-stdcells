@@ -132,6 +132,16 @@ single-corner probe recorded, five-corner run blocked on the batch fleet) and
 [`layout/smoke`](layout/smoke/README.md) (`klt drc` clean, `klt lvs` mismatch
 on the PDK's own reference inverter).
 
+## Reproduce
+
+Every recorded result appends the exact commands that regenerate it here.
+
+Repo checks (JSON/evidence formats, README links, graded signoff record):
+
+```
+npm run check:ci
+```
+
 ## License
 
 Apache License 2.0 — see [LICENSE](LICENSE).

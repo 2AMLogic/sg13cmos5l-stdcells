@@ -1,0 +1,47 @@
+name: CI
+
+# Keeps the harness and evidence formats valid. The gates here are the same
+# scripts `npm run check:ci` runs locally: scripts/check_json.py and
+# scripts/check_signoff.sh. Keep the two in step.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Validate JSON config/evidence files and README links
+        run: python3 -I scripts/check_json.py
+
+      # TODO(harness): add the harness self-test step here when the harness
+      # lands; its entrypoint is not defined yet, so none is invented.
+
+  signoff:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install uv
+        run: pip install uv
+
+      - name: Re-run klt signoff and compare against the committed record
+        run: scripts/check_signoff.sh
