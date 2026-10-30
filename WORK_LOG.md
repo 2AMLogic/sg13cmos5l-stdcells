@@ -3,6 +3,11 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-10-30
+
+- **PR #55**: feat(verification): attest T1 item 1 design sources and declare digital kind
+- **Issue #36** (closed): T1 item 1d: item-1 inventory, klt signoff --attest 1, manifest evidence
+
 ### 2026-10-29
 
 - **PR #8**: ci: validate JSON evidence and graded klt signoff record
