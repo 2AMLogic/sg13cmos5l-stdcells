@@ -1,5 +1,10 @@
 {
   "block": "sg13cmos5l-stdcells",
-  "kind": "mixed-signal",
-  "evidence": {}
+  "kind": "digital",
+  "evidence": {
+    "1": {
+      "file": "verification/item1-attest.json",
+      "content_hash": "sha256:675f505c4070f0840e289a528113fd53770fdf7ebceb640c75afe9927a56a805"
+    }
+  }
 }

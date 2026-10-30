@@ -1,7 +1,7 @@
 # Block manifest and signoff record
 
 - `sg13cmos5l-stdcells.json`: the block manifest (`block`, `kind`, `evidence`).
-  The evidence map is empty; each evidence item is added by the issue that
+  Each evidence item is added by the issue that
   produces it.
 - `sg13cmos5l-stdcells.signoff.json`: the committed `klt signoff` output, the
   tier verdict of record. CI regenerates it and fails on any difference.
@@ -12,9 +12,17 @@
 ## `kind`
 
 `klt signoff` requires `kind` to be one of `analog`, `digital`, `mixed-signal`.
-`mixed-signal` is a placeholder matching the repo's `CLAUDE.md`. Spec issue #2
-may revise it by decision record; a revision means regenerating the signoff
-output in the same PR.
+The block declares `digital` (full-custom sub-case), per
+`spec/decision-records/0004-block-kind-digital.md`. A revision of `kind` goes
+through a decision record and regenerates the signoff output in the same PR.
+
+## Evidence
+
+- Item 1: `verification/item1-attest.json`, produced from
+  `design/item1-inventory.json`. The citation's `content_hash` is the
+  inventory's sha256 (the envelope's `provenance.input.content_hash`), not the
+  envelope file's. Re-attest after any change to a source, derived file or the
+  inventory, then update the hash here and regenerate the signoff record.
 
 ## Regenerate the signoff record
 

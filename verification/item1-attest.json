@@ -1,0 +1,1811 @@
+{
+  "schema_version": 1,
+  "kind": "generic",
+  "status": "pass",
+  "t1_item": 1,
+  "summary": "T1 item 1 (Design sources): 163/163 attestation checks passed (klt signoff --attest)",
+  "source": "design/item1-inventory.json",
+  "attestation": {
+    "producer": "klt signoff --attest",
+    "inventory_schema_version": 1,
+    "hash_algorithm": "sha256-raw-bytes",
+    "check_count": 163,
+    "passed_count": 163,
+    "checks": [
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/cells.json",
+        "passed": true,
+        "content_hash": "sha256:abb752e1976149d36065d3179b670fffc636ee95252d8444918340772933c38e"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "design/gen_netlists.py",
+        "passed": true,
+        "content_hash": "sha256:b0a4aba6b42e0de217f3bd705144aba4b6c8cd2b92083fee0a6ac4b3faa35728"
+      },
+      {
+        "check": "present",
+        "role": "source",
+        "path": "rtl/gen_models.py",
+        "passed": true,
+        "content_hash": "sha256:93c2321dec3b1e9ccb65fcd75fe6301fa055635c371540673760e6b21b3e490c"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_a21o_1.spice",
+        "passed": true,
+        "content_hash": "sha256:c3df438214f0ae00c27020e6e15a390d2e2aa5f3178bbd3cd467fbf9ecbb4fa7"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_a21o_2.spice",
+        "passed": true,
+        "content_hash": "sha256:ab1f64c6b5c6fb61160433094e9e5858c774d5bac68b5013c70bf50a9fd61267"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_a21oi_1.spice",
+        "passed": true,
+        "content_hash": "sha256:7108153ab20b82ce0f55fb1af15215664dd0e399079f282bb99dfc802c7a2254"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_a21oi_2.spice",
+        "passed": true,
+        "content_hash": "sha256:5f7983ae0d5246cdf6d6160dde8ac88f156784ed80edebba30211b96185b54f2"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_a221oi_1.spice",
+        "passed": true,
+        "content_hash": "sha256:a4e396bc2e9a254967d8b37fe12c5cbc97f2c6616d7840bd278eff0c610792af"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_a22oi_1.spice",
+        "passed": true,
+        "content_hash": "sha256:32d96290d65acd71729bd7d2db8327819ab1e31571ee68ece54d9e55a3df2fd7"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_and2_1.spice",
+        "passed": true,
+        "content_hash": "sha256:9a10903f8154efc11de27fc98e077c31f449c9f574e23ed1ad80bd57115004bc"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_and2_2.spice",
+        "passed": true,
+        "content_hash": "sha256:fcc5479df7b8e9710c87bea1d52574006f08149f3633432fb6dc45c78945e973"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_and3_1.spice",
+        "passed": true,
+        "content_hash": "sha256:de5c9fa312855c9e0d47113fe51a076ab9ef642624f33a31321e271d47ff42b0"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_and3_2.spice",
+        "passed": true,
+        "content_hash": "sha256:f328ce9806c31d3419d741ec9e641c649d749d5784ffb4ffc0f4c2d904a96ebe"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_and4_1.spice",
+        "passed": true,
+        "content_hash": "sha256:0c39abd69b2097840ebb1adf728e91373aabb0206f02ac9c7ed659c5e7fb57c3"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_buf_1.spice",
+        "passed": true,
+        "content_hash": "sha256:421978947e4830770a88c7f323f2d03b47bdb0357d899d7f8892e0a9ed295ac2"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_buf_2.spice",
+        "passed": true,
+        "content_hash": "sha256:fba55e3b8ad0a664d5c842ef0d2b055e7085bd3f4caf278f23bc24e667f9609d"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_buf_4.spice",
+        "passed": true,
+        "content_hash": "sha256:d1c5d0dcdbdaa394f5fe4e2186e36772b39d368e37fbae938c05ad305248cd9f"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_inv_1.spice",
+        "passed": true,
+        "content_hash": "sha256:8d3df57ffce29266a3eede64f24dd7a46e0ff5f0e83769ff538a663acd928db5"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_inv_2.spice",
+        "passed": true,
+        "content_hash": "sha256:7a15be5c2896449961d35e618a7c86ba776a11936397bc0eab4a147fac97800e"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_inv_4.spice",
+        "passed": true,
+        "content_hash": "sha256:9aed716e6e79ed503c5dac864dd73759ce54f6464950dacdedf0f3b43db8fbed"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_mux2_1.spice",
+        "passed": true,
+        "content_hash": "sha256:21970380f0075a369e498756736c6db8be8d3ea6217c4377cd55183331f1e394"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_mux2_2.spice",
+        "passed": true,
+        "content_hash": "sha256:c19a8604bdafccfc59e07d8696d6c4284637fe10c324f9526159972f625c9446"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_mux4_1.spice",
+        "passed": true,
+        "content_hash": "sha256:83c6755dffa2e072d0e9e80907beec405a0f15fe849efab8d6998dc33d0a060c"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nand2_1.spice",
+        "passed": true,
+        "content_hash": "sha256:4ff2645bfa17a77fb68e556c1ad2e2f7df220c714438046c4f10980841d4f027"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nand2_2.spice",
+        "passed": true,
+        "content_hash": "sha256:e51c3adf5ada0eeccfe2a4d42a1448513116596b1b257c4802243764cbfb29af"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nand2b_1.spice",
+        "passed": true,
+        "content_hash": "sha256:79c8e388a02c4d915d95f2f33e9c88b6fdb8a76092d719442f7b4ed3159dda7c"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nand3_1.spice",
+        "passed": true,
+        "content_hash": "sha256:f7c049bc4815006dd0c47b252d6dead4efee826af171a721ddc355a88b0f35f4"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nand3b_1.spice",
+        "passed": true,
+        "content_hash": "sha256:ed5a2500e9c783bc97545b2b39e277a59d088e1ae3bf9243c3d1a263ffde0176"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nand4_1.spice",
+        "passed": true,
+        "content_hash": "sha256:a28848b1ab411a7a21b3e0a4553fe73f6bb975fb56f498ee8ed16f3c3191a527"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nor2_1.spice",
+        "passed": true,
+        "content_hash": "sha256:901de78a562e21bd544b66b0a9b7f8804ee14b54e6942ccbb45517ecc81943dd"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nor2_2.spice",
+        "passed": true,
+        "content_hash": "sha256:83e5dfc4f604704a56731eb5b602e333de689088c745609abd9d95a6b38aa1a1"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nor2b_1.spice",
+        "passed": true,
+        "content_hash": "sha256:260100f1a3b3026fffb98426e54a4f8826480c7f0be6068cbf321f27ae4ae892"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nor3_1.spice",
+        "passed": true,
+        "content_hash": "sha256:d80cf48b71879d0738b1ae68c0ede3c0630daf934e6841350c94a699c8959764"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nor3_2.spice",
+        "passed": true,
+        "content_hash": "sha256:cf79c6432b65ec4efa3def933053e60fe0ed425fe3a77e6e050a5e653e758e1e"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_nor4_1.spice",
+        "passed": true,
+        "content_hash": "sha256:c2ba4efe4fb37812d71872977f80efb3dbcb87d4ca2be78b33dc47db0a2230a9"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_o21ai_1.spice",
+        "passed": true,
+        "content_hash": "sha256:7de7e2f987391fd900153866eb42d5a83e1ced3d7352e18f8223ce4262562d32"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_or2_1.spice",
+        "passed": true,
+        "content_hash": "sha256:6872bfedf8fadbf7ce1bb3dce54dc214320863dda13c4759e0f76dd5181dceb4"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_or2_2.spice",
+        "passed": true,
+        "content_hash": "sha256:00d5d5f67dc30126d1b5a618df549eb808cbda709ba6eb93ae26bb62416aaa50"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_or3_1.spice",
+        "passed": true,
+        "content_hash": "sha256:1ea2f6638dc835188b605f1e84532425a46c5fbda6e290b66d047a7752dd8351"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_or3_2.spice",
+        "passed": true,
+        "content_hash": "sha256:1e74a55d5508d590aaea39c0882b15a8ae082e6816c8dccbf6e0a6f6ad9a8926"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_or4_1.spice",
+        "passed": true,
+        "content_hash": "sha256:1a183bbcac2a2017ab0015b18d21dc49fdfd01dca0bb03f560cb9724bfa586dd"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_xnor2_1.spice",
+        "passed": true,
+        "content_hash": "sha256:0ca428cc3599e1ce2e172cd6638b60975af74fc9dd64d087c76616027da759e9"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "design/netlists/s5l_xor2_1.spice",
+        "passed": true,
+        "content_hash": "sha256:2ff0bae65ccf4c5485eb446c13346111a295436236ce7b8fc2ec0c12465d01a4"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_a21o_1.v",
+        "passed": true,
+        "content_hash": "sha256:6c466995b5890e125242e2e2f7dbfbebc33ed5d42b6e66b20c21e795fdce896c"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_a21o_2.v",
+        "passed": true,
+        "content_hash": "sha256:6b8ea500b8368f5e76ccb41c6c3fc4b63b5f1c788d981cad16d83ce0cd4dcdbf"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_a21oi_1.v",
+        "passed": true,
+        "content_hash": "sha256:5574a946db75f21eff334cdecb6a4f34da3a3f5822a05bbdaafc1b5f2d34ec72"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_a21oi_2.v",
+        "passed": true,
+        "content_hash": "sha256:8b0a61a06bc78b306e503001c681a4b2556987d547adf59bc53dd5fd741a6ca9"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_a221oi_1.v",
+        "passed": true,
+        "content_hash": "sha256:46f1b84e1110fc6155f566f3f333c8f833ee3368696485abaae306de134875d5"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_a22oi_1.v",
+        "passed": true,
+        "content_hash": "sha256:8e7556f0c83abeac4ce47f82f4155c3e3a0d9e9ac50e5f07d953f8a45472f045"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_and2_1.v",
+        "passed": true,
+        "content_hash": "sha256:18491dbbaa33d72f37aa8347320f7bb8e0fbe7a9fa437820d041342be90b1088"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_and2_2.v",
+        "passed": true,
+        "content_hash": "sha256:845fbdedce1507d43158c9e139f03f8a7fe36bee2e026bfc8a6df16be2606c17"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_and3_1.v",
+        "passed": true,
+        "content_hash": "sha256:1a09acfff453e96979d72f9abb921736e3954c18866e5945b385806c77a70985"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_and3_2.v",
+        "passed": true,
+        "content_hash": "sha256:f07b67ad6ab72be2715c2dd55eac38457aa7e3e539971eaca7f96f248b1587c8"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_and4_1.v",
+        "passed": true,
+        "content_hash": "sha256:1e449b0aeb8a26247a108519865cb272aea7f2f6376e28f22c005cb5bda0b5b0"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_buf_1.v",
+        "passed": true,
+        "content_hash": "sha256:ad93c967a9eeda443910687a7aab69921f18fa8a30746e5bfb5c4e352f6fbb5a"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_buf_2.v",
+        "passed": true,
+        "content_hash": "sha256:168c0958082566d0c575e93896f5013259f6635cbbe78a350d2dcab0de5ef15e"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_buf_4.v",
+        "passed": true,
+        "content_hash": "sha256:b0942a7c1cb93df35bb9b3f275d0790d30a8fd4375058d59fca99cc9815c4daf"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_inv_1.v",
+        "passed": true,
+        "content_hash": "sha256:4741d13e8f9adf8c1234d85e541d384dae846c7198017ed8d4bf3e4035762565"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_inv_2.v",
+        "passed": true,
+        "content_hash": "sha256:ae776a6365fe57f9f33b7db24950d00ee7e02f29b73c67ef9f1a8ddf0cd9fad5"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_inv_4.v",
+        "passed": true,
+        "content_hash": "sha256:1997815fa405818dcc602f142a6eb5a8d06e26e0b87add7161ee9db6a9c45a92"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_mux2_1.v",
+        "passed": true,
+        "content_hash": "sha256:0ea51df15c0fca7c51d70244dec071829c5fbf8fb33768c9efa454c075286580"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_mux2_2.v",
+        "passed": true,
+        "content_hash": "sha256:2bfa6502c64da93d9a210b992d8fd196aedc7d4e24f22f67a9652db2ff725c65"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_mux4_1.v",
+        "passed": true,
+        "content_hash": "sha256:8ff987ece1bc1c4fa1b2695cf26691e79f27d61763d637f50415fe9950150733"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nand2_1.v",
+        "passed": true,
+        "content_hash": "sha256:9d634f5e94f5b0f778d565d28d7d93a3e3f0f4bd6047eba7497e9ee1f5914b60"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nand2_2.v",
+        "passed": true,
+        "content_hash": "sha256:987010ea695c6493db271122ffe4b56265d5a14db2ac3a2013a1c7d2ba14fa38"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nand2b_1.v",
+        "passed": true,
+        "content_hash": "sha256:77a7c455afcf45ce236d57309390850776cc64642dd33c336eccb159790fa745"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nand3_1.v",
+        "passed": true,
+        "content_hash": "sha256:2b0015fb4b530fc6f8ea6dfde771c8bc02cb33336d87aeaf28d7bae43d8cefef"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nand3b_1.v",
+        "passed": true,
+        "content_hash": "sha256:b26b8736e67e3d1cba48d9464bcbc2a8c87472926a057f65edbb1c9a98ec654f"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nand4_1.v",
+        "passed": true,
+        "content_hash": "sha256:12afe1deb3a16e00789ef4d81226e2a27abad0c859ee6f3672c45a8f013829d9"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nor2_1.v",
+        "passed": true,
+        "content_hash": "sha256:e040435f90c83cd63a8bd53b1d5e401f869e1fcfeed3ec45577a051ec294042b"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nor2_2.v",
+        "passed": true,
+        "content_hash": "sha256:22c82adc10b7819b0f3796c4843657fa80e8293b194d2f1690ee629d476bebfd"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nor2b_1.v",
+        "passed": true,
+        "content_hash": "sha256:1d7eebc7ae6e2cbf8c2690395a6ab909b4da839f97724579e5be4618254750b8"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nor3_1.v",
+        "passed": true,
+        "content_hash": "sha256:127f03310c6fe279392e708e7e1c0fbf58785d82cecdf53f11ac81e63a29080f"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nor3_2.v",
+        "passed": true,
+        "content_hash": "sha256:244768260b2ec28ad6c27ee226278d609132b64e038d70513dce06edc028a9fd"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_nor4_1.v",
+        "passed": true,
+        "content_hash": "sha256:d340a527355c89573bbdc16e9b3f40dd3cf68b6f008085f866bb95128fbe0313"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_o21ai_1.v",
+        "passed": true,
+        "content_hash": "sha256:57b2e91be71c683f221355bb7bf9440defca05715f075954ecf777154b1819be"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_or2_1.v",
+        "passed": true,
+        "content_hash": "sha256:c2af6d09f4ab75684e480fd169d000daa29d35f252bf4c4a8d2f6a0cce189441"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_or2_2.v",
+        "passed": true,
+        "content_hash": "sha256:cf7ef66c06e3e843d16bf1add498e2bd8e1ddbdbf77511bece610dc982fd6118"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_or3_1.v",
+        "passed": true,
+        "content_hash": "sha256:60b538b7e4c3c4547345aa9a1ba8ffe3275545e514250a871c0dde331ae5e5bb"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_or3_2.v",
+        "passed": true,
+        "content_hash": "sha256:9975111b5b6873a877c54ffc877e450390a72da3720800c22cf422e778b8fbc1"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_or4_1.v",
+        "passed": true,
+        "content_hash": "sha256:7170c4a97d3857ab4605bcefcfe4aed29141b22b2f7dac1b48a1ab3a3afdd8d7"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_xnor2_1.v",
+        "passed": true,
+        "content_hash": "sha256:fd79b5a5e26dd0eeddd04d5d71eccb63c4c70e9adedd90d7d4ce4e28d01e4f42"
+      },
+      {
+        "check": "present",
+        "role": "derived",
+        "path": "rtl/s5l_xor2_1.v",
+        "passed": true,
+        "content_hash": "sha256:d20ec6e795011b21b19b83091a1507eebfd61eddc93161fa4464a5f46547d7dc"
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_a21o_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_a21o_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_a21oi_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_a21oi_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_a221oi_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_a22oi_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_and2_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_and2_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_and3_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_and3_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_and4_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_buf_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_buf_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_buf_4.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_inv_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_inv_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_inv_4.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_mux2_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_mux2_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_mux4_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nand2_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nand2_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nand2b_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nand3_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nand3b_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nand4_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nor2_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nor2_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nor2b_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nor3_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nor3_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_nor4_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_o21ai_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_or2_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_or2_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_or3_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_or3_2.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_or4_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_xnor2_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "design/netlists/s5l_xor2_1.spice",
+        "generator": "design/gen_netlists.py",
+        "argv": [
+          "python3",
+          "-I",
+          "design/gen_netlists.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_a21o_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_a21o_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_a21oi_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_a21oi_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_a221oi_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_a22oi_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_and2_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_and2_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_and3_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_and3_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_and4_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_buf_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_buf_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_buf_4.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_inv_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_inv_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_inv_4.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_mux2_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_mux2_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_mux4_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nand2_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nand2_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nand2b_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nand3_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nand3b_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nand4_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nor2_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nor2_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nor2b_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nor3_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nor3_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_nor4_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_o21ai_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_or2_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_or2_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_or3_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_or3_2.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_or4_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_xnor2_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "freshness",
+        "target": "rtl/s5l_xor2_1.v",
+        "generator": "rtl/gen_models.py",
+        "argv": [
+          "python3",
+          "-I",
+          "rtl/gen_models.py",
+          "--check"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      }
+    ]
+  },
+  "provenance": {
+    "klt_version": "0.8.1.dev738+gd73dc11df57f",
+    "klayout_version": null,
+    "pdk": null,
+    "deck": null,
+    "input": {
+      "path": {
+        "path": "design/item1-inventory.json",
+        "scope": "repo"
+      },
+      "content_hash": "sha256:675f505c4070f0840e289a528113fd53770fdf7ebceb640c75afe9927a56a805"
+    }
+  }
+}
