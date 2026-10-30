@@ -3,6 +3,11 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-10-29
+
+- **PR #8**: ci: validate JSON evidence and graded klt signoff record
+- **Issue #5** (closed): Repo hygiene and CI (T1 item 10): real CI checks, a graded klt signoff manifest, README spec-issue fix
+
 ### 2026-10-27
 
 - **PR #51**: build: pin klayout-tools 0.8.0 release and check klt by version
