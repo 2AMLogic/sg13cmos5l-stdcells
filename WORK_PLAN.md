@@ -26,7 +26,8 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-_None._
+- **#28**: T1 item 6 (Monte Carlo): bound not_applicable statement accounting for every ratified row
+- **#31**: T1 item 9 (testbenches shipped): testbench inventory over the smoke and characterization benches, attested with klt signoff --attest 9
 
 ## In Progress
 
@@ -74,7 +75,7 @@ _None._
 | Operator merge-risk holds | 0 |
 | Very important | 0 |
 | Important | 1 |
-| Ready (`loom:issue`) | 0 |
+| Ready (`loom:issue`) | 2 |
 | In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |

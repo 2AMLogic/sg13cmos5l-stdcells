@@ -5,6 +5,7 @@ Maintained by the Guide triage role.
 
 ### 2026-10-30
 
+- **Issue #23** (closed): T1 item 1 (design sources): transistor-level schematics and derived netlists for the 40-cell combinational set on sg13_lv
 - **PR #55**: feat(verification): attest T1 item 1 design sources and declare digital kind
 - **Issue #36** (closed): T1 item 1d: item-1 inventory, klt signoff --attest 1, manifest evidence
 
