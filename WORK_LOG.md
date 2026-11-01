@@ -3,6 +3,10 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-01
+
+- **PR #59**: Bump Repo Skills 0.24.7 -> 0.25.1
+
 ### 2026-10-30
 
 - **Issue #23** (closed): T1 item 1 (design sources): transistor-level schematics and derived netlists for the 40-cell combinational set on sg13_lv
