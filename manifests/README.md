@@ -24,13 +24,19 @@ through a decision record and regenerates the signoff output in the same PR.
   envelope file's. Re-attest after any change to a source, derived file or the
   inventory, then update the hash here and regenerate the signoff record.
 
+- Item 9: `sim/attest/item9.envelope.json`, produced from
+  `sim/attest/item9.inventory.json` with `klt signoff --attest 9`. As for
+  item 1, `content_hash` is the inventory's sha256. CI re-runs
+  `klt signoff --attest 9 --inventory ... --check ...` on it (klt `0.8.0`;
+  `--attest` is absent from 0.7.0).
+
 ## Regenerate the signoff record
 
-klt is pinned to `0.7.0` (in `scripts/check_signoff.sh`). Change the manifest,
+klt is pinned to `0.8.0` (in `scripts/check_signoff.sh`). Change the manifest,
 the tiers doc, or the pin, then regenerate with the same version:
 
 ```
-uvx --from "klayout-tools==0.7.0" klt signoff \
+uvx --from "klayout-tools==0.8.0" klt signoff \
     --manifest manifests/sg13cmos5l-stdcells.json \
     --tiers-doc manifests/design-evidence-tiers.md \
     --format json > manifests/sg13cmos5l-stdcells.signoff.json

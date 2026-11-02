@@ -45,3 +45,9 @@ jobs:
 
       - name: Re-run klt signoff and compare against the committed record
         run: scripts/check_signoff.sh
+
+      - name: Re-check the item-9 testbench attestation
+        run: >
+          uvx --from "klayout-tools==0.8.0" klt signoff --attest 9
+          --inventory sim/attest/item9.inventory.json
+          --check sim/attest/item9.envelope.json
