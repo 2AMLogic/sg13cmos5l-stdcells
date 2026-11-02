@@ -5,7 +5,7 @@
 # host-wide tool is touched.
 set -uo pipefail
 
-KLT_PIN="0.7.0"   # keep in step with manifests/README.md and the committed record
+KLT_PIN="0.8.0"   # keep in step with manifests/README.md and the committed record
 
 cd "$(dirname "$0")/.."
 fresh="$(mktemp)"
