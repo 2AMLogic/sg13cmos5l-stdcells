@@ -1,8 +1,8 @@
 name: CI
 
 # Keeps the harness and evidence formats valid. The gates here are the same
-# scripts `npm run check:ci` runs locally: scripts/check_json.py and
-# scripts/check_signoff.sh. Keep the two in step.
+# scripts `npm run check:ci` runs locally: scripts/check_json.py,
+# scripts/check_item6_statement.py (+ its self-test) and scripts/check_signoff.sh. Keep the two in step.
 
 on:
   push:
@@ -26,6 +26,11 @@ jobs:
 
       - name: Validate JSON config/evidence files and README links
         run: python3 -I scripts/check_json.py
+
+      - name: Check the item 6 not_applicable statement against the spec
+        run: |
+          python3 -I scripts/check_item6_statement.py
+          bash scripts/test_check_item6_statement.sh
 
       # TODO(harness): add the harness self-test step here when the harness
       # lands; its entrypoint is not defined yet, so none is invented.
