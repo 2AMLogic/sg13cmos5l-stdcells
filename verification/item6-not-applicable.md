@@ -7,7 +7,7 @@ statement accounts for every row of the Parameters table in
 `not_applicable` for this block.
 
 Written against `spec/target-spec.md` with
-`SHA-256: 83334885462fabba7a84c5b268d7e3657a442f1a4adc2995d87c315d1d6982dc`.
+`SHA-256: cf2688fb8414feb158a8f0b11c67a2d79026a9b3343c64b5d5cf98f8c5d817b0`.
 
 `scripts/check_item6_statement.py` fails when that hash no longer matches the
 spec, or when the first column of the table below differs from the spec's
@@ -51,8 +51,16 @@ adds a tolerance or variation claim (a sigma bound, a yield target, an offset or
 matching limit, or a spread on a benchmark ratio or table value), this statement
 no longer applies and that row needs `klt yield` evidence.
 
+## Re-verification log
+
+- Hash re-recorded after the spec gained a prose pointer to decision record 0002
+  under the Combinational cells rationale (PR #39). The Parameters table rows
+  are unchanged, so the accounting above is unchanged.
+
 ## Pending
 
 The block manifest does not yet cite this file as item 6's `not_applicable`
-evidence, and `klt signoff` does not yet report item 6 from it: the manifest
-arrives with PR #8, and the citation is the last step of issue #28.
+evidence, and `klt signoff` does not yet report item 6 from it. The pinned
+`klt` 0.7.0 has no `not_applicable` grading, and 0.8.0's form takes a JSON
+ratified spec and a JSON statement, not this markdown pair. The citation waits
+on that tool gap (issue #28 stays open).
