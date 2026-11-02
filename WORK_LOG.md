@@ -3,6 +3,12 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-02
+
+- **PR #62**: ci: cite item-9 attestation in manifest and re-check it in CI
+- **Issue #31** (closed): T1 item 9 (testbenches shipped): testbench inventory over the smoke and characterization benches, attested with klt signoff --attest 9
+- **PR #61**: fix(verification): re-record item 6 spec hash and run its check in CI
+
 ### 2026-11-01
 
 - **PR #59**: Bump Repo Skills 0.24.7 -> 0.25.1
