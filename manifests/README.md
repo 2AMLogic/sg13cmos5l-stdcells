@@ -30,6 +30,16 @@ through a decision record and regenerates the signoff output in the same PR.
   `klt signoff --attest 9 --inventory ... --check ...` on it (klt `0.8.0`;
   `--attest` is absent from 0.7.0).
 
+- Item 10: `manifests/evidence/item-10-repo-hygiene.json`, produced from
+  `manifests/item-10-inventory.json` with `klt signoff --attest 10`. As for
+  items 1 and 9, `content_hash` is the inventory's sha256. The inventory lists
+  the hygiene files (README, LICENSE, CI workflow, check scripts) and the
+  audit commands (README has a Reproduce section and names `npm run check:ci`,
+  CI runs the signoff and item-10 re-checks, `scripts/check_json.py` passes).
+  CI re-runs `klt signoff --attest 10 --inventory ... --check ...` on it.
+  Re-attest after any change to the README, LICENSE, CI workflow or check
+  scripts, then update the hash and regenerate the signoff record.
+
 ## Regenerate the signoff record
 
 klt is pinned to `0.8.0` (in `scripts/check_signoff.sh`). Change the manifest,
