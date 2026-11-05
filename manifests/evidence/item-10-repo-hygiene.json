@@ -45,7 +45,7 @@
         "role": "hygiene",
         "path": "scripts/check_item6_statement.py",
         "passed": true,
-        "content_hash": "sha256:7a87663ee969f68677bf7a385562859fe4d80e1fb944fbea55e2ac58d404b10f"
+        "content_hash": "sha256:344e5d5270a78bfca371b8c1ad24efe7253172f7462c0f8f4f5150d82de19ae6"
       },
       {
         "check": "present",
