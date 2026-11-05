@@ -59,8 +59,10 @@ no longer applies and that row needs `klt yield` evidence.
 
 ## Pending
 
-The block manifest does not yet cite this file as item 6's `not_applicable`
-evidence, and `klt signoff` does not yet report item 6 from it. The pinned
-`klt` 0.7.0 has no `not_applicable` grading, and 0.8.0's form takes a JSON
-ratified spec and a JSON statement, not this markdown pair. The citation waits
-on that tool gap (issue #28 stays open).
+`verification/item6-not-applicable.json` is this table in the JSON form
+`klt signoff` grades (`python3 scripts/check_item6_statement.py --write-json`
+regenerates it; the check fails when it drifts from the table). The block
+manifest does not yet cite item 6, because klt 0.9.0 reads a markdown spec only
+if the file carries a `Status: <value>` line, and `spec/target-spec.md` has
+none. Adding it changes the ratified spec (and its hash), so it needs a
+decision record. Issue #28 stays open.
