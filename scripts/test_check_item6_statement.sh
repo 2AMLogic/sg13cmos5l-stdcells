@@ -24,4 +24,9 @@ sed 's/^| Pin access |/| Pin access (renamed) |/' "$SPEC" >"$tmp/spec_row.md"
 sed "s/SHA-256: [0-9a-f]\{64\}/SHA-256: $(sha256sum "$tmp/spec_row.md" | awk '{print $1}')/" "$STMT" >"$tmp/stmt_rehash.md"
 run "$tmp/spec_row.md" "$tmp/stmt_rehash.md"; check "renamed spec row fails despite fresh hash" "$?" "1"
 
+# the JSON form must follow the markdown table
+sed 's/"geometry"/"count"/' "$ROOT/verification/item6-not-applicable.json" >"$tmp/stmt.json"
+python3 -I "$ROOT/scripts/check_item6_statement.py" --json "$tmp/stmt.json" >"$tmp/log" 2>&1; check "drifted JSON statement fails" "$?" "1"
+grep -q "differs from the statement table" "$tmp/log"; check "  names the drift" "$?" "0"
+
 exit "$fail"

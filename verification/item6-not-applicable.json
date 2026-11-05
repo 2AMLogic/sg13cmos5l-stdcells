@@ -1,0 +1,74 @@
+{
+  "rows": [
+    {
+      "id": "Row height",
+      "class": "geometry",
+      "reason": "A drawn dimension (8 tracks of 0.42 µm); no device variation enters it."
+    },
+    {
+      "id": "Routing grid",
+      "class": "geometry",
+      "reason": "A pitch the layout snaps to; no variation."
+    },
+    {
+      "id": "Intra-cell routing",
+      "class": "geometry",
+      "reason": "A layer-usage rule (Metal1 only), checked by DRC."
+    },
+    {
+      "id": "Pin access",
+      "class": "geometry",
+      "reason": "Pins sit on grid points; a layout property, checked on the drawn cell."
+    },
+    {
+      "id": "Combinational cells",
+      "class": "count",
+      "reason": "A cell-count target; no distribution."
+    },
+    {
+      "id": "Sequential cells",
+      "class": "count",
+      "reason": "A cell-count target (0, deferred); no distribution."
+    },
+    {
+      "id": "DRC",
+      "class": "tool-pass",
+      "reason": "A deterministic rule check on drawn geometry."
+    },
+    {
+      "id": "LVS",
+      "class": "tool-pass",
+      "reason": "A deterministic netlist comparison."
+    },
+    {
+      "id": "Core supply",
+      "class": "corner-bounded",
+      "reason": "A nominal voltage (1.20 V); the ±10 % excursions are named corners, not a distribution."
+    },
+    {
+      "id": "Liberty corners",
+      "class": "corner-bounded",
+      "reason": "Named PVT points (TT; stretch FF, SS), each simulated once; no sigma or yield bound."
+    },
+    {
+      "id": "Characterization grid",
+      "class": "corner-bounded",
+      "reason": "A fixed 7 × 7 slew/load index set; a deterministic sweep with no spread claim."
+    },
+    {
+      "id": "Benchmark cell area vs `sg13cmos5l_stdcell`",
+      "class": "benchmark ratio",
+      "reason": "One deterministic flow run per library; a ratio with no tolerance band."
+    },
+    {
+      "id": "Benchmark energy vs `sg13cmos5l_stdcell`",
+      "class": "benchmark ratio",
+      "reason": "One deterministic power report per library; no spread claim."
+    },
+    {
+      "id": "Benchmark clock period vs `sg13cmos5l_stdcell`",
+      "class": "benchmark ratio",
+      "reason": "One deterministic timing result per library; the \"within 10 %\" is a comparison threshold, not a variation bound."
+    }
+  ]
+}
