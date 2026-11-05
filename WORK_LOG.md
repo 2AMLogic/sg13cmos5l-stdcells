@@ -3,6 +3,12 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-05
+
+- **PR #67**: feat: add JSON form of item 6 statement with drift check
+- **PR #66**: feat: attest T1 item 10 repo hygiene and refresh README status
+- **Issue #65** (closed): T1 item 10 (repo hygiene): current README status, hygiene inventory, klt signoff --attest 10
+
 ### 2026-11-02
 
 - **PR #62**: ci: cite item-9 attestation in manifest and re-check it in CI
