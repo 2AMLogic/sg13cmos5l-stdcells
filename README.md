@@ -14,8 +14,16 @@ that a synthesis tool builds a digital chip from, produced by cell generators
 at a fixed row height and characterized into the abstract views (LEF,
 Liberty) that every downstream tool reads.
 
-**Status: just opened, specification phase.** Nothing is designed yet,
-nothing has been taped out, and nothing has been measured.
+**Status: specification ratified, tier 1 in progress.** The spec is ratified
+(decision record 0001) and the block kind is declared digital (decision record
+0004). The committed signoff record
+([`manifests/sg13cmos5l-stdcells.signoff.json`](manifests/sg13cmos5l-stdcells.signoff.json))
+grades 3 of 11 tier-1 items met: design sources (1), testbenches shipped (9)
+and repo hygiene (10). The rest are unmet: the layout generator blocks layout,
+DRC and LVS (issue #24), the five-corner grid in issue #4 needs
+klayout-tools#2727, and the Monte Carlo item waits on a klt release (issue #28). Nothing has been taped out
+and nothing has been measured; every number from the smoke benches is
+simulated, not measured.
 
 **Built agent-native.** Every specification, decision record, testbench, and
 line of documentation here is produced by AI agents working from a ratified

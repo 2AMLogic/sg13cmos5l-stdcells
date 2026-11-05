@@ -56,3 +56,9 @@ jobs:
           uvx --from "klayout-tools==0.8.0" klt signoff --attest 9
           --inventory sim/attest/item9.inventory.json
           --check sim/attest/item9.envelope.json
+
+      - name: Re-check the item-10 repo-hygiene attestation
+        run: >
+          uvx --from "klayout-tools==0.8.0" klt signoff --attest 10
+          --inventory manifests/item-10-inventory.json
+          --check manifests/evidence/item-10-repo-hygiene.json

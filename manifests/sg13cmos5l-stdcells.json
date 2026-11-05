@@ -9,6 +9,10 @@
     "9": {
       "file": "sim/attest/item9.envelope.json",
       "content_hash": "sha256:bbe1d198aaae978cd7b0b7e22aae26a73f47ee05b7f9dc3eb51193b7a720f759"
+    },
+    "10": {
+      "file": "manifests/evidence/item-10-repo-hygiene.json",
+      "content_hash": "sha256:5c1afebcc991e485950b556619b82d66f1a6529936594651d6023b6d026c6d15"
     }
   }
 }
