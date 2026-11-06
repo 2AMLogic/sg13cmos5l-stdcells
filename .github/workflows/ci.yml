@@ -2,7 +2,7 @@ name: CI
 
 # Keeps the harness and evidence formats valid. The gates here are the same
 # scripts `npm run check:ci` runs locally: scripts/check_json.py,
-# scripts/check_item6_statement.py (+ its self-test) and scripts/check_signoff.sh. Keep the two in step.
+# scripts/check_item6_statement.py (+ its self-test) and scripts/check_signoff.sh, plus the PDK-free design/RTL checks (`check:design-rtl`). Keep the two in step.
 
 on:
   push:
@@ -62,3 +62,40 @@ jobs:
           uvx --from "klayout-tools==0.8.0" klt signoff --attest 10
           --inventory manifests/item-10-inventory.json
           --check manifests/evidence/item-10-repo-hygiene.json
+
+  design-rtl:
+    # PDK-free design and RTL checks: generator freshness, catalog, switch-level
+    # and cocotb + Icarus truth tables. Same commands as `npm run check:design-rtl`.
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install simulators (distro ngspice for logic-level stubs, Icarus)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends ngspice iverilog
+
+      - name: Create venv with pinned cocotb
+        run: |
+          python3 -m venv .venv
+          .venv/bin/pip install "cocotb==2.1.0"
+
+      - name: Catalog is 40 distinct well-formed cells
+        run: python3 design/check_catalog.py
+
+      - name: Committed netlists match the generator
+        run: python3 design/gen_netlists.py --check
+
+      - name: Committed RTL models match the generator
+        run: python3 rtl/gen_models.py --check
+
+      - name: Switch-level truth tables and generator unit tests
+        run: python3 -m unittest design/test_check_catalog.py design/tests/test_gen_netlists.py rtl/tests/test_gen_models.py
+
+      - name: Exhaustive cocotb + Icarus truth tables of all models
+        run: .venv/bin/python rtl/tests/run_tests.py
