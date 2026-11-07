@@ -3,6 +3,11 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-06
+
+- **PR #70**: ci: run PDK-free design and RTL checks in a design-rtl job
+- **Issue #69** (closed): Run the PDK-free design and RTL checks in CI (netlist/model freshness, truth tables)
+
 ### 2026-11-05
 
 - **PR #67**: feat: add JSON form of item 6 statement with drift check
