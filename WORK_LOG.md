@@ -3,6 +3,10 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-07
+
+- **PR #72**: Bump Repo Skills 0.25.1 -> 0.25.10
+
 ### 2026-11-06
 
 - **PR #70**: ci: run PDK-free design and RTL checks in a design-rtl job
