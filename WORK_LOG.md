@@ -3,6 +3,10 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-11
+
+- **PR #76**: feat(sim): pin klt 0.9.1 and record five-corner batch transient run
+
 ### 2026-11-10
 
 - **Issue #21** (closed): Remove placeholder package.json scripts that always succeed
