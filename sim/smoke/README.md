@@ -18,27 +18,16 @@ sections `mos_tt mos_ff mos_ss mos_fs mos_sf`; the PSP103 OSDI is preloaded
 from `$PDK_ROOT`. Both requests set `options.stage_model_inputs: true`, which
 is what the batch backend needs to accept an OSDI preload.
 
-## Status of the five-corner run: blocked on the fleet
+## Status of the five-corner run
 
-The five-corner requests are committed but **have no result record**. On this
-host `KLT_SIM_BACKEND=batch`, and the multi-corner grid must go to the Spot
-batch fleet, not to hand-launched local ngspice. The submit was refused before
-any job started:
+klt 0.9.1 (pinned in `layout/toolchain.json`) accepts `ihp-sg13cmos5l` on the
+batch backend (klayout-tools#2727, fixed by #4733).
 
-```
-klt sim --backend batch inverter_dc.request.json
-error: unsupported PDK 'ihp-sg13cmos5l' for the batch backend
-(supported: sky130A, gf180mcu, sg13g2). ... a variant whose family has no
-published AMI is unsupported even when it resolves locally.
-```
-
-Without `--backend`, `klt sim` falls back to `local` by itself for an OSDI
-request, so the same request would have run all five corners on this host; that
-was not done, by the host rule. The only local run is the single-corner debug
-probe below. Closing this needs a fleet image that carries `ihp-sg13cmos5l`
-(or a documented way to run a staged-PDK request on an existing image); it is
-a change to the fleet spec, not to this repo (tracked as
-[klayout-tools#2727](https://github.com/2AMLogic/klayout-tools/issues/2727)). Re-run when it exists:
+- `inverter_tran.request.json`: five corners passed on the fleet; record in
+  [`records/five-corner.2026-11-11.md`](records/five-corner.2026-11-11.md).
+- `inverter_dc.request.json`: **no record yet.** Two batch submits were accepted
+  but no instance ever booted for them. The grid is not run locally, by the host
+  rule. Re-submit when the fleet has capacity:
 
 ```
 source .cache/env.sh
