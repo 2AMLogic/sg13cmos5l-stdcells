@@ -35,11 +35,17 @@ Hygiene edit: `environment.ngspice_binary` was set to `null` in both reports
 because it held an absolute host path; the binary's identity is its
 `engine_build.binary_sha256`. Nothing else in the envelopes was changed.
 
-The five-corner record (`inverter_dc.report.json`, `inverter_tran.report.json`)
-does not exist yet.
+The five-corner transient record now exists, see below; the five-corner DC
+record (`inverter_dc.report.json`) does not exist yet.
 
 ## Clean-clone bring-up
 
 [`setup-env.clean-clone.2026-10-18.md`](setup-env.clean-clone.2026-10-18.md)
 records `scripts/setup-env.sh` run end to end from a fresh clone (pass, no manual
 PDK step).
+
+## Five-corner batch record
+
+[`five-corner.2026-11-11.md`](five-corner.2026-11-11.md): transient `tt/ff/ss/fs/sf`
+from batch job `klt-sim-1d48736cc46b` (pass), a `tt` batch probe, and the DC
+grid whose submits the fleet accepted but never started.
