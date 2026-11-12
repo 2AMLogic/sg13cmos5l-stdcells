@@ -5,6 +5,7 @@ Maintained by the Guide triage role.
 
 ### 2026-11-12
 
+- **PR #81**: feat(sim): generate per-corner klt characterize requests and record an nand2 TT probe
 - **PR #78**: feat(sim): record five-corner DC batch run of the reference inverter
 - **Issue #4** (closed): PDK and toolchain bring-up: pin SG13CMOS5L, commit an ngspice smoke run and a klt DRC/LVS smoke on a reference cell
 

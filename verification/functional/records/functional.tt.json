@@ -1,0 +1,3056 @@
+{
+ "label": "SIMULATED (ngspice, TT 1.20 V 25 C), never measured",
+ "pass": true,
+ "cells_total": 40,
+ "cells_passed": 40,
+ "cells": {
+  "s5l_a21o_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.43047e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 8.81661e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 4,
+     "rtl": 0,
+     "netlist_v": 4.52887e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 5,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_a21o_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.44376e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 1.33977e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 4,
+     "rtl": 0,
+     "netlist_v": -9.00823e-09,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 5,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_a21oi_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 3.84098e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 3.71916e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.19997,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 3.73225e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 6,
+     "rtl": 0,
+     "netlist_v": 2.17861e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 7,
+     "rtl": 0,
+     "netlist_v": 6.26779e-06,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_a21oi_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 3.4125e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 3.27759e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.19997,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 3.28595e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 6,
+     "rtl": 0,
+     "netlist_v": 2.18357e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 7,
+     "rtl": 0,
+     "netlist_v": 6.68381e-06,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_a22oi_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.19998,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 4.85587e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.19998,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 5,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.19997,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 7,
+     "rtl": 0,
+     "netlist_v": 4.77498e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 8,
+     "rtl": 1,
+     "netlist_v": 1.19995,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 9,
+     "rtl": 1,
+     "netlist_v": 1.19999,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 10,
+     "rtl": 1,
+     "netlist_v": 1.19996,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 11,
+     "rtl": 0,
+     "netlist_v": 4.78941e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 12,
+     "rtl": 0,
+     "netlist_v": -9.82252e-06,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 13,
+     "rtl": 0,
+     "netlist_v": 2.17621e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 14,
+     "rtl": 0,
+     "netlist_v": 2.5688e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 15,
+     "rtl": 0,
+     "netlist_v": 3.76507e-06,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_a221oi_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 0.000135557,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 0.000129847,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.19997,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 0.000130152,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 6,
+     "rtl": 0,
+     "netlist_v": 6.65117e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 7,
+     "rtl": 0,
+     "netlist_v": 1.97352e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 8,
+     "rtl": 1,
+     "netlist_v": 1.19998,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 9,
+     "rtl": 0,
+     "netlist_v": 0.000135169,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 10,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 11,
+     "rtl": 0,
+     "netlist_v": 0.000130997,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 12,
+     "rtl": 1,
+     "netlist_v": 1.19997,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 13,
+     "rtl": 0,
+     "netlist_v": 0.000131292,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 14,
+     "rtl": 0,
+     "netlist_v": 6.50556e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 15,
+     "rtl": 0,
+     "netlist_v": 1.92609e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 16,
+     "rtl": 1,
+     "netlist_v": 1.19995,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 17,
+     "rtl": 0,
+     "netlist_v": 0.000135522,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 18,
+     "rtl": 1,
+     "netlist_v": 1.19997,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 19,
+     "rtl": 0,
+     "netlist_v": 0.000131305,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 20,
+     "rtl": 1,
+     "netlist_v": 1.19993,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 21,
+     "rtl": 0,
+     "netlist_v": 0.000131626,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 22,
+     "rtl": 0,
+     "netlist_v": 6.51636e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 23,
+     "rtl": 0,
+     "netlist_v": 1.92841e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 24,
+     "rtl": 0,
+     "netlist_v": -9.74099e-06,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 25,
+     "rtl": 0,
+     "netlist_v": -1.18965e-06,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 26,
+     "rtl": 0,
+     "netlist_v": 3.06957e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 27,
+     "rtl": 0,
+     "netlist_v": 1.48116e-06,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 28,
+     "rtl": 0,
+     "netlist_v": 3.46275e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 29,
+     "rtl": 0,
+     "netlist_v": 1.50099e-06,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 30,
+     "rtl": 0,
+     "netlist_v": 2.27221e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 31,
+     "rtl": 0,
+     "netlist_v": 9.31281e-06,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_and2_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.43046e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 5.83705e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 6.40959e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_and2_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.44375e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 6.13957e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 6.3365e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_and3_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.43046e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 5.59543e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 5.4593e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 5.44851e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 4,
+     "rtl": 0,
+     "netlist_v": 6.54606e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 5.94205e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 6,
+     "rtl": 0,
+     "netlist_v": 8.4654e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_and3_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.44374e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 5.77553e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 5.4847e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 5.47826e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 4,
+     "rtl": 0,
+     "netlist_v": 6.3934e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 5.89626e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 6,
+     "rtl": 0,
+     "netlist_v": 8.14028e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_and4_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.43046e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 5.5307e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 5.40927e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 5.44041e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 4,
+     "rtl": 0,
+     "netlist_v": 5.42147e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 5.42885e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 6,
+     "rtl": 0,
+     "netlist_v": 5.43173e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 7,
+     "rtl": 0,
+     "netlist_v": 5.42872e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 8,
+     "rtl": 0,
+     "netlist_v": 6.81404e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 9,
+     "rtl": 0,
+     "netlist_v": 5.9428e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 10,
+     "rtl": 0,
+     "netlist_v": 5.64966e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 11,
+     "rtl": 0,
+     "netlist_v": 5.60916e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 12,
+     "rtl": 0,
+     "netlist_v": 7.94989e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 13,
+     "rtl": 0,
+     "netlist_v": 6.64319e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 14,
+     "rtl": 0,
+     "netlist_v": 1.167e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 15,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_buf_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.43047e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_buf_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.44375e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_buf_4": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.45039e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_inv_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 6.6965e-08,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_inv_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 8.34327e-08,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_inv_4": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 9.85113e-08,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_mux2_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.43047e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 6.40694e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 5.00475e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 6.41514e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_mux2_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.44376e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 6.51169e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 4.82776e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 6.29514e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_mux4_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.43049e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 5.52267e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 7.51415e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 5.82036e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 4,
+     "rtl": 0,
+     "netlist_v": 7.50321e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 6.00504e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 6,
+     "rtl": 0,
+     "netlist_v": 9.9961e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 8,
+     "rtl": 0,
+     "netlist_v": 1.01553e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 9,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 10,
+     "rtl": 0,
+     "netlist_v": 6.59349e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 11,
+     "rtl": 0,
+     "netlist_v": 5.77897e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 12,
+     "rtl": 0,
+     "netlist_v": 1.04411e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 13,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 14,
+     "rtl": 0,
+     "netlist_v": 9.53267e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 15,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 16,
+     "rtl": 0,
+     "netlist_v": 8.02229e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 17,
+     "rtl": 0,
+     "netlist_v": 5.9015e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 18,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 19,
+     "rtl": 0,
+     "netlist_v": 8.83772e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 20,
+     "rtl": 0,
+     "netlist_v": 8.23568e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 21,
+     "rtl": 0,
+     "netlist_v": 6.03581e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 22,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 23,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 24,
+     "rtl": 0,
+     "netlist_v": 1.12371e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 25,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 26,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 27,
+     "rtl": 0,
+     "netlist_v": 1.00787e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 28,
+     "rtl": 0,
+     "netlist_v": 1.13988e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 29,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 30,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 31,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 32,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 33,
+     "rtl": 0,
+     "netlist_v": 8.83806e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 34,
+     "rtl": 0,
+     "netlist_v": 8.07185e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 35,
+     "rtl": 0,
+     "netlist_v": 5.90755e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 36,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 37,
+     "rtl": 0,
+     "netlist_v": 1.01239e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 38,
+     "rtl": 0,
+     "netlist_v": 1.1162e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 39,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 40,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 41,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 42,
+     "rtl": 0,
+     "netlist_v": 8.15771e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 43,
+     "rtl": 0,
+     "netlist_v": 6.0282e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 44,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 45,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 46,
+     "rtl": 0,
+     "netlist_v": 1.15994e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 47,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 48,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 49,
+     "rtl": 0,
+     "netlist_v": 9.86268e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 50,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 51,
+     "rtl": 0,
+     "netlist_v": 9.98011e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 52,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 53,
+     "rtl": 0,
+     "netlist_v": 1.1386e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 54,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 55,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 56,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 57,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 58,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 59,
+     "rtl": 0,
+     "netlist_v": 1.16489e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 60,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 61,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 62,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 63,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nand2_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.19997,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 1.28326e-07,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nand2_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.19997,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 1.30379e-07,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nand2b_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 1.40921e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.19999,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nand3_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.19996,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 5,
+     "rtl": 1,
+     "netlist_v": 1.19997,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.19991,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 7,
+     "rtl": 0,
+     "netlist_v": 2.23252e-07,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nand3b_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.19991,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 2.31259e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.19999,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 5,
+     "rtl": 1,
+     "netlist_v": 1.19999,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nand4_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 5,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 8,
+     "rtl": 1,
+     "netlist_v": 1.19995,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 9,
+     "rtl": 1,
+     "netlist_v": 1.19997,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 10,
+     "rtl": 1,
+     "netlist_v": 1.19999,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 11,
+     "rtl": 1,
+     "netlist_v": 1.19998,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 12,
+     "rtl": 1,
+     "netlist_v": 1.19992,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 13,
+     "rtl": 1,
+     "netlist_v": 1.19993,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 14,
+     "rtl": 1,
+     "netlist_v": 1.19981,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 15,
+     "rtl": 0,
+     "netlist_v": 3.35838e-07,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nor2_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 2.41346e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 9.64619e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 7.36767e-06,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nor2_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 2.17049e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 9.27469e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 7.14648e-06,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nor2b_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 8.3846e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 1.00907e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 9.83482e-08,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nor3_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 7.63923e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 3.34859e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 1.46655e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 4,
+     "rtl": 0,
+     "netlist_v": 1.39109e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 1.82307e-06,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 6,
+     "rtl": 0,
+     "netlist_v": 1.42838e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 7,
+     "rtl": 0,
+     "netlist_v": 6.43877e-06,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nor3_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 7.07405e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 3.11582e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 1.44211e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 4,
+     "rtl": 0,
+     "netlist_v": 1.32743e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 1.86094e-06,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 6,
+     "rtl": 0,
+     "netlist_v": 1.33656e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 7,
+     "rtl": 0,
+     "netlist_v": 6.21813e-06,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_nor4_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 0.000165926,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": 9.50784e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 2.88325e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 4,
+     "rtl": 0,
+     "netlist_v": 4.3143e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 1.086e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 6,
+     "rtl": 0,
+     "netlist_v": 2.71119e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 7,
+     "rtl": 0,
+     "netlist_v": 1.19383e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 8,
+     "rtl": 0,
+     "netlist_v": 1.88687e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 9,
+     "rtl": 0,
+     "netlist_v": 9.36422e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 10,
+     "rtl": 0,
+     "netlist_v": 2.16204e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 11,
+     "rtl": 0,
+     "netlist_v": 1.14014e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 12,
+     "rtl": 0,
+     "netlist_v": 1.87019e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 13,
+     "rtl": 0,
+     "netlist_v": 6.29334e-06,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 14,
+     "rtl": 0,
+     "netlist_v": 9.33616e-06,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 15,
+     "rtl": 0,
+     "netlist_v": 5.56623e-06,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_o21ai_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.19995,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 2.42793e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.19995,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 5,
+     "rtl": 0,
+     "netlist_v": 1.73106e-07,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.19996,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 7,
+     "rtl": 0,
+     "netlist_v": 8.00879e-06,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_or2_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.43048e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_or2_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.44376e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_or3_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.43049e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 5,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_or3_2": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.44377e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 5,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_or4_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.4305e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 4,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 5,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 6,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 7,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 8,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 9,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 10,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 11,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 12,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 13,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 14,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 15,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_xnor2_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "Y",
+     "vector": 0,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 1,
+     "rtl": 0,
+     "netlist_v": 4.12229e-05,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 2,
+     "rtl": 0,
+     "netlist_v": -4.46282e-06,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "Y",
+     "vector": 3,
+     "rtl": 1,
+     "netlist_v": 1.19997,
+     "netlist": 1,
+     "pass": true
+    }
+   ]
+  },
+  "s5l_xor2_1": {
+   "pass": true,
+   "tests": [
+    {
+     "output": "X",
+     "vector": 0,
+     "rtl": 0,
+     "netlist_v": 5.43048e-08,
+     "netlist": 0,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 1,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 2,
+     "rtl": 1,
+     "netlist_v": 1.2,
+     "netlist": 1,
+     "pass": true
+    },
+    {
+     "output": "X",
+     "vector": 3,
+     "rtl": 0,
+     "netlist_v": 9.94106e-08,
+     "netlist": 0,
+     "pass": true
+    }
+   ]
+  }
+ }
+}
