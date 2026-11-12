@@ -25,12 +25,15 @@ batch backend (klayout-tools#2727, fixed by #4733).
 
 - `inverter_tran.request.json`: five corners passed on the fleet; record in
   [`records/five-corner.2026-11-11.md`](records/five-corner.2026-11-11.md).
-- `inverter_dc.request.json`: **no record yet.** Two batch submits were accepted
-  but no instance ever booted for them. The grid is not run locally, by the host
-  rule. Re-submit when the fleet has capacity:
+- `inverter_dc.request.json`: five corners passed on the fleet (job
+  `klt-sim-fc0dbe6a24be`); record in
+  [`records/five-corner-dc.2026-11-12.md`](records/five-corner-dc.2026-11-12.md).
+  The two earlier submits never started (undiagnosed).
+
+To reproduce on the fleet (never hand-loop `ngspice -b` locally):
 
 ```
 source .cache/env.sh
-klt sim inverter_dc.request.json   -o <out> --report-out records/inverter_dc.report.json
-klt sim inverter_tran.request.json -o <out> --report-out records/inverter_tran.report.json
+klt sim inverter_dc.request.json   --backend batch --wait-for-capacity 600 -o <out> --report-out records/inverter_dc.report.json
+klt sim inverter_tran.request.json --backend batch --wait-for-capacity 600 -o <out> --report-out records/inverter_tran.report.json
 ```
