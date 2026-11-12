@@ -3,6 +3,11 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-12
+
+- **PR #78**: feat(sim): record five-corner DC batch run of the reference inverter
+- **Issue #4** (closed): PDK and toolchain bring-up: pin SG13CMOS5L, commit an ngspice smoke run and a klt DRC/LVS smoke on a reference cell
+
 ### 2026-11-11
 
 - **PR #76**: feat(sim): pin klt 0.9.1 and record five-corner batch transient run
