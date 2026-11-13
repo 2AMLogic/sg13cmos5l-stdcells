@@ -5,6 +5,8 @@ Maintained by the Guide triage role.
 
 ### 2026-11-13
 
+- **PR #123**: verify: record a limit-checked three-corner arc-delay sweep for T1 item 5
+- **Issue #120** (closed): T1 item 5g: record a limit-checked corner-matrix klt sim report with a per-corner timing-margin measurement
 - **PR #118**: feat(characterize): record the SS/1.08 V/125 C corner, all 40 cells
 - **Issue #86** (closed): T1 item 5e: run klt characterize at SS/1.08 V/125 C (stretch) and commit the Liberty
 - **PR #115**: fix(ci): validate every tracked JSON file, not five stale globs
