@@ -12,7 +12,7 @@
     },
     "9": {
       "file": "sim/attest/item9.envelope.json",
-      "content_hash": "sha256:bbe1d198aaae978cd7b0b7e22aae26a73f47ee05b7f9dc3eb51193b7a720f759"
+      "content_hash": "sha256:e0d99250b4f68ee9050a60df0254dfc82147d7f03ec35efe8339acbce7d93739"
     },
     "10": {
       "file": "manifests/evidence/item-10-repo-hygiene.json",

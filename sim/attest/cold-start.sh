@@ -2,8 +2,9 @@
 # Cold-start command for the T1 item-9 testbench attestation (issue #31):
 # bring a clean clone to a runnable state, then run each committed smoke bench
 # on its single-corner tt probe request, locally. The five-corner requests
-# (sim/smoke/inverter_*.request.json) go to the batch fleet, which does not
-# support this PDK yet, so they are not part of the cold start. SIMULATED only.
+# (sim/smoke/inverter_*.request.json) run on the batch fleet and are recorded
+# under sim/smoke/records/, so they are not part of a cold start that has to
+# reproduce from a clean checkout alone. SIMULATED only.
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
 cd "$ROOT"
