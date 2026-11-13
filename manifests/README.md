@@ -26,17 +26,20 @@ through a decision record and regenerates the signoff output in the same PR.
 
 - Item 9: `sim/attest/item9.envelope.json`, produced from
   `sim/attest/item9.inventory.json` with `klt signoff --attest 9`. As for
-  item 1, `content_hash` is the inventory's sha256. CI re-runs
-  `klt signoff --attest 9 --inventory ... --check ...` on it (klt `0.8.0`;
-  `--attest` is absent from 0.7.0).
+  item 1, `content_hash` is the inventory's sha256. `scripts/check_signoff.sh`,
+  which CI runs, re-runs `klt signoff --attest 9 --inventory ... --check ...`
+  on it at the pin in `layout/toolchain.json`. `--attest` is absent from klt
+  0.7.0, so that pin cannot go below 0.8.0.
 
 - Item 10: `manifests/evidence/item-10-repo-hygiene.json`, produced from
   `manifests/item-10-inventory.json` with `klt signoff --attest 10`. As for
   items 1 and 9, `content_hash` is the inventory's sha256. The inventory lists
   the hygiene files (README, LICENSE, CI workflow, check scripts) and the
   audit commands (README has a Reproduce section and names `npm run check:ci`,
-  CI runs the signoff and item-10 re-checks, `scripts/check_json.py` passes).
-  CI re-runs `klt signoff --attest 10 --inventory ... --check ...` on it.
+  CI runs `scripts/check_signoff.sh`, that script carries the item-10
+  re-check, `scripts/check_json.py` passes, and no klt version literal is left
+  under `scripts/` or `.github/`). `scripts/check_signoff.sh` re-runs
+  `klt signoff --attest 10 --inventory ... --check ...` on it.
   Re-attest after any change to the README, LICENSE, CI workflow or check
   scripts, then update the hash and regenerate the signoff record.
 
@@ -50,22 +53,26 @@ through a decision record and regenerates the signoff output in the same PR.
   - Timing-margin code: `sim/characterize/margin.py`; no margin table has been
     recorded over the 40-cell TT library yet.
   - Functional report: TT only, 40/40 cells pass.
-  The cited `klt sim` report carries no limited measurement, so klt 0.8.0
-  grades it unmet. Turning item 5 `met` needs a corner-matrix report whose
+  The cited `klt sim` report carries no limited measurement, so klt grades it
+  unmet: klt 0.8.0 did, and the klt 0.9.1 record committed on 2026-11-13 does
+  too. Turning item 5 `met` needs a corner-matrix report whose
   limits are checked (FF and SS evidence plus the margin metric); that is
   evidence production, out of scope for the citation step.
 
 ## Regenerate the signoff record
 
-klt is pinned to `0.8.0` (in `scripts/check_signoff.sh`). Change the manifest,
-the tiers doc, or the pin, then regenerate with the same version:
+klt has one pin of record, `klt.install_spec` in `layout/toolchain.json`.
+`scripts/check_signoff.sh` reads it, so there is no second version to keep in
+step by hand (issue #112; the hand-synced copy had drifted). Change the
+manifest, the tiers doc, or the pin, then regenerate with the pinned klt and
+commit the result in the same PR:
 
 ```
-uvx --from "klayout-tools==0.8.0" klt signoff \
-    --manifest manifests/sg13cmos5l-stdcells.json \
-    --tiers-doc manifests/design-evidence-tiers.md \
-    --format json > manifests/sg13cmos5l-stdcells.signoff.json
+scripts/check_signoff.sh --regenerate
 ```
 
-Exit status 3 (grader ran, some T1 item unmet) is expected until the evidence
-map is filled in.
+Run `scripts/check_signoff.sh` (no argument, the same command CI runs) to check
+the committed record and re-check the item-9 and item-10 attestation envelopes.
+Exit status 3 from `klt signoff` itself (grader ran, some T1 item unmet) is
+expected until the evidence map is filled in; the script treats it as success
+and compares the output.

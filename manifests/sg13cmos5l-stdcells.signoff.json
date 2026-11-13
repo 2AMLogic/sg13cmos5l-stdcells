@@ -9,13 +9,13 @@
   "source_doc": "manifests/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:a26b90262320d0fbd32b3f549a02b6300832706041797a559d8bf6bdb62efdc7",
   "build": {
-    "version": "0.8.0",
-    "package_version": "0.8.0",
-    "git_commit": "c572046be644e0407f693f2410f3abb799d68a3a",
-    "git_tag": "v0.8.0",
+    "version": "0.9.1",
+    "package_version": "0.9.1",
+    "git_commit": "4d0d29be4fd991f499d59e783a908082d5e24c56",
+    "git_tag": "v0.9.1",
     "dirty": false,
     "is_release": true,
-    "grading_ruleset_id": "sha256:46c446d84423b7399ee1cf957b3d49801ae4f42a0bda53da92f435776cf977c4"
+    "grading_ruleset_id": "sha256:22c42b66c4d1f99b5c00f6bf53d80b20fa8365860d857a921508ca5ab5f3771b"
   },
   "items": [
     {
@@ -207,7 +207,7 @@
         "command": null,
         "kind": "generic",
         "check_status": "pass",
-        "content_hash": "sha256:5c1afebcc991e485950b556619b82d66f1a6529936594651d6023b6d026c6d15",
+        "content_hash": "sha256:393523c82c06b1530da398d7aa4c060fc7906c98f493e43f593b8f283dd231fc",
         "input_verified": true,
         "exit_status": 0,
         "artifact_binding": {
@@ -216,15 +216,15 @@
             "path": "manifests/item-10-inventory.json",
             "scope": "repo"
           },
-          "content_hash": "sha256:5c1afebcc991e485950b556619b82d66f1a6529936594651d6023b6d026c6d15",
+          "content_hash": "sha256:393523c82c06b1530da398d7aa4c060fc7906c98f493e43f593b8f283dd231fc",
           "input_verified": true,
-          "summary": "T1 item 10 (Repo hygiene): 13/13 attestation checks passed (klt signoff --attest)",
+          "summary": "T1 item 10 (Repo hygiene): 14/14 attestation checks passed (klt signoff --attest)",
           "source": "manifests/item-10-inventory.json",
           "attestation": {
             "producer": "klt signoff --attest",
             "inventory_schema_version": 1,
-            "check_count": 13,
-            "passed_count": 13
+            "check_count": 14,
+            "passed_count": 14
           }
         }
       }
