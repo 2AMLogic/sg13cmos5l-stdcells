@@ -10,6 +10,8 @@ three-corner run has not been completed (see below).
 | `gen_requests.py` | writes `requests/{tt,ff,ss}.request.json` from `design/cells.json`; `--check` exits 1 if they are stale |
 | `requests/` | one `klt characterize` request per Liberty corner in `spec/target-spec.md` (TT target; FF, SS stretch), 40 cells, the spec's 7 x 7 grid |
 | `margin.py`, `test_margin.py` | the timing-margin metric (defined in `margin.py`'s docstring, the one place): `margin = LIMIT_NS - delay` per (cell, arc, slew, load, corner); table + per-arc pass/fail + binding corner from any `records/*.lib` |
+| `check_lib_coverage.py`, `test_check_lib_coverage.py` | every cell in `design/cells.json` present with rise+fall 7 x 7 tables; exits 1 on a partial corner |
+| `records/s5l_ff_1p32v_m40c.lib` (+ `.provenance.json`) | FF / 1.32 V / -40 C, **39 of 40 cells, SIMULATED, partial** (issue #85): `s5l_mux4_1` hit the 3000 s ngspice timeout on the fleet (whole-job ceiling 3600 s). FF `s5l_nand2_1` delays average 0.71x the TT probe's over the 196 points, so the corner took effect |
 | `records/probe.s5l_nand2_1.tt_1p20v_25c.lib` | probe: `s5l_nand2_1` alone, TT / 1.20 V / 25 C, local run |
 
 Run a corner (the requests set `output.lib` into `records/`):
