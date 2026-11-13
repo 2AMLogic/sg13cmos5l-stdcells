@@ -1,13 +1,16 @@
 #!/usr/bin/env bash
 # Bring a fresh clone to a runnable SG13CMOS5L state (issue #4): the pinned
-# PDK, an OSDI-capable ngspice, the Verilog-A models built to OSDI, and klt at
-# a pinned commit. Everything lands inside this checkout (gitignored pdks/,
-# .cache/, .venv/); nothing is installed host-wide.
+# PDK, an OSDI-capable ngspice, the Verilog-A models built to OSDI, and klt and
+# cocotb at their pins. Everything lands inside this checkout (gitignored
+# pdks/, .cache/, .venv/); nothing is installed host-wide. This is the only
+# recipe that builds .venv (issue #119): everything `npm run check:ci` needs in
+# it is installed here, so a re-run never drops a package another recipe added.
 #
 #   scripts/setup-env.sh          # idempotent; re-run is cheap
 #   source .cache/env.sh          # PDK_ROOT, PDK, PATH for klt / ngspice / openvaf-r
 #
-# Pins: sim/pdk.json, sim/toolchain.json, layout/toolchain.json. Fails closed:
+# Pins: sim/pdk.json, sim/toolchain.json, layout/toolchain.json,
+# rtl/toolchain.json. Fails closed:
 # any sha256 mismatch (klayout-tools fetch scripts, ngspice tarball, PDK
 # tarball via the klayout-tools script), a pin that disagrees with the fetch
 # script it drives, a dangling shared-model symlink the smoke bench needs, or
@@ -73,6 +76,7 @@ G2_SHA="$(json_get "$ROOT/sim/pdk.json" sibling.tarball_sha256)"
 KLT_COMMIT="$(json_get "$ROOT/layout/toolchain.json" klt.commit)"
 KLT_SPEC="$(json_get "$ROOT/layout/toolchain.json" klt.install_spec)"
 SCRIPT_BASE="$(json_get "$ROOT/layout/toolchain.json" klt_fetch_scripts.base_url)"
+COCOTB_SPEC="$(json_get "$ROOT/rtl/toolchain.json" cocotb.install_spec)"
 NG_VER="$(json_get "$ROOT/sim/toolchain.json" ngspice.pinned_version)"
 NG_FLOOR="$(json_get "$ROOT/sim/toolchain.json" ngspice.floor_major)"
 NG_URL="$(json_get "$ROOT/sim/toolchain.json" ngspice.tarball_url)"
@@ -174,21 +178,46 @@ for m in "${want_osdi[@]}"; do
     log "OSDI ok: $m.osdi"
 done
 
-# 6. klt at the pinned commit, in a venv inside the checkout.
+# 6. klt and cocotb at their pins, in the one venv inside the checkout. This is
+#    the only recipe that builds .venv: `npm run check:design-rtl` runs
+#    .venv/bin/python rtl/tests/run_tests.py, so cocotb has to land in the same
+#    venv as klt, and both have to be in the "is the venv at the pins" test --
+#    otherwise the `uv venv --clear` below silently drops whichever one is not
+#    checked (issue #119).
 VENV="$ROOT/.venv"
 KLT_VERSION="$(json_get "$ROOT/layout/toolchain.json" klt.version_reported)"
+COCOTB_VERSION="$(json_get "$ROOT/rtl/toolchain.json" cocotb.version_reported)"
+venv_dist_version() {
+    [[ -x "$VENV/bin/python" ]] || return 0
+    "$VENV/bin/python" -I -c '
+import importlib.metadata as md, sys
+try:
+    print(md.version(sys.argv[1]))
+except md.PackageNotFoundError:
+    pass
+' "$1" 2>/dev/null
+}
 klt_at_pin() { [[ -x "$VENV/bin/klt" && "$("$VENV/bin/klt" --version 2>/dev/null)" == "klt $KLT_VERSION" ]]; }
-if ! klt_at_pin; then
-    command -v uv >/dev/null || die "uv not found (needed to create the klt venv)"
-    log "installing klt $KLT_VERSION ($KLT_SPEC) into $VENV"
+cocotb_at_pin() { [[ "$(venv_dist_version cocotb)" == "$COCOTB_VERSION" ]]; }
+if ! klt_at_pin || ! cocotb_at_pin; then
+    command -v uv >/dev/null || die "uv not found (needed to create the .venv)"
+    log "installing klt $KLT_VERSION ($KLT_SPEC) and cocotb $COCOTB_VERSION ($COCOTB_SPEC) into $VENV"
     uv venv --quiet --clear "$VENV"
-    uv pip install --quiet --python "$VENV/bin/python" "$KLT_SPEC"
+    uv pip install --quiet --python "$VENV/bin/python" "$KLT_SPEC" "$COCOTB_SPEC"
 fi
 klt_at_pin || die "klt in $VENV reports '$("$VENV/bin/klt" --version 2>&1)', not the pinned klt $KLT_VERSION"
+cocotb_at_pin || die "cocotb in $VENV reports '$(venv_dist_version cocotb)', not the pinned cocotb $COCOTB_VERSION (rtl/toolchain.json)"
 for c in $(python3 -I -c 'import json,sys; print(" ".join(json.load(open(sys.argv[1]))["klt"]["klt_required_commands"]))' "$ROOT/layout/toolchain.json"); do
     "$VENV/bin/klt" "$c" --help >/dev/null 2>&1 || die "klt lacks required command: $c"
 done
+# A version number is not a capability: assert the modules rtl/tests/run_tests.py
+# imports are actually there, the way klt_required_commands is asserted above.
+for m in $(python3 -I -c 'import json,sys; print(" ".join(json.load(open(sys.argv[1]))["cocotb"]["required_modules"]))' "$ROOT/rtl/toolchain.json"); do
+    "$VENV/bin/python" -I -c "import importlib, sys; importlib.import_module(sys.argv[1])" "$m" >/dev/null 2>&1 \
+        || die "cocotb $COCOTB_VERSION in $VENV cannot import required module: $m"
+done
 log "klt: $("$VENV/bin/klt" --version)"
+log "cocotb: $(venv_dist_version cocotb)"
 
 # 7. Environment file to source.
 cat >"$CACHE/env.sh" <<EOF
