@@ -38,9 +38,19 @@ A for 0.25x width).
 
 `pdk_truth_tables.tt.json`: all 40 cells, exhaustive input vectors (356
 vector x output checks), real PDK models, no unresolved subckt/model errors;
-0 failures at a 0.1 V tolerance. Reproduce:
-`source .cache/env.sh && python3 design/tests/test_pdk_models.py --record <out.json>`
-(also `python3 -m unittest` in `design/tests`; skipped without the PDK).
-ngspice prints "Unknown model type pspnqs103va - ignored" for the PDK's RF
-model variants; these are not instantiated (`rfmode=0`) and do not affect the
-results.
+0 failures at a 0.1 V tolerance. ngspice prints "Unknown model type
+pspnqs103va - ignored" for the PDK's RF model variants; these are not
+instantiated (`rfmode=0`) and do not affect the results.
+
+Produced by `design/tests/test_pdk_models.py` at commit `7a38b2e`, since
+retired (issue #108) as the second of two drivers for the same question. It
+has no reproduce command at `main`; the script is recoverable with
+`git show 7a38b2e:design/tests/test_pdk_models.py`. This record itself is
+unchanged append-only evidence.
+
+The current real-model truth-table check is `verification/functional/` (issue
+#82): the same 40 cells and 356 vector x output checks, run as one
+single-corner `klt sim` request with a `klt` report
+(`verification/functional/records/tt.report.json`) and a negative control.
+That is the record the manifest cites (`manifests/sg13cmos5l-stdcells.json`,
+item 5), and it is what to run to re-derive this result today.
