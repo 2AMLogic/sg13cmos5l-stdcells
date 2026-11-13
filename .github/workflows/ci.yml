@@ -77,7 +77,8 @@ jobs:
     # characterization requests, functional testbenches), catalog, switch-level
     # and cocotb + Icarus truth tables, the characterization self-tests, and the
     # netlist-vs-RTL functional comparison against the committed report.
-    # Same commands as `npm run check:design-rtl`.
+    # Same commands as `npm run check:design-rtl`, and the same cocotb pin as
+    # `scripts/setup-env.sh` installs locally.
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -92,10 +93,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends ngspice iverilog
 
-      - name: Create venv with pinned cocotb
+      # The full bring-up (scripts/setup-env.sh) is far too heavy for a job that
+      # needs only cocotb and Icarus, so this job keeps its own light venv -- but
+      # it reads the cocotb spec from the repo's one pin of record
+      # (rtl/toolchain.json) rather than carrying a version literal, exactly as
+      # the signoff job reads the klt pin from layout/toolchain.json. No version
+      # literal belongs in this workflow.
+      - name: Create venv with cocotb at the repo pin (rtl/toolchain.json)
         run: |
+          cocotb_spec="$(python3 -I -c 'import json; print(json.load(open("rtl/toolchain.json"))["cocotb"]["install_spec"])')"
+          test -n "$cocotb_spec"
+          echo "installing $cocotb_spec"
           python3 -m venv .venv
-          .venv/bin/pip install "cocotb==2.1.0"
+          .venv/bin/pip install "$cocotb_spec"
 
       - name: Catalog is 40 distinct well-formed cells
         run: python3 design/check_catalog.py
