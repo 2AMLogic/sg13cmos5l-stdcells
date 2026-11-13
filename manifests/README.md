@@ -46,8 +46,12 @@ through a decision record and regenerates the signoff output in the same PR.
   the hygiene files (README, LICENSE, CI workflow, check scripts) and the
   audit commands (README has a Reproduce section and names `npm run check:ci`,
   CI runs `scripts/check_signoff.sh`, that script carries the item-10
-  re-check, `scripts/check_json.py` passes, and no klt version literal is left
-  under `scripts/` or `.github/`). `scripts/check_signoff.sh` re-runs
+  re-check, `scripts/check_json.py` passes, no klt *or* cocotb version literal
+  is left under `scripts/` or `.github/`, and the CI workflow reads the cocotb
+  pin from `rtl/toolchain.json`). The two cocotb checks are the enforcement
+  behind issue #119: a one-pin-of-record rule that only lives in prose is a
+  rule that drifts back, as the klt literal did (issue #112).
+  `scripts/check_signoff.sh` re-runs
   `klt signoff --attest 10 --inventory ... --check ...` on it.
   Re-attest after any change to the README, LICENSE, CI workflow or check
   scripts, then update the hash and regenerate the signoff record.
