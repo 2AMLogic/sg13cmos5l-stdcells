@@ -35,11 +35,15 @@ one corner. `--timeout-s` raises the per-sim ngspice timeout above the default
 
 A client killed mid-run loses nothing: re-run the same command with the same
 `-o` and `--resume` and it re-attaches to the fleet jobs already submitted.
-One case does not recover on its own -- a job the fleet leaves Spot-`interrupted`
-without re-launching, which `--resume` re-attaches to forever
-(klayout-tools#5515); until that is fixed, delete that unit's
-`<outdir>/cells/<cell>/sim/batch-receipt.json` so the next `--resume`
-resubmits it.
+One case did not recover on its own on the client build used here -- a job the
+fleet leaves Spot-`interrupted` without re-launching, which `--resume`
+re-attached to forever (klayout-tools#5515, closed as already fixed upstream by
+klayout-tools#5459 / PR #5467; that fix landed about 80 minutes after this run's
+client `0.9.2.dev915+g513f88f6836d` was cut, and a client at or after
+`250f9e8cc` resubmits such a job by itself). On a client older than the fix,
+delete that unit's `<outdir>/cells/<cell>/sim/batch-receipt.json` so the next
+`--resume` resubmits it. Not checked here: whether the host or fleet `klt` now
+carries the fix.
 
 Check a corner. A corner recorded as several files is checked as one record,
 so pass every file of it:
@@ -133,8 +137,9 @@ to be a `klt` fault, so the run used a `/tmp` mirror of the PDK `lib/` and
   `--resume`/re-attach (klayout-tools#5348), `--timeout-s`
   (klayout-tools#5380) and `--split-grid` (klayout-tools#5410) have all
   landed, so an interrupted or capacity-refused run is recoverable rather
-  than lost -- except a Spot-`interrupted` job, which `--resume` re-attaches
-  to indefinitely (klayout-tools#5515, open; see the recipe above).
+  than lost -- except a Spot-`interrupted` job, which `--resume` re-attached
+  to indefinitely on this run's client build (klayout-tools#5515, closed as
+  already fixed upstream; see the recipe above).
 - The FF corner is not single-engine: the fleet moved from ngspice-46 to
   ngspice-47 between the 39-cell run and the `s5l_mux4_1` run. Re-running the
   39 cells on ngspice-47 would make it uniform; recorded results are
