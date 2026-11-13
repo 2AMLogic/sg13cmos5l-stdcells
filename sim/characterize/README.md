@@ -1,17 +1,17 @@
 # sim/characterize
 
 Issue #27 (T1 item 5): NLDM characterization of the 40 combinational cells.
-Everything here is **simulated**, never measured. **Status: partial.** The
-requests are generated and one cell has been run at TT; the 40-cell,
-three-corner run has not been completed (see below).
+Everything here is **simulated**, never measured. **Status: TT and FF
+complete (40/40 cells each), SS not run.**
 
 | path | what |
 |---|---|
 | `gen_requests.py` | writes `requests/{tt,ff,ss}.request.json` from `design/cells.json`; `--check` exits 1 if they are stale |
 | `requests/` | one `klt characterize` request per Liberty corner in `spec/target-spec.md` (TT target; FF, SS stretch), 40 cells, the spec's 7 x 7 grid |
 | `margin.py`, `test_margin.py` | the timing-margin metric (defined in `margin.py`'s docstring, the one place): `margin = LIMIT_NS - delay` per (cell, arc, slew, load, corner); table + per-arc pass/fail + binding corner from any `records/*.lib` |
-| `check_lib_coverage.py`, `test_check_lib_coverage.py` | every cell in `design/cells.json` present with rise+fall 7 x 7 tables; exits 1 on a partial corner |
-| `records/s5l_ff_1p32v_m40c.lib` (+ `.provenance.json`) | FF / 1.32 V / -40 C, **39 of 40 cells, SIMULATED, partial** (issue #85): `s5l_mux4_1` hit the 3000 s ngspice timeout on the fleet (whole-job ceiling 3600 s). FF `s5l_nand2_1` delays average 0.71x the TT probe's over the 196 points, so the corner took effect |
+| `check_lib_coverage.py`, `test_check_lib_coverage.py` | every cell in `design/cells.json` present with rise+fall 7 x 7 tables; exits 1 on a partial corner. Takes **several `.lib` files** when a corner is recorded as more than one file, and checks them as one record; a cell in two files, or files from two corners, is an error, so coverage cannot be manufactured by pairing corners |
+| `records/s5l_ff_1p32v_m40c.lib` (+ `.provenance.json`) | FF / 1.32 V / -40 C, **39 of 40 cells, SIMULATED** (issue #85): the 40th, `s5l_mux4_1`, is the separate file below. FF `s5l_nand2_1` delays average 0.71x the TT probe's over the 196 points, so the corner took effect |
+| `records/s5l_mux4_1.ff_1p32v_m40c.lib` (+ `.provenance.json`) | FF / 1.32 V / -40 C, `s5l_mux4_1` only, **SIMULATED** (issue #85). Additive: it does not rewrite the file above. Unsplit, this cell's grid is one `tran` run that outruns the fleet's 3600 s whole-job ceiling, so it ran with `--split-grid 7` (klayout-tools#5410), one fleet job per input-slew row, 7/7 `pass`. 588 points, 0 negative delays; FF/TT ratio mean 0.686. **Caveat:** these legs ran on fleet ngspice-47, the other 39 cells on ngspice-46, so the combined FF record is not single-engine |
 | `records/s5l_tt_1p20v_25c.lib` (+ `.provenance.json`) | TT / 1.20 V / 25 C, the ratified target corner, **all 40 cells, SIMULATED** (issue #84): coverage check `COVERAGE COMPLETE` (40/40, rise+fall 7 x 7); fleet job ids per cell in the provenance. `s5l_nand2_1` agrees with the local probe below at all 196 points (max |delta| 2.9e-5 ns) |
 | `records/probe.s5l_nand2_1.tt_1p20v_25c.lib` | probe: `s5l_nand2_1` alone, TT / 1.20 V / 25 C, local run |
 
@@ -20,7 +20,26 @@ Run a corner (the requests set `output.lib` into `records/`):
 ```
 source .cache/env.sh
 python3 sim/characterize/gen_requests.py
-klt characterize sim/characterize/requests/tt.request.json --backend batch
+klt characterize sim/characterize/requests/tt.request.json --backend batch \
+    --wait-for-capacity 600 --resume --keep-going
+```
+
+Check a corner. A corner recorded as several files is checked as one record,
+so pass every file of it:
+
+```
+python3 -I sim/characterize/check_lib_coverage.py \
+    sim/characterize/records/s5l_ff_1p32v_m40c.lib \
+    sim/characterize/records/s5l_mux4_1.ff_1p32v_m40c.lib
+```
+
+A cell whose whole grid outruns the fleet's 3600 s whole-job ceiling needs
+`--split-grid N` (one fleet job per input-slew row, merged into one table):
+
+```
+klt characterize sim/characterize/requests/ff.request.json --cell s5l_mux4_1 \
+    --backend batch --wait-for-capacity 600 --split-grid 7 --timeout-s 3000 \
+    --resume --lib sim/characterize/records/s5l_mux4_1.ff_1p32v_m40c.lib
 ```
 
 ## Timing-margin metric
@@ -73,16 +92,19 @@ to be a `klt` fault, so the run used a `/tmp` mirror of the PDK `lib/` and
   ngspice-46 on the host; the repo pin is klt 0.9.1 / ngspice 47
 - run: one local single-unit run, 49 points, 2 arcs; about 100 s wall, 13 min CPU
 
-## Why the full run is not here
+## What is not here yet
 
+- **SS / 1.08 V / 125 C has not been run.** `requests/ss.request.json` is
+  generated but never executed.
 - `klt characterize --backend batch` submits **one fleet job per cell,
-  serially**. Four cells (a21o_1 .. a21oi_2) took about 28 min, i.e. roughly
-  7 min per cell, so one corner is about 4.7 h and three corners about 14 h.
-  Run locally a cell costs 13 CPU-minutes, which this host may not spend.
-- `klt characterize` has no `--wait-for-capacity` and does not forward a
-  `batch` block to the sim request, so a `batch_no_capacity` burst cannot be
-  waited out. It also has no `--attach`: when the client is stopped the
-  remote job (`klt-sim-96215636a0f7`) keeps running and its result is
-  unreachable.
+  serially** (concurrent per-cell runs: klayout-tools#5351, open), so one
+  corner is roughly 4.7 h of wall time. `--wait-for-capacity`,
+  `--resume`/re-attach (klayout-tools#5348) and `--split-grid`
+  (klayout-tools#5410) have all landed, so an interrupted or
+  capacity-refused run is recoverable rather than lost.
+- The FF corner is not single-engine: the fleet moved from ngspice-46 to
+  ngspice-47 between the 39-cell run and the `s5l_mux4_1` run. Re-running the
+  39 cells on ngspice-47 would make it uniform; recorded results are
+  append-only, so that would be a new file, not an edit.
 - Not done: the functional check against `rtl/`, the
   CI validator and the manifest entry for item 5.

@@ -1,0 +1,97 @@
+{
+  "label": "SIMULATED (never measured); append-only",
+  "issue": 85,
+  "status": "COMPLETE for s5l_mux4_1: the one cell missing from s5l_ff_1p32v_m40c.lib. Together the two files are the full 40-cell FF corner (check_lib_coverage.py exits 0 on both).",
+  "record": "ADDITIVE -- this file does not rewrite s5l_ff_1p32v_m40c.lib (39 cells); the corner is recorded as TWO .lib files and must be checked as one combined record.",
+  "corner": "ff_1p32v_m40c (mos_ff, 1.32 V, -40 C)",
+  "cell": "s5l_mux4_1",
+  "request": "sim/characterize/requests/ff.request.json",
+  "request_sha256": "256c0d94e564009aca45c351c44a44a446b9783415e81fde0cf5a3178ed96b60",
+  "lib": "sim/characterize/records/s5l_mux4_1.ff_1p32v_m40c.lib",
+  "lib_sha256": "e2fae62ea8c6cfdccbb4b23b0c63eb4d44c47c7794c813be4078cc3398bb8d8e",
+  "combined_with": {
+    "lib": "sim/characterize/records/s5l_ff_1p32v_m40c.lib",
+    "lib_sha256": "a1e8fad076020fbce78fd2be637d2efcfb28b5cd1b7189042575bd327ac219d4",
+    "cells": 39
+  },
+  "pdk_commit": "f7bca32694fe3d58be0cc7d9df4b9f5db7161a14",
+  "models_lib_sha256": "03d505847c880d233b341be115a1e5460edf4d8e9b3e8a7df791a52fa4455d67",
+  "netlist_sha256": "b096f59ad0f5535bd620907c0ea3cb42ecc7066c79cd7fac169deb60a8338292",
+  "klt": "0.9.2.dev887+gec7400b7d8e5 (host klt, commit ec7400b7d8e5899bbdd0fa2018409ccb7b6bf171); fleet runner klt 0.9.0, runner_compatibility match",
+  "klt_note": "The repo pin (layout/toolchain.json, klayout-tools==0.9.1) predates --split-grid, which this run requires: 0.9.1 is the newest PyPI release and the flag landed in klayout-tools#5410 after it. The host klt was used, as it was for the 39-cell file. No pin bump is made here; bumping layout/toolchain.json needs a decision record.",
+  "ngspice": "fleet workers ngspice-47",
+  "ngspice_note": "CAVEAT: the 39 cells in s5l_ff_1p32v_m40c.lib were simulated on fleet ngspice-46; this cell ran on fleet ngspice-47 (the repo pin in sim/toolchain.json). The combined record is therefore not single-engine. The FF/TT ratio below is computed against a TT record that was itself ngspice-46, and lands where the other cells land, so no engine-driven shift is visible at this resolution.",
+  "why_split": "Unsplit, this cell's whole 7 x 7 grid (12 arcs) is one tran run that did not finish in 3000 s and could never fit the fleet's 3600 s whole-job ceiling (recorded as status error in s5l_ff_1p32v_m40c.provenance.json, job klt-sim-4606f62a0a13). klayout-tools#5410 added --split-grid, which runs one fleet job per input-slew row.",
+  "command": "klt characterize sim/characterize/requests/ff.request.json --cell s5l_mux4_1 --backend batch --wait-for-capacity 600 --split-grid 7 --timeout-s 3000 --resume -o <scratch> --lib sim/characterize/records/s5l_mux4_1.ff_1p32v_m40c.lib",
+  "grid_legs": {
+    "grid-1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-778683627877",
+      "instance_type": "c6i.4xlarge",
+      "elapsed_s": 769,
+      "runner_ngspice": "ngspice-47",
+      "job_bound_s": 3120.0,
+      "exceeds_ceiling": false
+    },
+    "grid-2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-4a22453d6f5f",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 880,
+      "runner_ngspice": "ngspice-47",
+      "job_bound_s": 3120.0,
+      "exceeds_ceiling": false
+    },
+    "grid-3": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-2a147f892657",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 846,
+      "runner_ngspice": "ngspice-47",
+      "job_bound_s": 3120.0,
+      "exceeds_ceiling": false
+    },
+    "grid-4": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-1188fd63a701",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 943,
+      "runner_ngspice": "ngspice-47",
+      "job_bound_s": 3120.0,
+      "exceeds_ceiling": false
+    },
+    "grid-5": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-d88e4cdac164",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 897,
+      "runner_ngspice": "ngspice-47",
+      "job_bound_s": 3120.0,
+      "exceeds_ceiling": false
+    },
+    "grid-6": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-56f8a866b3e7",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 792,
+      "runner_ngspice": "ngspice-47",
+      "job_bound_s": 3120.0,
+      "exceeds_ceiling": false
+    },
+    "grid-7": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-cef5a9164fd1",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 910,
+      "runner_ngspice": "ngspice-47",
+      "job_bound_s": 3120.0,
+      "exceeds_ceiling": false
+    }
+  },
+  "checks": {
+    "coverage": "python3 -I sim/characterize/check_lib_coverage.py sim/characterize/records/s5l_ff_1p32v_m40c.lib sim/characterize/records/s5l_mux4_1.ff_1p32v_m40c.lib -> COVERAGE COMPLETE, 40/40, exit 0",
+    "points": "588 delay points = 12 arcs x 7 slews x 7 loads; 0 negative delays",
+    "negative_control": "FF/TT delay ratio over the 588 common points: mean 0.6862, min 0.4482, max 0.8152 (TT from s5l_tt_1p20v_25c.lib). The FF corner took effect; comparable to s5l_nand2_1's 0.71.",
+    "spot_check": "Same-corner (FF) mean delay: s5l_mux2_1 0.3013 ns, s5l_mux2_2 0.2285 ns, s5l_mux4_1 0.3871 ns. A 4:1 mux is slower than the 2:1 muxes, as expected. SIMULATED, never measured."
+  }
+}
