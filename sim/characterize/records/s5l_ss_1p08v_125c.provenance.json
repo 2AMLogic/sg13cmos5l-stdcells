@@ -1,0 +1,347 @@
+{
+  "label": "SIMULATED (never measured); append-only",
+  "issue": 86,
+  "status": "PARTIAL: 39 of 40 cells; s5l_mux4_1 is the separate split-grid file below. Together the two files are the full 40-cell SS corner (check_lib_coverage.py exits 0 on both).",
+  "corner": "ss_1p08v_125c (mos_ss, 1.08 V, 125 C) -- a STRETCH corner per spec/target-spec.md; the ratified target corner is TT.",
+  "request": "sim/characterize/requests/ss.request.json",
+  "request_sha256": "3e9d326b234ace9aaf776fca98a33114ae066ae004df558029e92f1b5002c576",
+  "request_freshness": "python3 -I sim/characterize/gen_requests.py --check -> exit 0 (the committed request is what the generator emits; it was not regenerated)",
+  "lib": "sim/characterize/records/s5l_ss_1p08v_125c.lib",
+  "lib_sha256": "3e0111fa6cbb835fe74db65c4d0f5b0d83bb5c5384ed53b2df2bdbc97de670a1",
+  "companion": {
+    "lib": "sim/characterize/records/s5l_mux4_1.ss_1p08v_125c.lib",
+    "lib_sha256": "090157077c7aea190ea23914acfabd1b000c1c347cd539b8bfece9ea96790de3",
+    "cells": 1
+  },
+  "pdk_commit": "f7bca32694fe3d58be0cc7d9df4b9f5db7161a14",
+  "models_lib": "libs.tech/ngspice/models/cornerMOSlv.lib section mos_ss",
+  "models_lib_sha256": "03d505847c880d233b341be115a1e5460edf4d8e9b3e8a7df791a52fa4455d67",
+  "klt": "0.9.2.dev915+g513f88f6836d (host klt, commit 513f88f6836d2e65485cf1e655ef2743a16a7291); fleet runner klt 0.9.0, runner_compatibility match",
+  "klt_note": "The repo pin (layout/toolchain.json, klayout-tools==0.9.1) predates the flags this run needs -- --timeout-s (klayout-tools#5380), --split-grid (#5410), per-cell concurrency (#5351) and --resume re-attach (#5348) all landed after 0.9.1, the newest PyPI release. The host klt was used, as it was for the TT (#84) and FF (#85) records. No pin bump is made here; bumping layout/toolchain.json needs a decision record.",
+  "ngspice": "fleet workers ngspice-47 for all 39 cells (the repo pin in sim/toolchain.json). Single-engine, unlike the FF record.",
+  "liberty_roundtrip": "klt's own native/statime Liberty round-trip was SKIPPED (the klt_statime_native extension is not installed on this host), so the parse evidence is this repo's own readers: check_lib_coverage.py and margin.py both parse the two files as one record.",
+  "command": "klt characterize sim/characterize/requests/ss.request.json --cell <each of the 39 cells except s5l_mux4_1> --backend batch --wait-for-capacity 600 --timeout-s 3000 --resume --keep-going --format json -o <scratch> --lib sim/characterize/records/s5l_ss_1p08v_125c.lib",
+  "run_note": "The run was driven as a sequence of resumed passes, not one uninterrupted client: the klt client was killed by an external SIGTERM on this shared worker twice (once per run), and each bounded pass was re-launched with the same -o and --resume, which re-attaches a submitted fleet job instead of resubmitting it. No cell was simulated twice as a result. The fleet job ids below are those of the jobs whose results were collected.",
+  "spot_reclaim_note": "One fleet job was reclaimed mid-run: s5l_and4_1's first job klt-sim-622af418db0f went Spot-'interrupted' at about 360 s and the fleet never re-launched it. klt's --resume re-attached to that dead job on every later pass (its 1800 s interrupted-grace clock is in-memory, so a restarted client resets it), so the cell could not finish until the stale batch receipt in the scratch dir was removed by hand and the cell resubmitted as klt-sim-0a9a799f2809, which passed. Tool gap filed as 2AMLogic/klayout-tools#5515.",
+  "fleet_sim_seconds_total": 10312,
+  "checks": {
+    "coverage": "python3 -I sim/characterize/check_lib_coverage.py sim/characterize/records/s5l_ss_1p08v_125c.lib sim/characterize/records/s5l_mux4_1.ss_1p08v_125c.lib -> COVERAGE COMPLETE, cells present 40/40, 0 arc tables missing, 0 not 7x7, exit 0",
+    "margin": "python3 -I sim/characterize/margin.py <both files> -> 10388 points, 0 missing arc tables, 5 FAIL (exit 1), binding corner ss_1p08v_125c (least margin -0.05484 ns at s5l_nand4_1 Y<-D rise, slew 2.5074, load 0.3). The 5 failing points are recorded, not dropped: s5l_nand4_1 Y<-D rise margin -0.05484 ns; s5l_nand4_1 Y<-C rise margin -0.03195 ns; s5l_nand3_1 Y<-C rise margin -0.01163 ns; s5l_nand3b_1 Y<-C rise margin -0.01161 ns; s5l_nand4_1 Y<-B rise margin -0.00773 ns. Each is the grid's worst pair (largest input slew with largest load) on a stacked-NMOS rise arc, and each misses by 0.3-2.2% of LIMIT_NS. LIMIT_NS (2.5074 ns) is the ratified grid's largest input slew -- a grid-validity bound, not a ratified delay budget (margin.py's docstring is the one place that is defined), so this is a recorded property of the stretch corner at the grid's extreme, not a spec violation and not a relaxation: nothing in spec/ or the metric was changed. The ratified target corner TT still passes all 10388 points.",
+    "negative_control": "SS/TT delay ratio over the 10350 common points whose TT delay is at least 25 ps (of 10388 common points in total): mean 1.4820, median 1.4812, min 1.2522, max 5.2840. The SS corner took effect -- every one of those points is slower than TT. Only 4 points have SS < TT, all at the grid's degenerate pair (largest input slew 2.5074 ns, smallest load 0.001 pF) where the TT reference delay is itself within 21.3 ps of zero, so the ratio there is noise about a near-zero denominator, not a corner that failed to apply. SIMULATED, never measured.",
+    "spot_check": "s5l_nand2_1 at SS against the local TT probe (records/probe.s5l_nand2_1.tt_1p20v_25c.lib) over its 194 common points with a probe delay of at least 25 ps: ratio mean 1.4452, min 1.2721, max 2.3200. Same-corner (SS) mean delay falls with drive strength as it must: s5l_inv_1 0.6874 ns, s5l_inv_2 0.4484 ns, s5l_inv_4 0.3085 ns; and a 4:1 mux is slower than the 2:1 muxes, s5l_mux2_1 0.6854 ns, s5l_mux2_2 0.4982 ns, s5l_mux4_1 0.8529 ns. SIMULATED, never measured."
+  },
+  "cells": {
+    "s5l_a21o_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-58fa89132e0e",
+      "instance_type": "c6i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 306,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_a21o_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-8e34e95847ea",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 338,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_a21oi_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-34db0798fe50",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 236,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_a21oi_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-bbc5e300176e",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 256,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_a221oi_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-2cb64de62bbf",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 669,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_a22oi_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-7ac56fece1ac",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 482,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_and2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-062797284dd8",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 182,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_and2_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-8516ebcd72e0",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 161,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_and3_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-caab0feddd23",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 366,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_and3_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-9ebd61f1b036",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 339,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_and4_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-0a9a799f2809",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 569,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_buf_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-3037a711db9c",
+      "instance_type": "m6i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 51,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_buf_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-d4a8fdad4e8b",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 59,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_buf_4": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-d73bd24800b7",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 72,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_inv_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-f4062cd59b2d",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 35,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_inv_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-29de1736b27c",
+      "instance_type": "c7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 34,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_inv_4": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-27536c825588",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 32,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_mux2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-87fc18a45b27",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 572,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_mux2_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-849547fa7fd9",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 555,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nand2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-06e38c282680",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 104,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nand2_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-970be614fa36",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 106,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nand2b_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-91ee374c0146",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 168,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nand3_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-0da3c585c201",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 222,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nand3b_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-9366c8433b38",
+      "instance_type": "m6i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 298,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nand4_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-6a2b1091c0e0",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 471,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nor2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-2bc377e70ef1",
+      "instance_type": "m6i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 92,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nor2_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-b850b96dcb4d",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 103,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nor2b_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-1f3780fa7393",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 162,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nor3_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-476166d34359",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 267,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nor3_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-1d274bef6a07",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 234,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_nor4_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-55314ec97a8d",
+      "instance_type": "m6i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 378,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_o21ai_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-f86ec4fd4a8a",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 239,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_or2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-17f5de48205f",
+      "instance_type": "c7i.8xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 161,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_or2_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-fa22cae77e68",
+      "instance_type": "c7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 174,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_or3_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-bdb587640f7d",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 347,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_or3_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-444c1c3535c9",
+      "instance_type": "m6i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 284,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_or4_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-5d02ef41cdb1",
+      "instance_type": "m7i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 556,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_xnor2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-62b94b913e11",
+      "instance_type": "m6i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 284,
+      "runner_ngspice": "ngspice-47"
+    },
+    "s5l_xor2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-772d1e35b3e1",
+      "instance_type": "m6i.4xlarge",
+      "lifecycle": "spot",
+      "elapsed_s": 348,
+      "runner_ngspice": "ngspice-47"
+    }
+  }
+}
