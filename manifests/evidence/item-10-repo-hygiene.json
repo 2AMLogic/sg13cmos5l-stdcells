@@ -3,21 +3,21 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 13/13 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 14/14 attestation checks passed (klt signoff --attest)",
   "source": "manifests/item-10-inventory.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 13,
-    "passed_count": 13,
+    "check_count": 14,
+    "passed_count": 14,
     "checks": [
       {
         "check": "present",
         "role": "hygiene",
         "path": ".github/workflows/ci.yml",
         "passed": true,
-        "content_hash": "sha256:8cac38e6d88a5384648b5c89058b4d9a15973f2be7433dfc9be64215e58f3858"
+        "content_hash": "sha256:01cc42ef48d826a36e5e1898342864e94132deec4fd29b14bf08644f0c6e94d1"
       },
       {
         "check": "present",
@@ -38,7 +38,7 @@
         "role": "hygiene",
         "path": "manifests/README.md",
         "passed": true,
-        "content_hash": "sha256:4ffc22b3232bd2d68927a44fab8dc06ba8f7784db5514df2300c36da58821dff"
+        "content_hash": "sha256:758bcead754190946b6b16e60dcc9ebc20c0fe9054c84238e6bfdf6299782994"
       },
       {
         "check": "present",
@@ -52,14 +52,14 @@
         "role": "hygiene",
         "path": "scripts/check_json.py",
         "passed": true,
-        "content_hash": "sha256:79732da70be33fb5f18a0d1b9b9b279a2262029fe882cddcfff1e75543804f63"
+        "content_hash": "sha256:cc01fd71d1aa0de3fae7f3a0d7d50ad687f4cf15f012eecf9efb2680439b2ff2"
       },
       {
         "check": "present",
         "role": "hygiene",
         "path": "scripts/check_signoff.sh",
         "passed": true,
-        "content_hash": "sha256:16c8baf9ef2fcb6cb536538cc4d12276f628dd8801f97ef5c4cf01a8de7f39df"
+        "content_hash": "sha256:6626fd40af4215d24b50863bed737dca26120fbdad93f0f268da3fa7238a618d"
       },
       {
         "check": "command",
@@ -106,12 +106,25 @@
       {
         "check": "command",
         "role": "audit",
-        "name": "ci-rechecks-item-10",
+        "name": "signoff-script-rechecks-item-10",
         "argv": [
           "grep",
           "-qFe",
           "--attest 10",
-          ".github/workflows/ci.yml"
+          "scripts/check_signoff.sh"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "no-hardcoded-klt-version",
+        "argv": [
+          "bash",
+          "-c",
+          "! grep -rn 'klayout-tools==' scripts .github"
         ],
         "cwd": ".",
         "exit_status": 0,
@@ -147,7 +160,7 @@
     ]
   },
   "provenance": {
-    "klt_version": "0.8.0",
+    "klt_version": "0.9.1",
     "klayout_version": null,
     "pdk": null,
     "deck": null,
@@ -156,7 +169,7 @@
         "path": "manifests/item-10-inventory.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:5c1afebcc991e485950b556619b82d66f1a6529936594651d6023b6d026c6d15"
+      "content_hash": "sha256:393523c82c06b1530da398d7aa4c060fc7906c98f493e43f593b8f283dd231fc"
     }
   }
 }

@@ -1,7 +1,7 @@
 name: CI
 
 # Keeps the harness and evidence formats valid. The gates here are the same
-# scripts `npm run check:ci` runs locally: scripts/check_json.py,
+# scripts `npm run check:ci` runs locally: scripts/check_json.py (+ its self-test),
 # scripts/check_item6_statement.py (+ its self-test) and scripts/check_signoff.sh, plus the PDK-free design/RTL checks (`check:design-rtl`). Keep the two in step.
 
 on:
@@ -25,7 +25,9 @@ jobs:
           python-version: "3.10"
 
       - name: Validate JSON config/evidence files and README links
-        run: python3 -I scripts/check_json.py
+        run: |
+          python3 -I scripts/check_json.py
+          bash scripts/test_check_json.sh
 
       - name: Check the item 6 not_applicable statement against the spec
         run: |
@@ -48,20 +50,11 @@ jobs:
       - name: Install uv
         run: pip install uv
 
-      - name: Re-run klt signoff and compare against the committed record
+      # Re-runs klt signoff against the committed record and re-checks the
+      # item-9 and item-10 attestation envelopes, all at the repo's klt pin
+      # (layout/toolchain.json). No version literal belongs in this workflow.
+      - name: Re-run klt signoff and re-check the attestation envelopes
         run: scripts/check_signoff.sh
-
-      - name: Re-check the item-9 testbench attestation
-        run: >
-          uvx --from "klayout-tools==0.8.0" klt signoff --attest 9
-          --inventory sim/attest/item9.inventory.json
-          --check sim/attest/item9.envelope.json
-
-      - name: Re-check the item-10 repo-hygiene attestation
-        run: >
-          uvx --from "klayout-tools==0.8.0" klt signoff --attest 10
-          --inventory manifests/item-10-inventory.json
-          --check manifests/evidence/item-10-repo-hygiene.json
 
   design-rtl:
     # PDK-free design and RTL checks: generator freshness, catalog, switch-level
