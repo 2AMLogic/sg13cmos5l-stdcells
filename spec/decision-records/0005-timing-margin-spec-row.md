@@ -75,6 +75,18 @@ point,
 | input slew | **2.5074 ns** | `target-spec.md` "Characterization grid", largest value on the slew axis |
 | output load | **0.3 pF** | same row, largest value on the load axis |
 
+**The slew value is a Liberty index, not a rail-to-rail edge time.** A Liberty
+input-transition index is measured between the library's own slew thresholds
+and scaled by `slew_derate_from_library`; the recorded libraries state 20 % /
+80 % and derate 1 (`sim/characterize/records/s5l_*.lib` header). Realizing
+this grid point therefore means applying a rail-to-rail ramp of
+`slew / derate / span` = 2.5074 / 1 / 0.6 = **4.179 ns**, which is exactly
+what the characterization harness itself applies
+(`klayout_tools.characterize._ramp_ns`). Driving a 2.5074 ns rail-to-rail ramp
+instead would stimulate a 1.5044 ns grid point — a faster point than the one
+named, and one the grid does not contain — so the evidence must derive the
+ramp from the library's thresholds rather than using the index directly.
+
 Reason: `margin.py` applies the bound at *every* one of the 49 grid points of
 every arc, and takes the binding point to be the worst one. Stage delay is
 monotonically increasing in both input slew and output load, so the grid's

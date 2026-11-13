@@ -10,11 +10,17 @@ Everything is generated from design/cells.json (never hand-written per cell):
     window. Single corner => runs locally (no batch grid).
   * RTL side: one Verilog testbench (`tb_rtl.v`) over rtl/<cell>.v that prints
     the same truth tables (run with iverilog/vvp by compare.py).
+  * corner side (issue #120, decision record 0005): one timing-arc transient
+    testbench (`tb_corners.cir`) instantiating every timing arc of every cell
+    once, plus a three-corner `klt sim` request (`corners.request.json`)
+    measuring each arc's rising and falling stage delay against the ratified
+    grid-validity bound. Three corners => a batch-fleet grid, not local.
 
 Results are SIMULATED, never measured.
 
     python3 verification/functional/gen_functional.py          # (re)write
     python3 verification/functional/gen_functional.py --check  # exit 1 if stale
+    python3 verification/functional/gen_functional.py --arcs   # list the arcs
 """
 from __future__ import annotations
 
@@ -106,6 +112,325 @@ def build_request(meas: list[dict]) -> dict:
     }
 
 
+# ------------------------------------------------- corner-matrix timing arcs
+# Issue #120, spec/decision-records/0005-timing-margin-spec-row.md. The grid
+# axes and the ratified corner table are imported, never restated here; the
+# bound is margin.py's own LIMIT_NS, which record 0005 ratifies unchanged.
+sys.path.insert(0, str(ROOT / "sim" / "characterize"))
+import gen_requests as char  # noqa: E402
+import margin as marg  # noqa: E402
+
+ARC_SLEW_NS = char.SLEW_NS[-1]       # grid's largest input slew
+ARC_LOAD_PF = char.LOAD_PF[-1]       # grid's largest output load
+LIMIT_NS = marg.LIMIT_NS             # ratified bound (record 0005)
+SPEC_ROW = "t_stage_delay_grid_bound"
+TT_LIB = ROOT / "sim" / "characterize" / "records" / "s5l_tt_1p20v_25c.lib"
+
+
+def arc_ramp_ns(slew_ns: float = ARC_SLEW_NS) -> float:
+    """The rail-to-rail ramp that realizes a Liberty input-transition index.
+
+    A Liberty ``index_1`` value is **not** a rail-to-rail edge time: it is the
+    transition measured between the library's own slew thresholds and scaled
+    by ``slew_derate_from_library``. Driving a 0 -> VDD ramp of `slew_ns` would
+    therefore stimulate a strictly *faster* grid point than the one named --
+    with this library's 20/80 % thresholds, 0.6x the intended transition -- and
+    the delays would not be comparable with the characterized tables at all.
+
+    So undo both, exactly as the characterization harness itself does
+    (`klayout_tools.characterize._ramp_ns`): divide out the derate, then divide
+    by the threshold span. The four values are read from the recorded TT
+    Liberty rather than restated here, so this cannot drift from the library
+    whose tables `margin.py` applies the same bound to.
+    """
+    attrs = marg.parse_liberty(TT_LIB.read_text()).attrs
+    try:
+        lower = float(attrs["slew_lower_threshold_pct_rise"])
+        upper = float(attrs["slew_upper_threshold_pct_rise"])
+        derate = float(attrs["slew_derate_from_library"])
+    except (KeyError, ValueError) as exc:
+        raise SystemExit(
+            f"{TT_LIB.name} does not state the slew thresholds the input ramp "
+            f"must be derived from ({exc}); the grid point cannot be realized")
+    span = (upper - lower) / 100.0
+    if not 0 < span <= 1 or derate <= 0:
+        raise SystemExit(f"{TT_LIB.name} states an unusable slew threshold "
+                         f"span {span!r} / derate {derate!r}")
+    for edge in ("fall",):
+        if (float(attrs.get(f"slew_lower_threshold_pct_{edge}", lower)) != lower
+                or float(attrs.get(f"slew_upper_threshold_pct_{edge}", upper))
+                != upper):
+            raise SystemExit(
+                f"{TT_LIB.name} uses different rise and fall slew thresholds; "
+                "one shared input ramp cannot realize the grid point for both")
+    return slew_ns / derate / span
+
+
+ARC_RAMP_NS = round(arc_ramp_ns(), 6)   # 2.5074 / 0.6 = 4.179 ns, 20/80 %
+SETTLE_NS = 30.0                     # settle before, and between, the edges
+T_RISE = SETTLE_NS
+T_FALL = T_RISE + ARC_RAMP_NS + SETTLE_NS
+T_END = T_FALL + ARC_RAMP_NS + SETTLE_NS
+
+_EXPR_TOKEN = re.compile(r"[A-Za-z_][A-Za-z0-9_]*|[()!*+^]")
+
+
+def _lit(a, b, op):
+    if op == "+":
+        return lambda v: a(v) or b(v)
+    if op == "*":
+        return lambda v: a(v) and b(v)
+    return lambda v: a(v) != b(v)
+
+
+def logic(expr: str, pins: list[str]):
+    """Compile a design/cells.json output expression to ``f(dict) -> bool``.
+
+    Operators and Liberty precedence: ``!`` (not) > ``*`` (and) > ``^`` (xor)
+    > ``+`` (or). Anything else in the string is a hard error, never a guess:
+    this function decides which arcs exist, so a silently mis-parsed
+    expression would silently mis-measure the library.
+    """
+    toks = _EXPR_TOKEN.findall(expr)
+    if "".join(toks) != re.sub(r"\s+", "", expr):
+        raise SystemExit(f"cannot tokenize cell expression {expr!r}")
+    pos = 0
+
+    def peek():
+        return toks[pos] if pos < len(toks) else None
+
+    def take():
+        nonlocal pos
+        pos += 1
+        return toks[pos - 1]
+
+    def p_or():
+        f = p_xor()
+        while peek() == "+":
+            take()
+            f = _lit(f, p_xor(), "+")
+        return f
+
+    def p_xor():
+        f = p_and()
+        while peek() == "^":
+            take()
+            f = _lit(f, p_and(), "^")
+        return f
+
+    def p_and():
+        f = p_unary()
+        while peek() == "*":
+            take()
+            f = _lit(f, p_unary(), "*")
+        return f
+
+    def p_unary():
+        tok = peek()
+        if tok == "!":
+            take()
+            inner = p_unary()
+            return lambda v: not inner(v)
+        if tok == "(":
+            take()
+            inner = p_or()
+            if peek() != ")":
+                raise SystemExit(f"unbalanced parentheses in {expr!r}")
+            take()
+            return inner
+        if tok is None or tok in "()!*+^":
+            raise SystemExit(f"unexpected token {tok!r} in {expr!r}")
+        name = take()
+        if name not in pins:
+            raise SystemExit(f"{expr!r} names {name!r}, not an input pin")
+        return lambda v, _n=name: v[_n]
+
+    f = p_or()
+    if pos != len(toks):
+        raise SystemExit(f"trailing tokens after {expr!r}")
+    return f
+
+
+def arcs() -> list[dict]:
+    """Every timing arc of every cell, with a propagating side-input state.
+
+    An arc is (cell, output pin, related input pin) -- the same granularity
+    as a Liberty ``timing ()`` group, which carries no ``when`` condition in
+    this library's characterized ``.lib`` files. ``side`` is the first
+    assignment of the cell's other inputs (MSB-first over the remaining pins,
+    the same bit convention as ``vectors()``) under which toggling the related
+    pin toggles the output; ``out_on_rise`` is the output level a logic-high
+    related pin produces, i.e. which output edge a rising input drives.
+
+    ``side is None`` means no state propagates this input to this output: the
+    arc does not exist, and it is reported as a declared gap rather than
+    dropped.
+    """
+    out = []
+    for c in cells():
+        ins = c["inputs"]
+        for o, expr in c["outputs"].items():
+            f = logic(expr, ins)
+            for p in ins:
+                rest = [q for q in ins if q != p]
+                side = None
+                high = None
+                for k in range(1 << len(rest)):
+                    v = {q: bool((k >> (len(rest) - 1 - b)) & 1)
+                         for b, q in enumerate(rest)}
+                    lo = f({**v, p: False})
+                    hi = f({**v, p: True})
+                    if lo != hi:
+                        side, high = v, hi
+                        break
+                out.append({"cell": c["name"], "output": o, "pin": p,
+                            "side": side, "out_on_rise": high})
+    return out
+
+
+def arc_meas_name(arc: dict, edge: str) -> str:
+    return f"d_{arc['cell']}_{arc['output']}_{arc['pin']}_{edge}".lower()
+
+
+def build_corner_spice(arc_list: list[dict]) -> str:
+    """The timing-arc deck: one cell instance per arc, one shared rail-scaled
+    input ramp, one normalized copy of each output node.
+
+    Why the two behavioural sources. ``.meas`` thresholds are numbers baked
+    into the netlist, but 50 % of the rail is a different voltage at each of
+    the three corners. So the stimulus is a *unitless* PWL shape (peak 1.0)
+    multiplied by the rail -- ``Bin vin 0 V = v(vdd)*v(vshape)`` -- giving an
+    exactly rail-to-rail ramp of the grid's slew at every corner, and each
+    output gets ``V = v(out)/v(vdd)``, so the single literal ``VAL=0.5``
+    means 50 % of the actual rail in every corner. Only ``Vdd`` is swept
+    (a plain DC source, so ngspice's ``alter`` applies); ``Vshape`` is never
+    swept, so no per-corner netlist rewrite is needed.
+
+    Every arc is its own cell instance, so arcs never interact: an arc's
+    non-switching inputs are tied straight to ``vdd`` or ground in the state
+    that propagates it, and only the related pin sees ``vin``.
+    """
+    lines = [
+        "* Generated by verification/functional/gen_functional.py; do not edit.",
+        f"* Issue #120: every timing arc of all {len(cells())} cells, one",
+        "* instance each, at the ratified characterization grid's worst point",
+        f"* (input slew {ARC_SLEW_NS} ns, output load {ARC_LOAD_PF} pF) -- see",
+        "* spec/decision-records/0005-timing-margin-spec-row.md.",
+        f"* The {ARC_SLEW_NS} ns slew is a 20-80% transition per the recorded",
+        f"* Liberty's own thresholds, so the rail-to-rail ramp is {ARC_RAMP_NS} ns",
+        "* (slew / derate / span) -- the same stimulus klt characterize applies.",
+        "* Swept per corner by corners.request.json: process section,",
+        "* temperature, and the Vdd source. SIMULATED, never measured.",
+        f"Vdd vdd 0 {VDD}",
+        "* Unitless 0 -> 1 -> 0 shape; Bin scales it to the corner's rail.",
+        f"Vshape vshape 0 PWL(0 0 {T_RISE}n 0 {T_RISE + ARC_RAMP_NS}n 1 "
+        f"{T_FALL}n 1 {T_FALL + ARC_RAMP_NS}n 0 {T_END}n 0)",
+        "Bin vin 0 V = v(vdd)*v(vshape)",
+    ]
+    for name in sorted({a["cell"] for a in arc_list if a["side"] is not None}):
+        lines.append(f".include ../../design/netlists/{name}.spice")
+    for i, a in enumerate(arc_list):
+        if a["side"] is None:
+            lines.append(f"* GAP: no state propagates {a['pin']} to "
+                         f"{a['output']} of {a['cell']}; arc not instantiated")
+            continue
+        out_node = f"a{i}"
+        conn = []
+        for port in subckt_ports(a["cell"]):
+            if port == "VDD":
+                conn.append("vdd")
+            elif port == "VSS":
+                conn.append("0")
+            elif port == a["output"]:
+                conn.append(out_node)
+            elif port == a["pin"]:
+                conn.append("vin")
+            else:
+                conn.append("vdd" if a["side"][port] else "0")
+        held = " ".join(f"{q}={int(b)}" for q, b in sorted(a["side"].items()))
+        lines.append(f"* arc {a['cell']} {a['pin']} -> {a['output']}"
+                     + (f", holding {held}" if held else ""))
+        lines.append(f"X{i} {' '.join(conn)} {a['cell']}")
+        lines.append(f"C{i} {out_node} 0 {ARC_LOAD_PF}p")
+        lines.append(f"B{i} n{i} 0 V = v({out_node})/v(vdd)")
+    return "\n".join(lines) + "\n"
+
+
+def build_corner_measurements(arc_list: list[dict]) -> list[dict]:
+    """Two limited, spec-row-tagged delay measurements per instantiated arc.
+
+    ``r``/``f`` name the *output* edge, as Liberty's ``cell_rise`` /
+    ``cell_fall`` do; which input edge drives it follows from the arc's
+    unateness (``out_on_rise``). Both are 50 %-of-rail to 50 %-of-rail, and
+    carry ``limits.max`` = the ratified bound in seconds. No ``min``: a
+    50 %-to-50 % delay can legitimately be small or negative for a fast cell
+    on a slow input ramp (record 0005).
+    """
+    meas = []
+    for i, a in enumerate(arc_list):
+        if a["side"] is None:
+            continue
+        for edge in ("r", "f"):
+            # The input edge that drives this output edge.
+            trig = "RISE" if (a["out_on_rise"] == (edge == "r")) else "FALL"
+            targ = "RISE" if edge == "r" else "FALL"
+            name = arc_meas_name(a, edge)
+            meas.append({
+                "name": name,
+                "unit": "s",
+                "limits": {"max": round(LIMIT_NS * 1e-9, 16)},
+                "spec_row": SPEC_ROW,
+                "spice": (f".meas tran {name} TRIG v(vshape) VAL=0.5 {trig}=1 "
+                          f"TARG v(n{i}) VAL=0.5 {targ}=1"),
+            })
+    return meas
+
+
+def build_corner_request(arc_list: list[dict]) -> dict:
+    if abs(LIMIT_NS - ARC_SLEW_NS) > 1e-12:
+        raise SystemExit(
+            f"margin.py LIMIT_NS ({LIMIT_NS}) is no longer the grid's largest "
+            f"input slew ({ARC_SLEW_NS}); decision record 0005 ties the two, "
+            "so reconcile them (and the record) before regenerating")
+    gaps = [f"{a['cell']}.{a['pin']}->{a['output']}"
+            for a in arc_list if a["side"] is None]
+    units = [{"process": {"name": key, "sections": [c["process"]]},
+              "temperature_c": c["temperature_c"],
+              "supply_v": {"Vdd": c["supply_v"]}}
+             for key, c in char.CORNERS.items()]
+    return {
+        "_comment": (
+            f"Issue #120: stage delay of every timing arc of all {len(cells())} "
+            f"cells over the three ratified Liberty corners, at the "
+            f"characterization grid's worst point (input slew {ARC_SLEW_NS} ns "
+            f"20-80%, applied as a {ARC_RAMP_NS} ns rail-to-rail ramp; output "
+            f"load {ARC_LOAD_PF} pF), against the ratified grid-validity "
+            f"bound {LIMIT_NS} ns declared as spec row '{SPEC_ROW}' by "
+            f"spec/decision-records/0005-timing-margin-spec-row.md. "
+            f"{len(arc_list) - len(gaps)} arcs instantiated, "
+            f"{len(gaps)} declared gaps"
+            + (f" ({', '.join(gaps)})" if gaps else "")
+            + ". Multi-corner => batch fleet: "
+            "`klt sim corners.request.json --backend batch "
+            "--wait-for-capacity 600`. SIMULATED, never measured. Generated by "
+            "gen_functional.py; do not edit."),
+        "engine": "ngspice",
+        "netlist": "tb_corners.cir",
+        "models": {"pdk": "ihp-sg13cmos5l",
+                   "lib": "libs.tech/ngspice/models/cornerMOSlv.lib"},
+        "corners": {"units": units},
+        "analysis": {"kind": "tran", "args": f"20p {T_END}n 0 50p"},
+        "measurements": build_corner_measurements(arc_list),
+        "options": {
+            "osdi_preload": [
+                "$PDK_ROOT/ihp-sg13cmos5l/libs.tech/ngspice/osdi/psp103.osdi"],
+            "timeout_s": 900,
+            "stage_model_inputs": True,
+        },
+        "batch": {"capacity_wait_s": 600},
+    }
+
+
 def build_verilog() -> str:
     L = ["// Generated by verification/functional/gen_functional.py; do not edit.",
          "// Exhaustive truth tables of rtl/<cell>.v: `cell out vector value`.",
@@ -130,17 +455,30 @@ def build_verilog() -> str:
 
 def outputs() -> dict[Path, str]:
     spice, meas = build_spice()
+    arc_list = arcs()
     return {
         HERE / "tb_all.cir": spice,
         HERE / "tt.request.json": json.dumps(build_request(meas), indent=2) + "\n",
         HERE / "tb_rtl.v": build_verilog(),
+        HERE / "tb_corners.cir": build_corner_spice(arc_list),
+        HERE / "corners.request.json":
+            json.dumps(build_corner_request(arc_list), indent=2) + "\n",
     }
 
 
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--arcs", action="store_true",
+                    help="list every timing arc and its held side inputs")
     args = ap.parse_args()
+    if args.arcs:
+        for a in arcs():
+            held = ("GAP (no propagating state)" if a["side"] is None else
+                    " ".join(f"{q}={int(b)}" for q, b in sorted(a["side"].items()))
+                    or "(single input)")
+            print(f"{a['cell']}\t{a['pin']} -> {a['output']}\t{held}")
+        return 0
     stale = False
     for path, text in outputs().items():
         if args.check:
