@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Checks for issue #82: generated files fresh, all 40 cells in the record,
 # the real comparison passes, and a deliberately wrong truth table fails.
+# Plus issue #120: the derived timing arcs agree with the RTL models and with
+# the characterized Liberty, and the recorded corner report has every arc at
+# every ratified corner (test_arcs.py).
 set -euo pipefail
 cd "$(dirname "$0")"
 REPORT=records/tt.report.json
@@ -17,3 +20,4 @@ if python3 compare.py --report "$REPORT" --negative-control >/dev/null; then
   echo "FAIL: negative control did not fail" >&2; exit 1
 fi
 echo "ok: 40 cells compared; negative control fails as required"
+python3 test_arcs.py
