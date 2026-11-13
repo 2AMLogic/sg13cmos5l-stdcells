@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "t1-attestation-inventory",
   "t1_item": 10,
-  "description": "Repo-hygiene inventory for sg13cmos5l-stdcells: README, LICENSE, the CI workflow and the repo check scripts exist; the README has a Reproduce section and names the check entry point; CI runs scripts/check_signoff.sh and that script carries the item-10 re-attestation; no klt version literal is hardcoded under scripts/ or .github/ (the repo has one klt pin, layout/toolchain.json); the evidence JSON parses.",
+  "description": "Repo-hygiene inventory for sg13cmos5l-stdcells: README, LICENSE, the CI workflow and the repo check scripts exist; the README has a Reproduce section and names the check entry point; CI runs scripts/check_signoff.sh and that script carries the item-10 re-attestation; no klt version literal is hardcoded under scripts/ or .github/ (the repo has one klt pin, layout/toolchain.json); no cocotb version literal is hardcoded there either and the CI workflow reads the cocotb pin from rtl/toolchain.json (issue #119); the evidence JSON parses.",
   "hygiene": [
     "README.md",
     "LICENSE",
@@ -18,6 +18,8 @@
     {"name": "ci-runs-signoff-check", "argv": ["grep", "-qF", "scripts/check_signoff.sh", ".github/workflows/ci.yml"]},
     {"name": "signoff-script-rechecks-item-10", "argv": ["grep", "-qFe", "--attest 10", "scripts/check_signoff.sh"]},
     {"name": "no-hardcoded-klt-version", "argv": ["bash", "-c", "! grep -rn 'klayout-tools==' scripts .github"]},
+    {"name": "no-hardcoded-cocotb-version", "argv": ["bash", "-c", "! grep -rn 'cocotb==' scripts .github"]},
+    {"name": "ci-reads-cocotb-pin", "argv": ["grep", "-qF", "rtl/toolchain.json", ".github/workflows/ci.yml"]},
     {"name": "readme-not-spec-phase-stub", "argv": ["python3", "-I", "-c", "import sys; sys.exit('just opened' in open('README.md').read())"]},
     {"name": "check-json-passes", "argv": ["python3", "-I", "scripts/check_json.py"]}
   ]

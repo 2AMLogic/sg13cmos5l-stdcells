@@ -3,21 +3,21 @@
   "kind": "generic",
   "status": "pass",
   "t1_item": 10,
-  "summary": "T1 item 10 (Repo hygiene): 14/14 attestation checks passed (klt signoff --attest)",
+  "summary": "T1 item 10 (Repo hygiene): 16/16 attestation checks passed (klt signoff --attest)",
   "source": "manifests/item-10-inventory.json",
   "attestation": {
     "producer": "klt signoff --attest",
     "inventory_schema_version": 1,
     "hash_algorithm": "sha256-raw-bytes",
-    "check_count": 14,
-    "passed_count": 14,
+    "check_count": 16,
+    "passed_count": 16,
     "checks": [
       {
         "check": "present",
         "role": "hygiene",
         "path": ".github/workflows/ci.yml",
         "passed": true,
-        "content_hash": "sha256:01cc42ef48d826a36e5e1898342864e94132deec4fd29b14bf08644f0c6e94d1"
+        "content_hash": "sha256:b696068a028d24fecc2b51955444e6ac7697dc1751ca3819819a8c657e57a83e"
       },
       {
         "check": "present",
@@ -31,14 +31,14 @@
         "role": "hygiene",
         "path": "README.md",
         "passed": true,
-        "content_hash": "sha256:686d421b941e385cbfb7f19ba70f57fd1dd414bb5f11f055b12b7b765514cb56"
+        "content_hash": "sha256:e622ced373784ae1c1399d9987b359de76f1e50772d43fbf02c829009b8029b9"
       },
       {
         "check": "present",
         "role": "hygiene",
         "path": "manifests/README.md",
         "passed": true,
-        "content_hash": "sha256:758bcead754190946b6b16e60dcc9ebc20c0fe9054c84238e6bfdf6299782994"
+        "content_hash": "sha256:909376208a37ce64605f1ff40ea22e0501f605957246b1d7a503efdb76e85052"
       },
       {
         "check": "present",
@@ -133,6 +133,33 @@
       {
         "check": "command",
         "role": "audit",
+        "name": "no-hardcoded-cocotb-version",
+        "argv": [
+          "bash",
+          "-c",
+          "! grep -rn 'cocotb==' scripts .github"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
+        "name": "ci-reads-cocotb-pin",
+        "argv": [
+          "grep",
+          "-qF",
+          "rtl/toolchain.json",
+          ".github/workflows/ci.yml"
+        ],
+        "cwd": ".",
+        "exit_status": 0,
+        "passed": true
+      },
+      {
+        "check": "command",
+        "role": "audit",
         "name": "readme-not-spec-phase-stub",
         "argv": [
           "python3",
@@ -169,7 +196,7 @@
         "path": "manifests/item-10-inventory.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:393523c82c06b1530da398d7aa4c060fc7906c98f493e43f593b8f283dd231fc"
+      "content_hash": "sha256:412240539c820ef958af2b902c8665a4e41eeaeae798a470dce7e26d2ada6982"
     }
   }
 }

@@ -13,13 +13,14 @@ T1 item 5 functional evidence. Everything here is **simulated**, never measured.
   `--negative-control` flips one RTL bit and must fail.
 - `test_functional.sh` — freshness, all-40-cells coverage, real pass, negative
   control, then `test_arcs.py`.
-- `test_arcs.py` — cross-checks the derived arc list two ways: the boolean
-  parser that derives it must reproduce the iverilog RTL truth tables on every
-  one of the 356 vectors, and the arc count must equal the number of
-  `timing ()` groups in the recorded TT Liberty (106). Then, if the corner
-  report exists, that every arc is measured, limited and spec-row tagged at
-  every ratified corner. Pass/fail of the arcs themselves is printed, not
-  asserted — a recorded overshoot is evidence, not a broken test.
+- `test_arcs.py` — cross-checks the derived arc list two ways: the evaluator
+  that derives it (`design/gen_netlists.py`'s `evaluate`, behind the one shared
+  Liberty-function parser the RTL models are generated from too) must reproduce
+  the iverilog RTL truth tables on every one of the 356 vectors, and the arc
+  count must equal the number of `timing ()` groups in the recorded TT Liberty
+  (106). Then, if the corner report exists, that every arc is measured, limited
+  and spec-row tagged at every ratified corner. Pass/fail of the arcs themselves
+  is printed, not asserted — a recorded overshoot is evidence, not a broken test.
 - `records/tt.report.json` — `klt sim` report (klt 0.9.1, ngspice 46 per `environment.engine_version`, TT 1.20 V 25 C). The repo pin (`sim/toolchain.json`) is ngspice 47, so this record was not produced at the pin.
 - `records/functional.tt.json` — per-cell, per-vector pass/fail (356 checks, 40/40 pass).
 

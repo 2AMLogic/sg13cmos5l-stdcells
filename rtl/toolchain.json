@@ -1,0 +1,19 @@
+{
+  "_comment": [
+    "RTL functional-model toolchain pin (issue #119). This is the ONE pin of record for cocotb. It is read by scripts/setup-env.sh, which installs cocotb at this exact spec into the checkout's .venv (never on the host), and by .github/workflows/ci.yml, which reads the same spec instead of carrying a version literal.",
+    "Never copy the version anywhere else -- not into a workflow, a script, or a README. A second copy is exactly what drifted for klt (issue #112), and manifests/item-10-inventory.json now audits for a `cocotb==` literal under scripts/ and .github/ the same way it audits for a `klayout-tools==` one.",
+    "cocotb.required_modules is a CAPABILITY list, not a version number, and is used the same way klt.klt_required_commands is in layout/toolchain.json: an install that reports the pinned version but cannot import these modules is a broken install, and setup-env.sh fails loudly rather than leaving `npm run check:design-rtl` to die on a ModuleNotFoundError later.",
+    "Icarus Verilog (iverilog/vvp) is deliberately NOT pinned here: setup-env.sh does not install it, it comes from the distro (apt-get install iverilog) and from the CI runner's own apt step. Pinning a tool nothing installs would be a pin with no recipe behind it.",
+    "The pin lives here and not in sim/toolchain.json because sim/harness/toolchain.py copies every key of that file into each SPICE record's environment.toolchain.pins (see its summary()); a cocotb pin has no place in SPICE characterization evidence.",
+    "This comment is APPEND-ONLY: record each later pin bump as a new paragraph naming the issue, what changed upstream, and why; a correction gets its own new paragraph, never an edit to the one it corrects.",
+    "Issue #119: first pin, cocotb 2.1.0 -- the version the design-rtl CI job already installed as a literal when it was introduced (issue #69), so this records the status quo rather than changing it. rtl/tests/run_tests.py imports cocotb_tools.runner, which exists only in cocotb 2.x, so the previously unpinned hand recipe in rtl/README.md was working by coincidence of what PyPI served."
+  ],
+  "cocotb": {
+    "install_spec": "cocotb==2.1.0",
+    "version_reported": "2.1.0",
+    "required_modules": [
+      "cocotb",
+      "cocotb_tools.runner"
+    ]
+  }
+}

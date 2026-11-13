@@ -120,6 +120,16 @@ sys.path.insert(0, str(ROOT / "sim" / "characterize"))
 import gen_requests as char  # noqa: E402
 import margin as marg  # noqa: E402
 
+# The cell expressions are parsed by the one shared Liberty-function parser
+# (design/gen_netlists.py `parse`/`evaluate`, design/README.md), reached through
+# rtl/gen_models.py's `parse(expr, pins)` so the pin-name check comes with it
+# rather than being re-implemented here. The netlists, the RTL models and this
+# arc list therefore cannot disagree about what an expression means (issue #125).
+sys.path.insert(0, str(ROOT / "design"))
+sys.path.insert(0, str(ROOT / "rtl"))
+import gen_models as models  # noqa: E402
+from gen_netlists import evaluate  # noqa: E402
+
 ARC_SLEW_NS = char.SLEW_NS[-1]       # grid's largest input slew
 ARC_LOAD_PF = char.LOAD_PF[-1]       # grid's largest output load
 LIMIT_NS = marg.LIMIT_NS             # ratified bound (record 0005)
@@ -172,83 +182,20 @@ T_RISE = SETTLE_NS
 T_FALL = T_RISE + ARC_RAMP_NS + SETTLE_NS
 T_END = T_FALL + ARC_RAMP_NS + SETTLE_NS
 
-_EXPR_TOKEN = re.compile(r"[A-Za-z_][A-Za-z0-9_]*|[()!*+^]")
 
+def expression(expr: str, pins: list[str]):
+    """Parse one design/cells.json output expression; hard-error on anything else.
 
-def _lit(a, b, op):
-    if op == "+":
-        return lambda v: a(v) or b(v)
-    if op == "*":
-        return lambda v: a(v) and b(v)
-    return lambda v: a(v) != b(v)
-
-
-def logic(expr: str, pins: list[str]):
-    """Compile a design/cells.json output expression to ``f(dict) -> bool``.
-
-    Operators and Liberty precedence: ``!`` (not) > ``*`` (and) > ``^`` (xor)
-    > ``+`` (or). Anything else in the string is a hard error, never a guess:
-    this function decides which arcs exist, so a silently mis-parsed
-    expression would silently mis-measure the library.
+    The grammar and the pin-name check are the shared ones (``!`` not, ``*``
+    and, ``+`` or, ``^`` xor, no mixing at one nesting level without
+    parentheses). This function decides which arcs exist, so a silently
+    mis-parsed expression would silently mis-measure the library: a rejected
+    expression is a hard stop, never a guess.
     """
-    toks = _EXPR_TOKEN.findall(expr)
-    if "".join(toks) != re.sub(r"\s+", "", expr):
-        raise SystemExit(f"cannot tokenize cell expression {expr!r}")
-    pos = 0
-
-    def peek():
-        return toks[pos] if pos < len(toks) else None
-
-    def take():
-        nonlocal pos
-        pos += 1
-        return toks[pos - 1]
-
-    def p_or():
-        f = p_xor()
-        while peek() == "+":
-            take()
-            f = _lit(f, p_xor(), "+")
-        return f
-
-    def p_xor():
-        f = p_and()
-        while peek() == "^":
-            take()
-            f = _lit(f, p_and(), "^")
-        return f
-
-    def p_and():
-        f = p_unary()
-        while peek() == "*":
-            take()
-            f = _lit(f, p_unary(), "*")
-        return f
-
-    def p_unary():
-        tok = peek()
-        if tok == "!":
-            take()
-            inner = p_unary()
-            return lambda v: not inner(v)
-        if tok == "(":
-            take()
-            inner = p_or()
-            if peek() != ")":
-                raise SystemExit(f"unbalanced parentheses in {expr!r}")
-            take()
-            return inner
-        if tok is None or tok in "()!*+^":
-            raise SystemExit(f"unexpected token {tok!r} in {expr!r}")
-        name = take()
-        if name not in pins:
-            raise SystemExit(f"{expr!r} names {name!r}, not an input pin")
-        return lambda v, _n=name: v[_n]
-
-    f = p_or()
-    if pos != len(toks):
-        raise SystemExit(f"trailing tokens after {expr!r}")
-    return f
+    try:
+        return models.parse(expr, pins)
+    except ValueError as exc:
+        raise SystemExit(f"cannot use cell expression {expr!r}: {exc}") from exc
 
 
 def arcs() -> list[dict]:
@@ -270,7 +217,7 @@ def arcs() -> list[dict]:
     for c in cells():
         ins = c["inputs"]
         for o, expr in c["outputs"].items():
-            f = logic(expr, ins)
+            node = expression(expr, ins)
             for p in ins:
                 rest = [q for q in ins if q != p]
                 side = None
@@ -278,10 +225,10 @@ def arcs() -> list[dict]:
                 for k in range(1 << len(rest)):
                     v = {q: bool((k >> (len(rest) - 1 - b)) & 1)
                          for b, q in enumerate(rest)}
-                    lo = f({**v, p: False})
-                    hi = f({**v, p: True})
+                    lo = evaluate(node, {**v, p: False})
+                    hi = evaluate(node, {**v, p: True})
                     if lo != hi:
-                        side, high = v, hi
+                        side, high = v, bool(hi)
                         break
                 out.append({"cell": c["name"], "output": o, "pin": p,
                             "side": side, "out_on_rise": high})

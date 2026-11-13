@@ -128,13 +128,18 @@ source .cache/env.sh        # PDK_ROOT, PDK=ihp-sg13cmos5l, PATH
 It fetches the SG13G2 sibling and the pinned SG13CMOS5L subtree of
 IHP-Open-PDK (the CMOS5L models are symlinks into the sibling), builds ngspice
 47 (the host ngspice-42 cannot load the OSDI models), compiles the Verilog-A
-models to OSDI, and installs `klt` at a pinned commit in `.venv`. It needs
-`curl`, `tar`, `make`, `gcc`, `bison`, `flex`, `python3` >= 3.10 and `uv`, about
-1 GB of disk and several minutes (`SETUP_JOBS`, default 2, sets the ngspice
+models to OSDI, and installs `klt` and `cocotb` at their pins in `.venv`. It
+needs `curl`, `tar`, `make`, `gcc`, `bison`, `flex`, `python3` >= 3.10 and `uv`,
+about 1 GB of disk and several minutes (`SETUP_JOBS`, default 2, sets the ngspice
 `make -j`). It installs nothing host-wide and fails closed on any checksum
 mismatch. Pins: [`sim/pdk.json`](sim/pdk.json), [`sim/toolchain.json`](sim/toolchain.json),
-[`layout/toolchain.json`](layout/toolchain.json). `scripts/test_setup_env.sh`
-checks the fail-closed behaviour without the large downloads.
+[`layout/toolchain.json`](layout/toolchain.json), [`rtl/toolchain.json`](rtl/toolchain.json).
+`scripts/test_setup_env.sh` checks the fail-closed behaviour without the large
+downloads.
+
+This is the only recipe that builds `.venv`, and it installs everything `npm run
+check:ci` needs in it — the RTL gate's cocotb included. Icarus (`iverilog`) is
+the one tool it does not provide: install it from the distro.
 
 Smoke evidence: [`sim/smoke`](sim/smoke/README.md) (inverter simulation;
 single-corner probe plus the five-corner transient and DC records, simulated)
