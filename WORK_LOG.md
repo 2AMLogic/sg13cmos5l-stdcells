@@ -5,6 +5,16 @@ Maintained by the Guide triage role.
 
 ### 2026-11-13
 
+- **PR #118**: feat(characterize): record the SS/1.08 V/125 C corner, all 40 cells
+- **Issue #86** (closed): T1 item 5e: run klt characterize at SS/1.08 V/125 C (stretch) and commit the Liberty
+- **PR #115**: fix(ci): validate every tracked JSON file, not five stale globs
+- **Issue #114** (closed): Simplify check_json.py: replace the stale glob list with tracked files (gate parses 8 of 39 JSON evidence files)
+- **PR #113**: build: read the signoff klt pin from layout/toolchain.json
+- **Issue #112** (closed): Collapse the second klt pin: signoff tooling hardcodes klayout-tools 0.8.0 in four places while layout/toolchain.json pins 0.9.1
+- **PR #111**: refactor(sim): retire test_pdk_models.py, point records at the klt flow
+- **Issue #108** (closed): Remove design/tests/test_pdk_models.py: real-model truth tables are duplicated by the klt flow in verification/functional
+- **PR #107**: feat(characterize): complete the FF corner with a split-grid s5l_mux4_1 record
+- **Issue #85** (closed): T1 item 5d: run klt characterize at FF/1.32 V/-40 C (stretch) and commit the Liberty
 - **PR #101**: docs(manifest): cite TT functional report as item-5 evidence, disclose FF/SS gaps
 - **PR #100**: feat(characterize): record TT/1.20V/25C Liberty for all 40 cells
 - **Issue #84** (closed): T1 item 5c: run klt characterize at TT/1.20 V/25 C for all 40 cells and commit the Liberty

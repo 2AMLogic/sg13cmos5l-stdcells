@@ -21,7 +21,7 @@ _None._
 `loom:important`; taken before unlabelled work.
 
 - **#24**: T1 item 2 (layout): retargeted generator output, committed GDS for the 40 cells on the 8-track SG13CMOS5L row
-- **#85**: T1 item 5d: run klt characterize at FF/1.32 V/-40 C (stretch) and commit the Liberty
+- **#120**: T1 item 5g: record a limit-checked corner-matrix klt sim report with a per-corner timing-margin measurement
 
 ## Ready
 
@@ -33,8 +33,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#85**: T1 item 5d: run klt characterize at FF/1.32 V/-40 C (stretch) and commit the Liberty
-- **#86**: T1 item 5e: run klt characterize at SS/1.08 V/125 C (stretch) and commit the Liberty
+- **#120**: T1 item 5g: record a limit-checked corner-matrix klt sim report with a per-corner timing-margin measurement
 
 ## PRs Awaiting Review
 
@@ -55,11 +54,14 @@ Issues carrying `loom:curated`.
 - **#6**: Track the gap to T1 (klayout-tools design-evidence-tiers.md) *(curated)*
 - **#26**: T1 item 4 (LVS clean): klt lvs match of every generated cell against its item-1 netlist *(curated)*
 - **#28**: T1 item 6 (Monte Carlo): bound not_applicable statement accounting for every ratified row *(curated)*
-- **#86**: T1 item 5e: run klt characterize at SS/1.08 V/125 C (stretch) and commit the Liberty *(curated)*
+- **#120**: T1 item 5g: record a limit-checked corner-matrix klt sim report with a per-corner timing-margin measurement *(curated)*
 
 ## Proposed (Architect / Hermit)
 
 - **#105**: Remove or wire up the vendored sim/harness: 2,155 lines of Python with no experiment, no CI step, and no record *(hermit)*
+- **#116**: Wire up or remove the self-tests and --check freshness modes that no gate runs (4 test files, 240 lines, absent from CI and check:ci) *(hermit)*
+- **#117**: Remove the vendored manifests/design-evidence-tiers.md: a second tiers-doc pin that has drifted from the copy the pinned klt ships (1,053 lines) *(hermit)*
+- **#119**: Unify the three .venv recipes and give cocotb one pin of record (npm run check:ci fails on a setup-env.sh checkout) *(hermit)*
 
 ## Epics
 
@@ -73,10 +75,10 @@ _None._
 | Very important | 0 |
 | Important | 2 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 2 |
+| In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
 | Curated | 4 |
-| Architect / Hermit proposals | 1 |
+| Architect / Hermit proposals | 4 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
