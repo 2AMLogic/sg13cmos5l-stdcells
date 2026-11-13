@@ -32,7 +32,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#87**: T1 item 5f: cite item-5 evidence in the manifest and confirm verdict met
+- **#86**: T1 item 5e: run klt characterize at SS/1.08 V/125 C (stretch) and commit the Liberty
 
 ## PRs Awaiting Review
 
@@ -54,15 +54,12 @@ Issues carrying `loom:curated`.
 - **#26**: T1 item 4 (LVS clean): klt lvs match of every generated cell against its item-1 netlist *(curated)*
 - **#28**: T1 item 6 (Monte Carlo): bound not_applicable statement accounting for every ratified row *(curated)*
 - **#86**: T1 item 5e: run klt characterize at SS/1.08 V/125 C (stretch) and commit the Liberty *(curated)*
-- **#87**: T1 item 5f: cite item-5 evidence in the manifest and confirm verdict met *(curated)*
 
 ## Proposed (Architect / Hermit)
 
 _None._
 
 ## Epics
-
-
 
 _None._
 
@@ -77,7 +74,7 @@ _None._
 | In Progress (`loom:building`) | 1 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 5 |
+| Curated | 4 |
 | Architect / Hermit proposals | 0 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
