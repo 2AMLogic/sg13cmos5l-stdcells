@@ -136,3 +136,30 @@ declared: a lower bound would fail a physically correct measurement.
 - Adopting the existing constant, rather than choosing a new number now,
   is deliberate: all three corners' Liberty is already recorded, so any
   freshly chosen limit would be post-hoc by construction.
+
+## Addendum, 2026-11-13 (added after the run; the decision is unchanged)
+
+Appended, not edited, so the order of events stays readable.
+
+The decision above was committed before the sweep ran. It was also made
+before its author read `sim/characterize/README.md`'s "Timing-margin metric"
+section, which **already recorded** that `margin.py` over the characterized
+Liberty finds 5 of 10388 points negative — all at this very grid point
+(largest slew *and* largest load), all stacked-NMOS rise arcs, at SS, least
+margin −0.0548 ns on `s5l_nand4_1` `Y<-D`.
+
+So by the time the run was submitted, the outcome at the chosen point was
+foreseeable from material already in the repo. The point was **not** moved in
+response. Moving it to a gentler grid point would have made the choice
+outcome-driven, would have claimed strictly less than the row as stated, and
+would have put this evidence in contradiction with `margin.py` over the same
+libraries — which is exactly the relaxation this repo forbids.
+
+What the run then found, independently: the same five arcs, in the same
+order, with the same least margin (−0.0548 ns) to four decimals, through a
+different flow (a generated arc deck through `klt sim` on the batch fleet,
+rather than NLDM tables through `klt characterize`). Recorded in
+`verification/functional/README.md`. Item 5 grades `unmet` / `check_failed`
+on it; the timing-margin rule itself is satisfied. Closing that gap needs
+either a ratified delay budget or a grid change — each its own decision
+record, neither of them this one.

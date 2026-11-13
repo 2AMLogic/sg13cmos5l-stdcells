@@ -11,6 +11,8 @@ __pycache__/
 sim/build/
 # synthesis / P&R scratch
 flow/build/
+# klt run scratch (`.klt/sim/` beside a request, when no -o is given)
+.klt/
 # local klt install, created by the setup script
 .venv/
 # PDK, built tools and scratch downloads, created by scripts/setup-env.sh
