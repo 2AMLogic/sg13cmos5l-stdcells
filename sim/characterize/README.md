@@ -12,6 +12,7 @@ three-corner run has not been completed (see below).
 | `margin.py`, `test_margin.py` | the timing-margin metric (defined in `margin.py`'s docstring, the one place): `margin = LIMIT_NS - delay` per (cell, arc, slew, load, corner); table + per-arc pass/fail + binding corner from any `records/*.lib` |
 | `check_lib_coverage.py`, `test_check_lib_coverage.py` | every cell in `design/cells.json` present with rise+fall 7 x 7 tables; exits 1 on a partial corner |
 | `records/s5l_ff_1p32v_m40c.lib` (+ `.provenance.json`) | FF / 1.32 V / -40 C, **39 of 40 cells, SIMULATED, partial** (issue #85): `s5l_mux4_1` hit the 3000 s ngspice timeout on the fleet (whole-job ceiling 3600 s). FF `s5l_nand2_1` delays average 0.71x the TT probe's over the 196 points, so the corner took effect |
+| `records/s5l_tt_1p20v_25c.lib` (+ `.provenance.json`) | TT / 1.20 V / 25 C, the ratified target corner, **all 40 cells, SIMULATED** (issue #84): coverage check `COVERAGE COMPLETE` (40/40, rise+fall 7 x 7); fleet job ids per cell in the provenance. `s5l_nand2_1` agrees with the local probe below at all 196 points (max |delta| 2.9e-5 ns) |
 | `records/probe.s5l_nand2_1.tt_1p20v_25c.lib` | probe: `s5l_nand2_1` alone, TT / 1.20 V / 25 C, local run |
 
 Run a corner (the requests set `output.lib` into `records/`):
