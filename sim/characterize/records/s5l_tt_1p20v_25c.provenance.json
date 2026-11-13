@@ -1,0 +1,297 @@
+{
+  "label": "SIMULATED (never measured); append-only",
+  "issue": 84,
+  "status": "COMPLETE: 40 of 40 cells",
+  "corner": "tt_1p20v_25c (mos_tt, 1.20 V, 25 C)",
+  "request": "sim/characterize/requests/tt.request.json",
+  "request_sha256": "465f2a774bcc6b29ed64b64a62508f561d42a38d2ece12c21311c8969d3e58f1",
+  "lib": "sim/characterize/records/s5l_tt_1p20v_25c.lib",
+  "lib_sha256": "5b80e2acda6e43356fdbe0fc8ae7ed9f95c26a77363d429bb45f95642acc6843",
+  "pdk_commit": "f7bca32694fe3d58be0cc7d9df4b9f5db7161a14",
+  "klt": "0.9.2.dev885+ge4c446bd91f2 (host klt; versions varied slightly across resumed invocations); fleet runner klt 0.9.0",
+  "ngspice": "fleet workers ngspice-46 (repo pin is 47, per sim/toolchain.json)",
+  "command": "klt characterize sim/characterize/requests/tt.request.json --backend batch --wait-for-capacity 600 --resume --keep-going --timeout-s 3000",
+  "note": "first client invocation was killed mid-run and resumed with --resume; job ids are those of the run that produced the collected result",
+  "cells": {
+    "s5l_a21o_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-f3b70e51bf3d",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 354,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_a21o_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-afa4f85b8666",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 354,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_a21oi_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-4649f8854241",
+      "instance_type": "m6i.4xlarge",
+      "elapsed_s": 212,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_a21oi_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-662a48f113e7",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 235,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_a221oi_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-3896ba9c3bd8",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 813,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_a22oi_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-17a99719b3ec",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 459,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_and2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-92a6402988da",
+      "instance_type": "c7i.4xlarge",
+      "elapsed_s": 191,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_and2_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-a653e2a5dca9",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 157,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_and3_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-2ada9baad986",
+      "instance_type": "m6i.4xlarge",
+      "elapsed_s": 327,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_and3_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-7a340b618d64",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 328,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_and4_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-4e811e97b87b",
+      "instance_type": "c7i.4xlarge",
+      "elapsed_s": 569,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_buf_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-f640c1df5b3b",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 109,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_buf_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-eed451ad19fa",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 52,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_buf_4": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-1fb627edd77c",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 58,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_inv_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-356389ba86fb",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 34,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_inv_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-562036c2c60a",
+      "instance_type": "m6i.4xlarge",
+      "elapsed_s": 30,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_inv_4": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-ec6b8fbe7df4",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 33,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_mux2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-ffed868b8551",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 665,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_mux2_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-9070b3de8227",
+      "instance_type": "c7i.8xlarge",
+      "elapsed_s": 503,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_mux4_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-78a0593780f5",
+      "instance_type": "c7i.4xlarge",
+      "elapsed_s": 2873,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nand2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-7d2463453d32",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 111,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nand2_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-39abed6aff0a",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 113,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nand2b_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-b17b98e9baf5",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 149,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nand3_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-54a29c797cdd",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 222,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nand3b_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-e57214a8436e",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 304,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nand4_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-a5c3cd348a53",
+      "instance_type": "c7i.4xlarge",
+      "elapsed_s": 467,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nor2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-40bba79fa9e4",
+      "instance_type": "c7i.4xlarge",
+      "elapsed_s": 109,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nor2_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-8597fe444608",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 110,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nor2b_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-05cd7017fc78",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 163,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nor3_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-2619c89e0126",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 251,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nor3_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-92747044036d",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 286,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_nor4_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-8df3f70a4987",
+      "instance_type": "c7i.4xlarge",
+      "elapsed_s": 486,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_o21ai_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-ea4fd6798e62",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 260,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_or2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-6e72382c1789",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 177,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_or2_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-575047180ddd",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 146,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_or3_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-f1bfcf8b7bcf",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 366,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_or3_2": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-d8e72f2e940b",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 327,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_or4_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-2bf1b55606e7",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 586,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_xnor2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-fc567b86218e",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 330,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    },
+    "s5l_xor2_1": {
+      "status": "pass",
+      "fleet_job_id": "klt-sim-72891f26ca8d",
+      "instance_type": "m7i.4xlarge",
+      "elapsed_s": 384,
+      "runner_ngspice": "ngspice-46 : Circuit level simulation program"
+    }
+  }
+}
