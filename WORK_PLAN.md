@@ -21,6 +21,7 @@ _None._
 `loom:important`; taken before unlabelled work.
 
 - **#24**: T1 item 2 (layout): retargeted generator output, committed GDS for the 40 cells on the 8-track SG13CMOS5L row
+- **#85**: T1 item 5d: run klt characterize at FF/1.32 V/-40 C (stretch) and commit the Liberty
 
 ## Ready
 
@@ -32,6 +33,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
+- **#85**: T1 item 5d: run klt characterize at FF/1.32 V/-40 C (stretch) and commit the Liberty
 - **#86**: T1 item 5e: run klt characterize at SS/1.08 V/125 C (stretch) and commit the Liberty
 
 ## PRs Awaiting Review
@@ -57,7 +59,7 @@ Issues carrying `loom:curated`.
 
 ## Proposed (Architect / Hermit)
 
-_None._
+- **#105**: Remove or wire up the vendored sim/harness: 2,155 lines of Python with no experiment, no CI step, and no record *(hermit)*
 
 ## Epics
 
@@ -69,12 +71,12 @@ _None._
 |------|-------|
 | Operator merge-risk holds | 0 |
 | Very important | 0 |
-| Important | 1 |
+| Important | 2 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 2 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
 | Curated | 4 |
-| Architect / Hermit proposals | 0 |
+| Architect / Hermit proposals | 1 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
