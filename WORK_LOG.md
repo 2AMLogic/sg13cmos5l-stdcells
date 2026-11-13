@@ -5,6 +5,8 @@ Maintained by the Guide triage role.
 
 ### 2026-11-13
 
+- **PR #100**: feat(characterize): record TT/1.20V/25C Liberty for all 40 cells
+- **Issue #84** (closed): T1 item 5c: run klt characterize at TT/1.20 V/25 C for all 40 cells and commit the Liberty
 - **PR #98**: feat(characterize): FF/1.32V/-40C Liberty for 39 of 40 cells, with coverage check
 
 ### 2026-11-12
