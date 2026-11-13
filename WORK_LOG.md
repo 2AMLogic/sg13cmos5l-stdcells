@@ -3,6 +3,10 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-13
+
+- **PR #98**: feat(characterize): FF/1.32V/-40C Liberty for 39 of 40 cells, with coverage check
+
 ### 2026-11-12
 
 - **PR #96**: Bump Repo Skills 0.25.10 -> 0.26.1
