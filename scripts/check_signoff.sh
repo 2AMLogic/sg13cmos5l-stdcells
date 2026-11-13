@@ -17,6 +17,85 @@ usage() {
   sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'
 }
 
+# check_attest_pins <repo-root>: the item-9 attestation inventory hand-copies
+# this repo's tool and PDK pins, and `klt signoff --attest 9` only checks that
+# its `pins` block is present and well formed -- never what it says. So a copy
+# that drifts from the pin of record is cited evidence no gate notices (issue
+# #131, the drift issue #112 removed from this script's own klt version).
+# Compare the copy with the files that own each pin. Never add a fourth copy:
+# every value below is read, never written here.
+check_attest_pins() {
+  python3 -I - "${1:-.}" <<'PY'
+import json
+import sys
+
+ROOT = sys.argv[1]
+INVENTORY = "sim/attest/item9.inventory.json"
+
+
+def dig(path, *keys):
+    """The string at `keys` in the JSON file at `path`, or None if any step is
+    missing or the file is unreadable -- reported as a failure below, never
+    raised, so a broken pin file names itself instead of printing a traceback."""
+    try:
+        with open(f"{ROOT}/{path}", "rb") as handle:
+            node = json.loads(handle.read().decode("utf-8"))
+    except (OSError, UnicodeDecodeError, ValueError):
+        return None
+    for key in keys:
+        if not isinstance(node, dict) or key not in node:
+            return None
+        node = node[key]
+    return node if isinstance(node, str) else None
+
+
+# (inventory key, its value, file owning the pin, key there, its value)
+comparisons = [
+    ("pins.tools.klt", dig(INVENTORY, "pins", "tools", "klt"),
+     "layout/toolchain.json", "klt.commit",
+     dig("layout/toolchain.json", "klt", "commit")),
+    ("pins.tools.ngspice", dig(INVENTORY, "pins", "tools", "ngspice"),
+     "sim/toolchain.json", "ngspice.pinned_version",
+     dig("sim/toolchain.json", "ngspice", "pinned_version")),
+    ("pins.tools.openvaf-r", dig(INVENTORY, "pins", "tools", "openvaf-r"),
+     "sim/toolchain.json", "openvaf.tag",
+     dig("sim/toolchain.json", "openvaf", "tag")),
+    ("pins.pdk.name", dig(INVENTORY, "pins", "pdk", "name"),
+     "sim/pdk.json", "variant", dig("sim/pdk.json", "variant")),
+    ("pins.pdk.revision", dig(INVENTORY, "pins", "pdk", "revision"),
+     "sim/pdk.json", "pinned_commit", dig("sim/pdk.json", "pinned_commit")),
+]
+
+drifted = 0
+for inventory_key, copied, owner, owner_key, pinned in comparisons:
+    if pinned is None:
+        print(f"error: cannot read {owner_key} from {owner}", file=sys.stderr)
+        drifted += 1
+    elif copied != pinned:
+        print(
+            f"error: {INVENTORY} {inventory_key} is {copied!r}, "
+            f"but the pin of record {owner} {owner_key} is {pinned!r}",
+            file=sys.stderr,
+        )
+        drifted += 1
+
+if drifted:
+    print(
+        f"The inventory copies this repo's pins; bring the {drifted} value(s) "
+        "above back to the pin of record, re-attest item 9 and commit the new "
+        "envelope (see manifests/README.md).",
+        file=sys.stderr,
+    )
+    sys.exit(1)
+print(f"ok: {INVENTORY} pins match layout/toolchain.json, sim/toolchain.json "
+      "and sim/pdk.json")
+PY
+}
+
+# Lets scripts/test_check_signoff.sh exercise check_attest_pins without uvx,
+# the network or a klt install.
+if [ "${CHECK_SIGNOFF_SOURCE_ONLY:-0}" = "1" ]; then return 0 2>/dev/null || exit 0; fi
+
 regenerate=0
 case "${1:-}" in
   "") ;;
@@ -32,6 +111,10 @@ case "${1:-}" in
 esac
 
 cd "$(dirname "$0")/.." || exit 1
+
+# Cheapest gate first: no network, no klt. A drifted pin copy invalidates the
+# committed envelope, so there is no point re-checking it until this agrees.
+check_attest_pins . || exit 1
 
 RECORD="manifests/sg13cmos5l-stdcells.signoff.json"
 

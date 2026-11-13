@@ -2,7 +2,7 @@ name: CI
 
 # Keeps the harness and evidence formats valid. The gates here are the same
 # scripts `npm run check:ci` runs locally: scripts/check_json.py (+ its self-test),
-# scripts/check_item6_statement.py (+ its self-test) and scripts/check_signoff.sh, plus the PDK-free design/RTL checks (`check:design-rtl`). Keep the two in step.
+# scripts/check_item6_statement.py (+ its self-test) and scripts/check_signoff.sh (+ its self-test), plus the PDK-free design/RTL checks (`check:design-rtl`). Keep the two in step.
 
 on:
   push:
@@ -33,6 +33,12 @@ jobs:
         run: |
           python3 -I scripts/check_item6_statement.py
           bash scripts/test_check_item6_statement.sh
+
+      # The item-9 inventory's copy of the tool and PDK pins against the files
+      # that own them. Needs no klt, so it runs here rather than in `signoff`;
+      # `signoff` runs the same comparison again as check_signoff.sh's first step.
+      - name: Check the item-9 attestation pins against the pins of record
+        run: bash scripts/test_check_signoff.sh
 
       # TODO(harness): add the harness self-test step here when the harness
       # lands; its entrypoint is not defined yet, so none is invented.

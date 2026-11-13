@@ -30,6 +30,15 @@ through a decision record and regenerates the signoff output in the same PR.
   which CI runs, re-runs `klt signoff --attest 9 --inventory ... --check ...`
   on it at the pin in `layout/toolchain.json`. `--attest` is absent from klt
   0.7.0, so that pin cannot go below 0.8.0.
+  The inventory's `pins` block copies this repo's tool and PDK pins, and klt's
+  own `pin` check only verifies that the block is present and well formed,
+  never what it says -- so the copied klt commit drifted across two pin bumps
+  with no gate noticing (issue #131). `check_attest_pins` in
+  `scripts/check_signoff.sh` compares every copied value with the file that
+  owns it (`layout/toolchain.json`, `sim/toolchain.json`, `sim/pdk.json`)
+  before any other check runs, and `scripts/test_check_signoff.sh` is its
+  self-test. A tool or PDK pin bump is therefore a two-file change: bump the
+  pin of record, then bring the inventory with it and re-attest item 9.
 
 - Item 10: `manifests/evidence/item-10-repo-hygiene.json`, produced from
   `manifests/item-10-inventory.json` with `klt signoff --attest 10`. As for
