@@ -24,5 +24,5 @@
     "models": ["psp103", "psp103_nqs", "r3_cmc", "mosvar", "cap_cmomi", "cap_cmomf"],
     "install_dir": "pdks/ihp-open-pdk/ihp-sg13cmos5l/libs.tech/ngspice/osdi"
   },
-  "runtime_compatibility": "VERIFIED in this repo at this pin on linux-x86_64 / ngspice-47 / openvaf-r osdi_0.4-153-g2e066436: all six models compile and load in ngspice (devhelp), and the smoke inverter simulates at tt (sim/smoke/records/). Five-corner and fleet (batch) execution are NOT verified: the batch fleet publishes no ihp-sg13cmos5l image (supported: sky130A, gf180mcu, sg13g2)."
+  "runtime_compatibility": "VERIFIED in this repo at this pin on linux-x86_64 / ngspice-47 / openvaf-r osdi_0.4-153-g2e066436: all six models compile and load in ngspice (devhelp), and the smoke inverter simulates at tt (sim/smoke/records/). Five-corner fleet (batch) execution of the smoke inverter is VERIFIED at the klt pin in layout/toolchain.json (klt 0.9.1 accepts ihp-sg13cmos5l on the batch backend, klayout-tools#2727): transient 5/5 and DC 5/5, simulated, recorded in sim/smoke/records/five-corner.2026-11-11.md and sim/smoke/records/five-corner-dc.2026-11-12.md."
 }
