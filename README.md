@@ -133,7 +133,8 @@ models to OSDI, and installs `klt` at a pinned commit in `.venv`. It needs
 `make -j`). It installs nothing host-wide and fails closed on any checksum
 mismatch. Pins: [`sim/pdk.json`](sim/pdk.json), [`sim/toolchain.json`](sim/toolchain.json),
 [`layout/toolchain.json`](layout/toolchain.json). `scripts/test_setup_env.sh`
-checks the fail-closed behaviour without the large downloads.
+checks the fail-closed behaviour without the large downloads; CI runs it
+(`npm run check:setup-env`), so the claim is gated rather than advertised.
 
 Smoke evidence: [`sim/smoke`](sim/smoke/README.md) (inverter simulation;
 single-corner probe recorded, five-corner run blocked on the batch fleet) and
@@ -144,7 +145,9 @@ on the PDK's own reference inverter).
 
 Every recorded result appends the exact commands that regenerate it here.
 
-Repo checks (JSON/evidence formats, README links, graded signoff record):
+Repo checks (JSON/evidence formats, README links, `setup-env.sh` fail-closed
+behaviour, graded signoff record, and the PDK-free design/RTL gate: catalog,
+generator freshness, unit tests and the netlist-vs-RTL functional compare):
 
 ```
 npm run check:ci
