@@ -10,9 +10,22 @@ T1 item 5 functional evidence. Everything here is **simulated**, never measured.
   side-input state that propagates it.
 - `compare.py` — RTL tables (iverilog) vs the sim report, bit-exact on
   thresholded levels (<0.1·VDD → 0, >0.9·VDD → 1, otherwise fail).
-  `--negative-control` flips one RTL bit and must fail.
-- `test_functional.sh` — freshness, all-40-cells coverage, real pass, negative
-  control, then `test_arcs.py`.
+  `--negative-control` flips one RTL bit and must fail. Two forms, and the
+  distinction matters (issue #138):
+  - `--report R --out P` **regenerates** `P` — the deliberate step after a new
+    `klt sim` run, and the only thing here that writes the record.
+  - `--report R --out P --check` is the **gate**: it compares the committed
+    record at `P` against the freshly computed result in memory and never
+    writes it, so a stale or hand-edited record is reported instead of
+    silently repaired. Exit 1 = the netlist and RTL disagree (a broken
+    library), exit 3 = the record is stale (out-of-date bookkeeping); the two
+    verdicts are separate on purpose so a red log needs no guessing. Refused
+    with `--negative-control`, which computes a deliberately wrong table.
+- `test_functional.sh` — freshness (`gen_functional.py --check` **and**
+  `compare.py --check`), all-40-cells coverage, real pass, the wrong-truth-table
+  negative control, a stale-record negative control for the gate itself, then
+  `test_arcs.py`. It only reads the records; a passing or failing run leaves
+  `git status` clean.
 - `test_arcs.py` — cross-checks the derived arc list two ways: the evaluator
   that derives it (`design/gen_netlists.py`'s `evaluate`, behind the one shared
   Liberty-function parser the RTL models are generated from too) must reproduce
@@ -24,7 +37,10 @@ T1 item 5 functional evidence. Everything here is **simulated**, never measured.
 - `records/tt.report.json` — `klt sim` report (klt 0.9.1, ngspice 46 per `environment.engine_version`, TT 1.20 V 25 C). The repo pin (`sim/toolchain.json`) is ngspice 47, so this record was not produced at the pin.
 - `records/functional.tt.json` — per-cell, per-vector pass/fail (356 checks, 40/40 pass).
 
-Reproduce: `source .cache/env.sh; klt sim verification/functional/tt.request.json --backend local -o <out> --report-out verification/functional/records/tt.report.json; verification/functional/test_functional.sh`.
+Reproduce: `source .cache/env.sh; klt sim verification/functional/tt.request.json --backend local -o <out> --report-out verification/functional/records/tt.report.json; python3 verification/functional/compare.py --report verification/functional/records/tt.report.json --out verification/functional/records/functional.tt.json; verification/functional/test_functional.sh`
+— the `compare.py` call is the regeneration step for the new report, and
+`test_functional.sh` then verifies what it wrote. To check the committed
+records without a new sim, run `test_functional.sh` alone.
 
 ## Corner-matrix timing-arc sweep (issue #120)
 
