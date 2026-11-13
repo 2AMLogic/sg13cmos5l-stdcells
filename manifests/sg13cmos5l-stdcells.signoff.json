@@ -101,9 +101,21 @@
         "Both require the spec table itself to be ratified \u2014 verdicts against a draft spec are provisional by construction."
       ],
       "status": "unmet",
-      "reason": "no_evidence",
+      "reason": "no_limits_checked",
       "graded_by_build": true,
-      "citation": null
+      "citation": null,
+      "citations_graded": [
+        {
+          "citation": "verification/functional/records/tt.report.json",
+          "status": "unmet",
+          "reason": "no_limits_checked"
+        }
+      ],
+      "detail": {
+        "failed_citations": [
+          "verification/functional/records/tt.report.json"
+        ]
+      }
     },
     {
       "tier": "T1",

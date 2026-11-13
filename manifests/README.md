@@ -40,6 +40,21 @@ through a decision record and regenerates the signoff output in the same PR.
   Re-attest after any change to the README, LICENSE, CI workflow or check
   scripts, then update the hash and regenerate the signoff record.
 
+- Item 5: cites `verification/functional/records/tt.report.json`, the TT /
+  1.20 V / 25 C `klt sim` functional report (all 40 cells, SIMULATED), by its
+  sha256. **The verdict of record reads `unmet` (`no_limits_checked`), not
+  `met`.** Coverage as of this citation:
+  - TT Liberty: all 40 cells (`sim/characterize/records/s5l_tt_1p20v_25c.lib`).
+  - FF / 1.32 V / -40 C Liberty: 39 of 40 cells (`s5l_mux4_1` timed out); partial.
+  - SS Liberty: none recorded.
+  - Timing-margin code: `sim/characterize/margin.py`; no margin table has been
+    recorded over the 40-cell TT library yet.
+  - Functional report: TT only, 40/40 cells pass.
+  The cited `klt sim` report carries no limited measurement, so klt 0.8.0
+  grades it unmet. Turning item 5 `met` needs a corner-matrix report whose
+  limits are checked (FF and SS evidence plus the margin metric); that is
+  evidence production, out of scope for the citation step.
+
 ## Regenerate the signoff record
 
 klt is pinned to `0.8.0` (in `scripts/check_signoff.sh`). Change the manifest,
