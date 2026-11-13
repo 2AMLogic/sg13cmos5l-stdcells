@@ -27,9 +27,14 @@ cmp -s "$tmp/payload" "$tmp/out"; check "right sha256 installs the file" "$?" "0
 ( fetch_verified "file://$tmp/missing" "$good" "$tmp/out2" ) >"$tmp/log" 2>&1
 check "failed download exits non-zero" "$?" "1"
 
-# The pins in sim/ must agree with the checksummed scripts: a doctored pin is refused
-# before any large download. Run the real script with a corrupted copy of the pin file.
-mkdir -p "$tmp/clone" && cp -r "$ROOT/sim" "$ROOT/layout" "$ROOT/scripts" "$tmp/clone/"
+# The pins must agree with the checksummed scripts: a doctored pin is refused
+# before any large download. Run the real script with a corrupted copy of the pin
+# file. The clone carries every tree setup-env.sh reads a pin from -- sim/
+# (pdk.json, toolchain.json), layout/ (toolchain.json) and rtl/ (toolchain.json,
+# the cocotb pin, issue #119) -- so a missing tree cannot masquerade as the
+# pin/script disagreement this case is checking for.
+mkdir -p "$tmp/clone" \
+    && cp -r "$ROOT/sim" "$ROOT/layout" "$ROOT/rtl" "$ROOT/scripts" "$tmp/clone/"
 python3 -I - "$tmp/clone/sim/pdk.json" <<'PY'
 import json, sys
 p = json.load(open(sys.argv[1])); p["tarball_sha256"] = "0" * 64
@@ -39,5 +44,19 @@ PY
 rc=$?
 check "doctored PDK pin makes setup-env.sh exit non-zero" "$([[ $rc -ne 0 ]] && echo 1 || echo 0)" "1"
 grep -q "disagrees with fetch-ihp-sg13cmos5l.sh" "$tmp/log"; check "doctored pin reported as a pin/script disagreement" "$?" "0"
+
+# Every pin setup-env.sh reads is load-bearing: an unreadable one aborts the run
+# rather than falling back to an unpinned install (issue #119 -- the cocotb pin is
+# the one recipe's only source for that version, so a silent default would
+# re-create the drift the pin exists to remove).
+mkdir -p "$tmp/clone2" \
+    && cp -r "$ROOT/sim" "$ROOT/layout" "$ROOT/rtl" "$ROOT/scripts" "$tmp/clone2/"
+printf 'not json\n' >"$tmp/clone2/rtl/toolchain.json"
+(cd "$tmp/clone2" && bash scripts/setup-env.sh) >"$tmp/log2" 2>&1
+rc=$?
+check "unreadable cocotb pin makes setup-env.sh exit non-zero" \
+    "$([[ $rc -ne 0 ]] && echo 1 || echo 0)" "1"
+[[ ! -e "$tmp/clone2/.venv" ]]
+check "unreadable cocotb pin builds no .venv (no unpinned fallback)" "$?" "0"
 
 exit $fail
