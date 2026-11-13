@@ -105,7 +105,6 @@ through a decision record and regenerates the signoff output in the same PR.
   `tt.report.json` (TT only, no limited measurement) and graded `unmet` /
   `no_limits_checked`.
 
-
 ## Regenerate the signoff record
 
 klt has one pin of record, `klt.install_spec` in `layout/toolchain.json`.
