@@ -5,6 +5,9 @@ Maintained by the Guide triage role.
 
 ### 2026-11-12
 
+- **PR #96**: Bump Repo Skills 0.25.10 -> 0.26.1
+- **Issue #91** (closed): verification/functional README states ngspice 47 but record reports ngspice 46
+- **PR #93**: docs(verification): state ngspice 46 for the TT functional record
 - **PR #90**: feat(verification): bit-exact netlist-vs-RTL truth-table check for all 40 cells at TT
 - **PR #89**: feat(sim): add per-point timing-margin metric computed from characterized .lib files
 - **Issue #83** (closed): T1 item 5b: define and compute the per-point timing-margin metric
