@@ -4,12 +4,17 @@
 The arc list decides what the corner sweep measures, so it is checked against
 two things it must not be allowed to drift from:
 
-  * the **RTL models** -- `gen_functional.logic()` parses the boolean
-    expressions in `design/cells.json` by itself, and the arcs it derives are
-    only as good as that parse. Every cell's every vector is compared against
-    the exhaustive truth tables `rtl/<cell>.v` prints through iverilog (the
-    same oracle `compare.py` uses), so a mis-parsed expression fails here
-    rather than silently mis-measuring the library.
+  * the **RTL models** -- the arcs are derived by evaluating the boolean
+    expressions in `design/cells.json`, and are only as good as that
+    evaluation. Every cell's every vector is compared against the exhaustive
+    truth tables `rtl/<cell>.v` prints through iverilog (the same oracle
+    `compare.py` uses), so an expression this sweep reads differently from
+    the shipped RTL fails here rather than silently mis-measuring the
+    library. Since issue #125 both sides parse with the one shared parser
+    (`design/gen_netlists.py`), so there is no second grammar left to
+    disagree. What this still guards is the two independent *evaluators* of
+    that one parse tree -- `gen_netlists.evaluate()`, which derives the arcs,
+    against `gen_models.to_verilog()` as iverilog elaborates it.
   * the **characterized Liberty** -- the arc count must equal the number of
     `timing ()` groups in the recorded TT `.lib`, so an arc the
     characterization found but this sweep does not measure (or vice versa) is
@@ -40,8 +45,14 @@ TT_LIB = ROOT / "sim" / "characterize" / "records" / "s5l_tt_1p20v_25c.lib"
 REPORT = HERE / "records" / "corners.report.json"
 
 
-def check_logic_against_rtl() -> int:
-    """`logic()` must reproduce the RTL truth tables exactly, every vector."""
+def check_evaluator_against_rtl() -> int:
+    """The evaluator that derives the arcs must reproduce the RTL truth tables.
+
+    Both views now parse with the same shared parser, so this is a check of
+    `gen_netlists.evaluate()` against the Verilog `gen_models.py` renders from
+    the same parse tree, exhaustively, through iverilog. It also pins the
+    committed `rtl/<cell>.v` to the catalog the arc list is derived from.
+    """
     import compare
 
     rtl = compare.rtl_tables()
@@ -51,16 +62,16 @@ def check_logic_against_rtl() -> int:
     for c in g.cells():
         ins = c["inputs"]
         for o, expr in c["outputs"].items():
-            f = g.logic(expr, ins)
+            node = g.expression(expr, ins)
             for k, vec in enumerate(g.vectors(len(ins))):
                 want = rtl.get((c["name"], o, k))
                 if want is None:
                     raise SystemExit(f"no RTL table for {c['name']}.{o}[{k}]")
-                got = int(f({p: bool(vec[i]) for i, p in enumerate(ins)}))
+                got = int(g.evaluate(node, dict(zip(ins, vec))))
                 if got != want:
                     raise SystemExit(
-                        f"logic({expr!r}) disagrees with rtl/{c['name']}.v at "
-                        f"vector {k} ({dict(zip(ins, vec))}): {got} != {want}")
+                        f"evaluating {expr!r} disagrees with rtl/{c['name']}.v "
+                        f"at vector {k} ({dict(zip(ins, vec))}): {got} != {want}")
                 checked += 1
     return checked
 
@@ -131,8 +142,9 @@ def check_report(arcs: list[dict]) -> None:
 
 def main() -> int:
     arcs = g.arcs()
-    checked = check_logic_against_rtl()
-    print(f"ok: logic() matches the RTL truth tables on {checked} vectors")
+    checked = check_evaluator_against_rtl()
+    print(f"ok: the shared parser's evaluator matches the RTL truth tables on "
+          f"{checked} vectors")
     check_arcs_against_liberty(arcs)
     print(f"ok: {len(arcs)} arcs, 0 gaps, all {len(g.cells())} cells, one per "
           f"`timing ()` group of the recorded TT Liberty")
