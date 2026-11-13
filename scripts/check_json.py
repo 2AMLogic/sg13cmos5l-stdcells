@@ -1,46 +1,68 @@
 #!/usr/bin/env python3
 """Validate committed JSON config/evidence files and README relative links.
 
-Run from anywhere: `python3 -I scripts/check_json.py`. Globs that match nothing
-are skipped with a note (the files land with later issues), so this is green on
-a repo that has none of them yet. Exit 1 on any parse error or broken link.
+Run from anywhere: `python3 -I scripts/check_json.py`. Every tracked `*.json`
+file is parsed, except the tool-installed trees listed in TOOL_TREES. There is
+no path list to keep in step with the evidence: a record is covered as soon as
+it is tracked. An empty file set is a failure, not a green run. Exit 1 on any
+parse error or broken link.
 """
-import glob
 import json
 import os
 import re
+import subprocess
 import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-JSON_GLOBS = [
-    "package.json",
-    "reuse.lock.json",
-    "sim/*.json",
-    "layout/toolchain.json",
-    "manifests/*.json",
-]
+# Installed and refreshed by tooling (Loom, agent skills), so their JSON is not
+# this repo's evidence and a tool upgrade must not be able to turn this gate
+# red. Everything else tracked in the repo is in scope.
+TOOL_TREES = (".loom/", ".claude/", ".agents/")
 
 LINK_RE = re.compile(r"(?<!!)\[[^\]]*\]\(([^)\s]+)\)")
 
 
+def tracked_json_paths():
+    """Repo-relative paths of every tracked *.json file outside TOOL_TREES.
+
+    Raises subprocess.CalledProcessError if `git ls-files` cannot run (no git,
+    or not a repository): the caller turns that into a failure, so a gate that
+    cannot enumerate its inputs never reports success.
+    """
+    listing = subprocess.run(
+        ["git", "ls-files", "-z", "--", "*.json"],
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout
+    return sorted(
+        rel
+        for rel in listing.split("\0")
+        if rel and not rel.startswith(TOOL_TREES)
+    )
+
+
 def check_json():
+    try:
+        paths = tracked_json_paths()
+    except (OSError, subprocess.SubprocessError) as exc:
+        print(f"FAIL: cannot list tracked *.json files with git: {exc}")
+        return 1
+    if not paths:
+        print("FAIL: git tracks no *.json file outside " + ", ".join(TOOL_TREES))
+        return 1
     failures = 0
-    for pattern in JSON_GLOBS:
-        paths = sorted(glob.glob(os.path.join(ROOT, pattern)))
-        if not paths:
-            print(f"skip: {pattern} (no matching file yet)")
-            continue
-        for path in paths:
-            rel = os.path.relpath(path, ROOT)
-            try:
-                with open(path, encoding="utf-8") as fh:
-                    json.load(fh)
-            except (OSError, ValueError) as exc:
-                print(f"FAIL: {rel}: {exc}")
-                failures += 1
-            else:
-                print(f"ok:   {rel}")
+    for rel in paths:
+        try:
+            with open(os.path.join(ROOT, rel), encoding="utf-8") as fh:
+                json.load(fh)
+        except (OSError, ValueError) as exc:
+            print(f"FAIL: {rel}: {exc}")
+            failures += 1
+        else:
+            print(f"ok:   {rel}")
     return failures
 
 
