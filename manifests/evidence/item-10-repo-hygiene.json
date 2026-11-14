@@ -17,7 +17,7 @@
         "role": "hygiene",
         "path": ".github/workflows/ci.yml",
         "passed": true,
-        "content_hash": "sha256:c9f516dd33e99d34b2574ac633433a8c2f46d3f184f309c10f9683c8f7d6b237"
+        "content_hash": "sha256:cf803edcc795043a3625afdb7b24e5002da9466f7b20fb29eaa91e73b5c411e7"
       },
       {
         "check": "present",
@@ -31,14 +31,14 @@
         "role": "hygiene",
         "path": "README.md",
         "passed": true,
-        "content_hash": "sha256:7b29f35d0cfdca0a35552b3db8afd82e951f6b9b494787b0e2297a2d635fb904"
+        "content_hash": "sha256:0fae3b9df66e3a196356550b6d663731dd9ec3805a6979e2c151f8ae9d7734ca"
       },
       {
         "check": "present",
         "role": "hygiene",
         "path": "manifests/README.md",
         "passed": true,
-        "content_hash": "sha256:909376208a37ce64605f1ff40ea22e0501f605957246b1d7a503efdb76e85052"
+        "content_hash": "sha256:d1d2648ef243e73528a333ae202397eaa317b4ba4dda63bbd539edf52c6181c3"
       },
       {
         "check": "present",
@@ -59,7 +59,7 @@
         "role": "hygiene",
         "path": "scripts/check_signoff.sh",
         "passed": true,
-        "content_hash": "sha256:6626fd40af4215d24b50863bed737dca26120fbdad93f0f268da3fa7238a618d"
+        "content_hash": "sha256:596ad2c6ff62d8e16ec5cdb9065d7ae9bb75e9af0f30a7cae31f32bf6278e4e7"
       },
       {
         "check": "command",
@@ -108,10 +108,9 @@
         "role": "audit",
         "name": "signoff-script-rechecks-item-10",
         "argv": [
-          "grep",
-          "-qFe",
-          "--attest 10",
-          "scripts/check_signoff.sh"
+          "bash",
+          "-c",
+          "CHECK_SIGNOFF_SOURCE_ONLY=1 source scripts/check_signoff.sh '' && attest_envelopes . \"$MANIFEST\" | cut -f1 | grep -qx 10"
         ],
         "cwd": ".",
         "exit_status": 0,
@@ -196,7 +195,7 @@
         "path": "manifests/item-10-inventory.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:412240539c820ef958af2b902c8665a4e41eeaeae798a470dce7e26d2ada6982"
+      "content_hash": "sha256:dae8ffa95181e62bfffc25a0bb4316b332668370bc6d54a07106ec379d26ebde"
     }
   }
 }

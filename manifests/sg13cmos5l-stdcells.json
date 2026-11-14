@@ -4,7 +4,7 @@
   "evidence": {
     "1": {
       "file": "verification/item1-attest.json",
-      "content_hash": "sha256:675f505c4070f0840e289a528113fd53770fdf7ebceb640c75afe9927a56a805"
+      "content_hash": "sha256:d4f1a2f04363e6f43532ae5d1b36a666ac67573509d302bfe0d2549bce475f32"
     },
     "5": {
       "file": "verification/functional/records/tt.report.json",
@@ -12,11 +12,11 @@
     },
     "9": {
       "file": "sim/attest/item9.envelope.json",
-      "content_hash": "sha256:bbe1d198aaae978cd7b0b7e22aae26a73f47ee05b7f9dc3eb51193b7a720f759"
+      "content_hash": "sha256:e0d99250b4f68ee9050a60df0254dfc82147d7f03ec35efe8339acbce7d93739"
     },
     "10": {
       "file": "manifests/evidence/item-10-repo-hygiene.json",
-      "content_hash": "sha256:412240539c820ef958af2b902c8665a4e41eeaeae798a470dce7e26d2ada6982"
+      "content_hash": "sha256:dae8ffa95181e62bfffc25a0bb4316b332668370bc6d54a07106ec379d26ebde"
     }
   }
 }

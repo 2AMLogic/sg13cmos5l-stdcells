@@ -20,8 +20,9 @@ Liberty) that every downstream tool reads.
 ([`manifests/sg13cmos5l-stdcells.signoff.json`](manifests/sg13cmos5l-stdcells.signoff.json))
 grades 3 of 11 tier-1 items met: design sources (1), testbenches shipped (9)
 and repo hygiene (10). The rest are unmet: the layout generator blocks layout,
-DRC and LVS (issue #24), the five-corner grid in issue #4 needs
-klayout-tools#2727, and the Monte Carlo item waits on a klt release (issue #28). Nothing has been taped out
+DRC and LVS (issue #24), corner verification still needs the per-corner
+characterization sweep of the cells (issue #27), and the Monte Carlo item waits
+on a klt release (issue #28). Nothing has been taped out
 and nothing has been measured; every number from the smoke benches is
 simulated, not measured.
 
@@ -142,8 +143,8 @@ check:ci` needs in it — the RTL gate's cocotb included. Icarus (`iverilog`) is
 the one tool it does not provide: install it from the distro.
 
 Smoke evidence: [`sim/smoke`](sim/smoke/README.md) (inverter simulation;
-single-corner probe recorded, five-corner run blocked on the batch fleet) and
-[`layout/smoke`](layout/smoke/README.md) (`klt drc` clean, `klt lvs` mismatch
+single-corner probe plus the five-corner transient and DC records, simulated)
+and [`layout/smoke`](layout/smoke/README.md) (`klt drc` clean, `klt lvs` mismatch
 on the PDK's own reference inverter).
 
 ## Reproduce

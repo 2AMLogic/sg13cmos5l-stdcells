@@ -79,7 +79,7 @@
         "role": "tools",
         "passed": true,
         "value": {
-          "klt": "dce956c3c39995643ff2a5c31b53c474b3c2aada",
+          "klt": "4d0d29be4fd991f499d59e783a908082d5e24c56",
           "ngspice": "47",
           "openvaf-r": "osdi_0.4-153-g2e066436"
         }
@@ -87,7 +87,7 @@
     ]
   },
   "provenance": {
-    "klt_version": "0.8.1.dev58+g78f36d8f316c",
+    "klt_version": "0.9.1",
     "klayout_version": null,
     "pdk": null,
     "deck": null,
@@ -96,7 +96,7 @@
         "path": "sim/attest/item9.inventory.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:bbe1d198aaae978cd7b0b7e22aae26a73f47ee05b7f9dc3eb51193b7a720f759"
+      "content_hash": "sha256:e0d99250b4f68ee9050a60df0254dfc82147d7f03ec35efe8339acbce7d93739"
     }
   }
 }
