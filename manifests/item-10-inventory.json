@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "t1-attestation-inventory",
   "t1_item": 10,
-  "description": "Repo-hygiene inventory for sg13cmos5l-stdcells: README, LICENSE, the CI workflow and the repo check scripts exist; the README has a Reproduce section and names the check entry point; CI runs scripts/check_signoff.sh and that script carries the item-10 re-attestation; no klt version literal is hardcoded under scripts/ or .github/ (the repo has one klt pin, layout/toolchain.json); no cocotb version literal is hardcoded there either and the CI workflow reads the cocotb pin from rtl/toolchain.json (issue #119); the evidence JSON parses.",
+  "description": "Repo-hygiene inventory for sg13cmos5l-stdcells: README, LICENSE, the CI workflow and the repo check scripts exist; the README has a Reproduce section and names the check entry point; CI runs scripts/check_signoff.sh and that script's own derivation of the attestation envelopes to re-check (attest_envelopes, from the block manifest) includes item 10; no klt version literal is hardcoded under scripts/ or .github/ (the repo has one klt pin, layout/toolchain.json); no cocotb version literal is hardcoded there either and the CI workflow reads the cocotb pin from rtl/toolchain.json (issue #119); the evidence JSON parses.",
   "hygiene": [
     "README.md",
     "LICENSE",
@@ -16,7 +16,7 @@
     {"name": "readme-has-reproduce-section", "argv": ["grep", "-q", "^## Reproduce", "README.md"]},
     {"name": "readme-names-check-ci", "argv": ["grep", "-qF", "npm run check:ci", "README.md"]},
     {"name": "ci-runs-signoff-check", "argv": ["grep", "-qF", "scripts/check_signoff.sh", ".github/workflows/ci.yml"]},
-    {"name": "signoff-script-rechecks-item-10", "argv": ["grep", "-qFe", "--attest 10", "scripts/check_signoff.sh"]},
+    {"name": "signoff-script-rechecks-item-10", "argv": ["bash", "-c", "CHECK_SIGNOFF_SOURCE_ONLY=1 source scripts/check_signoff.sh '' && attest_envelopes . \"$MANIFEST\" | cut -f1 | grep -qx 10"]},
     {"name": "no-hardcoded-klt-version", "argv": ["bash", "-c", "! grep -rn 'klayout-tools==' scripts .github"]},
     {"name": "no-hardcoded-cocotb-version", "argv": ["bash", "-c", "! grep -rn 'cocotb==' scripts .github"]},
     {"name": "ci-reads-cocotb-pin", "argv": ["grep", "-qF", "rtl/toolchain.json", ".github/workflows/ci.yml"]},

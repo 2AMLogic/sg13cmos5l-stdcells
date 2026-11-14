@@ -19,17 +19,23 @@ through a decision record and regenerates the signoff output in the same PR.
 ## Evidence
 
 - Item 1: `verification/item1-attest.json`, produced from
-  `design/item1-inventory.json`. The citation's `content_hash` is the
-  inventory's sha256 (the envelope's `provenance.input.content_hash`), not the
-  envelope file's. Re-attest after any change to a source, derived file or the
-  inventory, then update the hash here and regenerate the signoff record.
+  `design/item1-inventory.json` with `klt signoff --attest 1`. The citation's
+  `content_hash` is the envelope's `provenance.input.content_hash`, not the
+  envelope file's — for item 1 that is one hash over the inventory *and* every
+  source and derived file it lists (84 paths at klt 0.9.1; a pre-0.9 klt hashed
+  the inventory file alone, so the committed envelope reported `drifted` under
+  the pin until issue #133 re-attested it). A change to any netlist or model
+  therefore moves this hash. Re-attest after any change to a source, derived
+  file or the inventory, then update the hash here and regenerate the signoff
+  record. `scripts/check_signoff.sh` re-checks the envelope at the pin.
 
 - Item 9: `sim/attest/item9.envelope.json`, produced from
   `sim/attest/item9.inventory.json` with `klt signoff --attest 9`. As for
-  item 1, `content_hash` is the inventory's sha256. `scripts/check_signoff.sh`,
-  which CI runs, re-runs `klt signoff --attest 9 --inventory ... --check ...`
-  on it at the pin in `layout/toolchain.json`. `--attest` is absent from klt
-  0.7.0, so that pin cannot go below 0.8.0.
+  item 1, `content_hash` is the envelope's `provenance.input.content_hash` —
+  for this item the inventory's own sha256. `scripts/check_signoff.sh`, which
+  CI runs, re-runs `klt signoff --attest 9 --inventory ... --check ...` on it at
+  the pin in `layout/toolchain.json`. `--attest` is absent from klt 0.7.0, so
+  that pin cannot go below 0.8.0.
   The inventory's `pins` block copies this repo's tool and PDK pins, and klt's
   own `pin` check only verifies that the block is present and well formed,
   never what it says -- so the copied klt commit drifted across two pin bumps
@@ -42,17 +48,23 @@ through a decision record and regenerates the signoff output in the same PR.
 
 - Item 10: `manifests/evidence/item-10-repo-hygiene.json`, produced from
   `manifests/item-10-inventory.json` with `klt signoff --attest 10`. As for
-  items 1 and 9, `content_hash` is the inventory's sha256. The inventory lists
+  item 9, `content_hash` is the inventory's sha256. The inventory lists
   the hygiene files (README, LICENSE, CI workflow, check scripts) and the
   audit commands (README has a Reproduce section and names `npm run check:ci`,
-  CI runs `scripts/check_signoff.sh`, that script carries the item-10
-  re-check, `scripts/check_json.py` passes, no klt *or* cocotb version literal
-  is left under `scripts/` or `.github/`, and the CI workflow reads the cocotb
-  pin from `rtl/toolchain.json`). The two cocotb checks are the enforcement
-  behind issue #119: a one-pin-of-record rule that only lives in prose is a
-  rule that drifts back, as the klt literal did (issue #112).
+  CI runs `scripts/check_signoff.sh`, that script's own derivation of the
+  envelopes to re-check includes item 10, `scripts/check_json.py` passes, no
+  klt *or* cocotb version literal is left under `scripts/` or `.github/`, and
+  the CI workflow reads the cocotb pin from `rtl/toolchain.json`). The two
+  cocotb checks are the enforcement behind issue #119: a one-pin-of-record
+  rule that only lives in prose is a rule that drifts back, as the klt literal
+  did (issue #112).
   `scripts/check_signoff.sh` re-runs
   `klt signoff --attest 10 --inventory ... --check ...` on it.
+  Its `attest_envelopes` derives that list — item, inventory and envelope — from
+  this manifest and from each envelope's own `t1_item` and `source`, so the gate
+  re-checks exactly the envelopes the manifest cites. It used to be one
+  hand-copied block per item, and item 1 never got one: the only cited envelope
+  no gate re-checked was the one that had drifted (issue #133).
   Re-attest after any change to the README, LICENSE, CI workflow or check
   scripts, then update the hash and regenerate the signoff record.
 
@@ -85,7 +97,7 @@ scripts/check_signoff.sh --regenerate
 ```
 
 Run `scripts/check_signoff.sh` (no argument, the same command CI runs) to check
-the committed record and re-check the item-9 and item-10 attestation envelopes.
-Exit status 3 from `klt signoff` itself (grader ran, some T1 item unmet) is
-expected until the evidence map is filled in; the script treats it as success
-and compares the output.
+the committed record and re-check every attestation envelope this manifest
+cites (items 1, 9 and 10 today). Exit status 3 from `klt signoff` itself
+(grader ran, some T1 item unmet) is expected until the evidence map is filled
+in; the script treats it as success and compares the output.
