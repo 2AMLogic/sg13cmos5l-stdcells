@@ -17,7 +17,7 @@
         "role": "hygiene",
         "path": ".github/workflows/ci.yml",
         "passed": true,
-        "content_hash": "sha256:7d8d50847c61b0521937a8a452872044ebdf3cc3dca6377b409df35149949c32"
+        "content_hash": "sha256:9707f370248e08f94af3fdb6fdf3e8c61ddbbb05dd50f0028e13fddb3bb5d6f9"
       },
       {
         "check": "present",
@@ -38,7 +38,7 @@
         "role": "hygiene",
         "path": "manifests/README.md",
         "passed": true,
-        "content_hash": "sha256:895be830d6bc8004fda91d6ecd781e83a0c98728058573fef593515f9fe1af3a"
+        "content_hash": "sha256:ec076068d8c09d09948e87a3622d246ee4caa4de0a0cbdbb47cd3eb2261558b0"
       },
       {
         "check": "present",
@@ -59,7 +59,7 @@
         "role": "hygiene",
         "path": "scripts/check_signoff.sh",
         "passed": true,
-        "content_hash": "sha256:e4f9874597bfa6f7f13889302fdc6a2356320613f06a2dadca885e3aa4db3abf"
+        "content_hash": "sha256:596ad2c6ff62d8e16ec5cdb9065d7ae9bb75e9af0f30a7cae31f32bf6278e4e7"
       },
       {
         "check": "command",
@@ -108,10 +108,9 @@
         "role": "audit",
         "name": "signoff-script-rechecks-item-10",
         "argv": [
-          "grep",
-          "-qFe",
-          "--attest 10",
-          "scripts/check_signoff.sh"
+          "bash",
+          "-c",
+          "CHECK_SIGNOFF_SOURCE_ONLY=1 source scripts/check_signoff.sh '' && attest_envelopes . \"$MANIFEST\" | cut -f1 | grep -qx 10"
         ],
         "cwd": ".",
         "exit_status": 0,
@@ -196,7 +195,7 @@
         "path": "manifests/item-10-inventory.json",
         "scope": "repo"
       },
-      "content_hash": "sha256:412240539c820ef958af2b902c8665a4e41eeaeae798a470dce7e26d2ada6982"
+      "content_hash": "sha256:dae8ffa95181e62bfffc25a0bb4316b332668370bc6d54a07106ec379d26ebde"
     }
   }
 }

@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Regenerate the klt signoff output and fail if it differs from the committed
-# record, then re-check the committed T1 attestation envelopes. Used by CI
+# record, then re-check every attestation envelope the manifest cites -- the
+# list is derived from the manifest, never kept by hand here. Used by CI
 # (.github/workflows/ci.yml) and `npm run check:signoff` — CI runs this script,
 # so the two cover the same checks.
 #
@@ -13,8 +14,15 @@
 #   scripts/check_signoff.sh --regenerate   rewrite the committed signoff record
 set -uo pipefail
 
+# The block manifest: what `klt signoff` grades below, and what the list of
+# attestation envelopes to re-check is derived from. Named once, here.
+MANIFEST="manifests/sg13cmos5l-stdcells.json"
+
+# The header comment above, as help text: from line 2 to the first line that is
+# not a comment. Derived, not a line range to keep in step by hand -- a `2,13p`
+# silently dropped the last Usage line the moment the header grew (issue #133).
 usage() {
-  sed -n '2,13p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '2,/^[^#]/p' "$0" | sed '/^[^#]/d; s/^# \{0,1\}//'
 }
 
 # check_attest_pins <repo-root>: the item-9 attestation inventory hand-copies
@@ -92,8 +100,85 @@ print(f"ok: {INVENTORY} pins match layout/toolchain.json, sim/toolchain.json "
 PY
 }
 
-# Lets scripts/test_check_signoff.sh exercise check_attest_pins without uvx,
-# the network or a klt install.
+# attest_envelopes <repo-root> <manifest>: one
+# `<item><TAB><inventory><TAB><envelope>` row for every attestation envelope the
+# manifest cites, item-sorted. Derived from the manifest and from each
+# envelope's own `t1_item` and `source`, so the gate re-checks exactly what the
+# manifest cites. Items 9 and 10 each had a hand-copied `--attest N --check`
+# block below and item 1, cited since issue #36, had none -- so the one cited
+# envelope no gate re-checked was the one that had drifted (issue #133). A
+# derived list cannot omit a citation, and a fourth envelope needs no edit here.
+#
+# Anything it cannot resolve is a failure, never a dropped row: a re-check that
+# silently covers nothing is the bug this replaces. A cited file that is not an
+# attestation envelope (item 5's `klt sim` report) is not a row and not an
+# error -- `klt signoff --attest` is not how that one is checked.
+attest_envelopes() {
+  python3 -I - "${1:-.}" "$2" <<'ENV'
+import json
+import sys
+
+ROOT, MANIFEST = sys.argv[1], sys.argv[2]
+PRODUCER = "klt signoff --attest"
+
+
+def load(path):
+    """The parsed JSON at ROOT/path, or None if it is missing or is not JSON --
+    reported as a failure by the caller, never raised, so a broken citation
+    names itself instead of printing a traceback."""
+    try:
+        with open(f"{ROOT}/{path}", "rb") as handle:
+            return json.loads(handle.read().decode("utf-8"))
+    except (OSError, UnicodeDecodeError, ValueError):
+        return None
+
+
+manifest = load(MANIFEST)
+if not isinstance(manifest, dict) or not isinstance(manifest.get("evidence"), dict):
+    print(f"error: cannot read an evidence map from {MANIFEST}", file=sys.stderr)
+    sys.exit(1)
+
+rows = []
+broken = 0
+for item, entry in manifest["evidence"].items():
+    cited = entry.get("file") if isinstance(entry, dict) else None
+    if not isinstance(cited, str):
+        print(f"error: {MANIFEST} evidence item {item} names no file",
+              file=sys.stderr)
+        broken += 1
+        continue
+    evidence = load(cited)
+    if not isinstance(evidence, dict):
+        print(f"error: {MANIFEST} cites {cited} for item {item}, which is "
+              "missing or is not a readable JSON object", file=sys.stderr)
+        broken += 1
+        continue
+    attestation = evidence.get("attestation")
+    if not isinstance(attestation, dict) or attestation.get("producer") != PRODUCER:
+        continue
+    t1_item = evidence.get("t1_item")
+    inventory = evidence.get("source")
+    if not isinstance(t1_item, int) or not isinstance(inventory, str):
+        print(f"error: {cited} is a `{PRODUCER}` envelope but does not name both "
+              "its t1_item and its source inventory, so it cannot be re-checked",
+              file=sys.stderr)
+        broken += 1
+        continue
+    rows.append((t1_item, inventory, cited))
+
+if broken:
+    sys.exit(1)
+if not rows:
+    print(f"error: {MANIFEST} cites no `{PRODUCER}` envelope, so the re-check "
+          "would report success without checking one", file=sys.stderr)
+    sys.exit(1)
+for t1_item, inventory, envelope in sorted(rows):
+    print(f"{t1_item}\t{inventory}\t{envelope}")
+ENV
+}
+
+# Lets scripts/test_check_signoff.sh exercise check_attest_pins and
+# attest_envelopes without uvx, the network or a klt install.
 if [ "${CHECK_SIGNOFF_SOURCE_ONLY:-0}" = "1" ]; then return 0 2>/dev/null || exit 0; fi
 
 regenerate=0
@@ -131,7 +216,7 @@ trap 'rm -f "$fresh"' EXIT
 
 rc=0
 uvx --from "$KLT_SPEC" klt signoff \
-  --manifest manifests/sg13cmos5l-stdcells.json \
+  --manifest "$MANIFEST" \
   --tiers-doc manifests/design-evidence-tiers.md \
   --format json > "$fresh" || rc=$?
 # 0 = every T1 item met; 3 = grader ran clean, some item unmet. Both are valid.
@@ -155,22 +240,25 @@ if ! cmp -s "$fresh" "$RECORD"; then
 fi
 echo "ok: committed signoff record matches a fresh $KLT_SPEC run"
 
-# The committed attestation envelopes are the evidence the manifest cites for
-# items 9 and 10. CI used to re-check them with its own version literal; they
-# run here instead, at the same pin.
+# The attestation envelopes are the evidence the manifest cites for the items
+# klt attests rather than simulates. CI used to re-check them with its own
+# version literal; they run here instead, at the same pin. The list is derived
+# from the manifest, so citing a new envelope adds its re-check.
+envelopes="$(attest_envelopes . "$MANIFEST")" || exit 1
+
 attest_rc=0
-echo "--- re-checking the item-9 testbench attestation"
-uvx --from "$KLT_SPEC" klt signoff --attest 9 \
-  --inventory sim/attest/item9.inventory.json \
-  --check sim/attest/item9.envelope.json || attest_rc=1
-echo "--- re-checking the item-10 repo-hygiene attestation"
-uvx --from "$KLT_SPEC" klt signoff --attest 10 \
-  --inventory manifests/item-10-inventory.json \
-  --check manifests/evidence/item-10-repo-hygiene.json || attest_rc=1
+rechecked=""
+while IFS=$'\t' read -r item inventory envelope; do
+  echo "--- re-checking the item-$item attestation: $envelope"
+  uvx --from "$KLT_SPEC" klt signoff --attest "$item" \
+    --inventory "$inventory" \
+    --check "$envelope" || attest_rc=1
+  rechecked="${rechecked:+$rechecked, }item-$item"
+done <<< "$envelopes"
 
 if [ "$attest_rc" -ne 0 ]; then
   echo "error: an attestation re-check failed: re-attest and commit the envelope" >&2
   echo "(see manifests/README.md), then regenerate the signoff record." >&2
   exit 1
 fi
-echo "ok: item-9 and item-10 attestation envelopes re-check clean under $KLT_SPEC"
+echo "ok: every attestation envelope $MANIFEST cites ($rechecked) re-checks clean under $KLT_SPEC"

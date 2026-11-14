@@ -56,8 +56,8 @@ jobs:
       - name: Install uv
         run: pip install uv
 
-      # Re-runs klt signoff against the committed record and re-checks the
-      # item-9 and item-10 attestation envelopes, all at the repo's klt pin
+      # Re-runs klt signoff against the committed record and re-checks every
+      # attestation envelope the block manifest cites, all at the repo's klt pin
       # (layout/toolchain.json). No version literal belongs in this workflow.
       - name: Re-run klt signoff and re-check the attestation envelopes
         run: scripts/check_signoff.sh
