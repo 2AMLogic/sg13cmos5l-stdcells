@@ -297,6 +297,25 @@ def arc_states() -> list[dict]:
     return out
 
 
+def trig_edge(arc: dict, edge: str) -> str:
+    """The input edge that drives output edge `edge` of `arc` in its state.
+
+    ``r``/``f`` name the *output* edge, as Liberty's ``cell_rise`` /
+    ``cell_fall`` do; which input edge drives it follows from the arc's
+    unateness in this state (``out_on_rise`` is the output level a logic-high
+    related pin produces there).
+
+    The single definition of the expression, called both by
+    ``build_corner_measurements`` -- which bakes it into the ``.meas`` TRIG
+    term, so this is what the deck actually measures -- and by the
+    non-unateness assertion in ``test_arcs.check_arc_states``, which asserts
+    over it. The two were byte-identical copies and nothing tied them, so a
+    change to the formula here left the test asserting the old one and still
+    green (issue #148).
+    """
+    return "RISE" if (arc["out_on_rise"] == (edge == "r")) else "FALL"
+
+
 def arc_meas_name(arc: dict, edge: str) -> str:
     return f"d_{arc['cell']}_{arc['output']}_{arc['pin']}_{edge}".lower()
 
@@ -449,8 +468,9 @@ def build_corner_measurements(arc_list: list[dict],
         if a["side"] is None:
             continue
         for edge in ("r", "f"):
-            # The input edge that drives this output edge.
-            trig = "RISE" if (a["out_on_rise"] == (edge == "r")) else "FALL"
+            # The input edge that drives this output edge. Shared with
+            # test_arcs.py's non-unateness assertion (issue #148).
+            trig = trig_edge(a, edge)
             targ = "RISE" if edge == "r" else "FALL"
             meas.append({
                 "name": name(a, edge),
