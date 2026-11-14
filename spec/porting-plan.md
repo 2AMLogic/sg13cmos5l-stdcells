@@ -82,8 +82,10 @@ no lock entry carries `"diverged"`.
   that commit and the local copy. Re-verified for the `26935d33` element on
   2026-11-14 from an independent clone (`git merge-base --is-ancestor` against
   `origin/main`, then `git show <commit>:<path> | sha256sum` for both files).
-  No automated gate covers this: `scripts/check_json.py` parses tracked JSON, it
-  hashes nothing, so re-check it by hand whenever a pin moves.
+  The local-copy half is now enforced on every run by
+  `scripts/check_reuse_lock.py` (`check:reuse-lock`, wired into `check:ci`);
+  the commit-reachability half needs network, so re-check it by hand whenever
+  a pin moves.
 - [x] The vendored layout generator runs on this repo's config: writes
   `layout/gds/s5l_inv_1.gds`, `--check` exits 0, output byte-identical across
   independent runs (`npm run check:layout`, wired into `check:ci`).
