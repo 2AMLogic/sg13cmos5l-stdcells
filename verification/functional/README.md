@@ -128,12 +128,25 @@ bound and not a ratified delay budget, so this is a recorded property of the
 slow corner at the grid's extreme, not a spec violation — and it is left as
 it is. Nothing here is retuned to make it pass.
 
-Graded with the pinned klt against a scratch manifest citing this report
-(`spec_rows: {"5": [{"id": "t_stage_delay_grid_bound", "timing_margin":
-true}]}`), T1 item 5 is **`unmet` / `check_failed`**, blocker
-`sim__corner__failed_count: 1`, with `uncovered_rows: []`,
+Graded with the pinned klt against a scratch manifest citing this report, T1
+item 5 is **`unmet` / `check_failed`**, blocker `sim__corner__failed_count: 1`,
+with `failed_rows: ["t_stage_delay_grid_bound"]`, `uncovered_rows: []`,
 `declared_gaps: []` and `unratified_rows: []` — i.e. the timing-margin rule
-itself is satisfied and only the measurement verdict blocks the item.
+itself is satisfied and only the measurement verdict blocks the item. That
+scratch manifest is the committed one plus the delta below. Quoting the
+`spec_rows` half on its own does **not** reproduce those numbers: it is the
+`evidence` entry's `rows` key that puts the failing row in `failed_rows`,
+and without it the same grading returns
+`failed_rows: []` / `uncovered_rows: ["t_stage_delay_grid_bound"]` instead.
+
+```
+"spec_rows": { "5": [ { "id": "t_stage_delay_grid_bound",
+                        "timing_margin": true } ] },
+"evidence":  { "5": { "file": "verification/functional/records/corners.report.json",
+                      "content_hash": <this report's provenance.input.content_hash>,
+                      "rows": [ "t_stage_delay_grid_bound" ] } }
+```
+
 Re-pointing the committed manifest is [#87](https://github.com/2AMLogic/sg13cmos5l-stdcells/issues/87), not this record.
 
 Two things #87 will need, found while grading:
