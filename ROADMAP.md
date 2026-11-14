@@ -4,7 +4,7 @@ sg13cmos5l-stdcells is a port of the 8-track `sg13g2-stdcells` library to IHP
 SG13CMOS5L: 40 generated combinational cells, their views, and the evidence
 that they meet the ratified spec.
 
-Status as of 2026-11-13, `main` @ `e167b52`.
+Status as of 2026-11-14, `main` @ `388bcf4`.
 
 Tracker for the gap to tier 1 (T1): #6. Verdict of record:
 [`manifests/sg13cmos5l-stdcells.signoff.json`](manifests/sg13cmos5l-stdcells.signoff.json).
@@ -24,7 +24,7 @@ The signoff record grades **3 of 11 T1 items met** (klt 0.9.1):
 | 2 | Layout | unmet (`no_evidence`) | only the PDK reference inverter in `layout/smoke/` | #24 |
 | 3 | DRC clean | unmet (`no_evidence`) | smoke: `klt drc` clean on the reference inverter | #25 |
 | 4 | LVS clean | unmet (`no_evidence`) | smoke: `klt lvs` mismatch on the reference inverter | #26 |
-| 5 | Corner verification | unmet (`no_limits_checked`) | Liberty at TT, FF and SS for all 40 cells (`sim/characterize/records/`), 356-vector functional record, three-corner limit-checked sweep `verification/functional/records/corners.report.json` (recorded **fail**: 2 of 3 corners pass) | #27, #87, #129, #124 |
+| 5 | Corner verification | unmet (`no_limits_checked`) | Liberty at TT, FF and SS for all 40 cells (`sim/characterize/records/`), 356-vector functional record, three-corner limit-checked sweeps — one propagating state per arc (`verification/functional/records/corners.report.json`) and every propagating state (`verification/functional/records/corner_states.report.json`) — both recorded **fail**: 2 of 3 corners pass | #27, #87, #129 |
 | 6 | Monte Carlo | unmet (`no_evidence`) | `verification/item6-not-applicable.{md,json}`, drift-checked in CI, not yet cited | #28 |
 | 7 | Post-layout verification | unmet (`no_evidence`) | none | #29 |
 | 8 | Characterization report | unmet (`no_evidence`) | none | #30 |
@@ -39,7 +39,12 @@ Two facts shape everything below.
   grid-validity bound (stage delay ≤ 2.5074 ns) as the timing-margin row. TT and
   FF pass; at SS / 1.08 V / 125 °C five stacked-NMOS rise arcs exceed it at the
   grid's largest slew and load, by at most 0.0548 ns (`s5l_nand4_1` `Y<-D`).
-  The committed manifest still cites the TT-only report; re-pointing it is #87.
+  Since #124 (PR #146) the sweep covers every propagating side-input state, not
+  one per arc: 208 (arc, state) pairs, 416 delays per corner, in
+  `verification/functional/records/corner_states.report.json` — the same five
+  arcs fail, and the library's tightest *passing* SS margin drops from +6.55 ps
+  to +0.86 ps (`s5l_mux4_1` `X<-A3` rise; DR 0005's 2026-11-14 addendum). The
+  committed manifest still cites the TT-only report; re-pointing it is #87.
 - **The layout chain is no longer waiting on the origin.** #24 was parked
   because `sg13g2-stdcells` had no layout generator. It now ships one
   (`layout/gen_layouts.py`, config-driven, with `--check`;
@@ -53,30 +58,27 @@ Two facts shape everything below.
 Can start today; each is one pull request.
 
 1. **Pin the origin's generators and record a one-cell retarget probe** (first
-   slice of #24; no issue of its own yet). Done when `reuse.lock.json` carries
+   slice of #24, in flight as PR #154). Done when `reuse.lock.json` carries
    the origin's `design/gen_netlists.py` and `layout/gen_layouts.py` at one
    full commit with a sha256 per file, an SG13CMOS5L layout config is
    committed, and `layout/` holds either the generated `s5l_inv_1` GDS with a
    clean `--check`, or a record of the generator's named failure and the
-   upstream issue filed for it. Blocked by: nothing in the tree; #24 itself
-   still carries `loom:blocked` and `loom:operator`.
-2. **Measure every propagating side-input state in the corner arc sweep**
-   (#124, ready). Done when `corners.report.json` covers all propagating
-   states for the 30 multi-state arcs with the worst one carrying the limit,
-   or `verification/functional/README.md` states the single-state scope with
-   a measurement showing the other states are not slower.
-3. **Cite the three-corner report for item 5 and regenerate the verdict**
-   (#87, PR #136 open with changes requested and a merge conflict). Done when
+   upstream issue filed for it. Blocked by: nothing — #24's park is lifted
+   (re-curated to `loom:triage` / `loom:very-important`).
+2. **Cite the three-corner report for item 5 and regenerate the verdict**
+   (#87, PR #136 open with review requested and a clean merge state; the
+   conflict was resolved on 2026-11-14). Done when
    the manifest cites `corners.report.json` and the signoff record reads
    item 5 as graded on it (expected `unmet` / `check_failed`, per
    `verification/functional/README.md`).
-4. **Bring the README status in line with the record** (no issue yet). Done
+3. **Bring the README status in line with the record** (no issue yet). Done
    when the Status paragraph and the Repo layout block match the table above:
    the per-corner characterization exists, item 5 waits on #87 and #129,
    item 6 waits on the #28 decision, and `design/` holds a catalog and a
    generator rather than xschem schematics.
-5. **Gate hygiene in flight:** #138 (PR #139, approved), #116 (PR #130,
-   changes requested), #142 (triage), #141 (being evaluated).
+4. **Gate hygiene** (#138, #116, #142, #141): per-item and PR state lives in
+   [`WORK_PLAN.md`](WORK_PLAN.md), the generated label view — this file does
+   not chase hour-scale PR states.
 
 ## Next
 
@@ -124,8 +126,6 @@ ratified spec to make a result pass.
 - **#28: item 6 citation.** The pinned grader needs a `Status:` line in
   `spec/target-spec.md`; adding it changes the ratified spec's hash and needs a
   decision record.
-- **#24: re-curation.** Its park reason (no upstream generator) is resolved;
-  the labels have not been lifted.
 - **#105, #117, #134:** removal proposals (vendored `sim/harness`, vendored
   tiers document, cocotb harness).
 
