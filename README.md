@@ -135,7 +135,8 @@ about 1 GB of disk and several minutes (`SETUP_JOBS`, default 2, sets the ngspic
 mismatch. Pins: [`sim/pdk.json`](sim/pdk.json), [`sim/toolchain.json`](sim/toolchain.json),
 [`layout/toolchain.json`](layout/toolchain.json), [`rtl/toolchain.json`](rtl/toolchain.json).
 `scripts/test_setup_env.sh` checks the fail-closed behaviour without the large
-downloads.
+downloads; CI runs it (`npm run check:setup-env`), so the claim is gated rather
+than advertised.
 
 This is the only recipe that builds `.venv`, and it installs everything `npm run
 check:ci` needs in it — the RTL gate's cocotb included. Icarus (`iverilog`) is
@@ -150,7 +151,9 @@ on the PDK's own reference inverter).
 
 Every recorded result appends the exact commands that regenerate it here.
 
-Repo checks (JSON/evidence formats, README links, graded signoff record):
+Repo checks (JSON/evidence formats, README links, `setup-env.sh` fail-closed
+behaviour, graded signoff record, and the PDK-free design/RTL gate: catalog,
+generator freshness, unit tests and the netlist-vs-RTL functional compare):
 
 ```
 npm run check:ci

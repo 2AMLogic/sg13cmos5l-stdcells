@@ -144,5 +144,12 @@ to be a `klt` fault, so the run used a `/tmp` mirror of the PDK `lib/` and
   ngspice-47 between the 39-cell run and the `s5l_mux4_1` run. Re-running the
   39 cells on ngspice-47 would make it uniform; recorded results are
   append-only, so that would be a new file, not an edit.
-- Not done: the functional check against `rtl/`, the
-  CI validator and the manifest entry for item 5.
+- Partly done, the CI validator: `gen_requests.py --check` and the
+  `test_margin.py` / `test_check_lib_coverage.py` self-tests run in the
+  `design-rtl` CI job (issue #116), so a catalog edit that leaves
+  `requests/` stale, or a change that breaks the margin metric or the
+  coverage guard, is now caught. What has no gate is a check of the
+  **recorded** `.lib` files themselves: that is a results gate for item 5
+  (#27, #87) and a separate decision.
+- Not done: the functional check against `rtl/` and the manifest entry for
+  item 5.

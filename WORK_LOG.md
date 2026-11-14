@@ -3,8 +3,21 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-14
+
+- **PR #140**: fix: derive the signoff gate's attestation re-checks from the manifest
+- **Issue #133** (closed): Re-check the item-1 attestation envelope in check_signoff.sh: the one cited envelope no gate runs reports drifted at the klt pin
+- **PR #127**: docs: state the five-corner batch run as recorded, not blocked
+- **Issue #122** (closed): Remove the stale 'five-corner run blocked / batch not verified' statements that contradict the committed five-corner records
+
 ### 2026-11-13
 
+- **PR #135**: fix: re-sync the item-9 attestation pins and gate the copy
+- **Issue #131** (closed): Remove the drifted klt pin copy and stale 'blocked on the batch fleet' text from the item-9 attestation inventory
+- **PR #132**: build: give cocotb one pin of record and install it in the bring-up venv
+- **Issue #119** (closed): Unify the three .venv recipes and give cocotb one pin of record (npm run check:ci fails on a setup-env.sh checkout)
+- **PR #128**: refactor: derive timing arcs with the shared Liberty-function parser
+- **Issue #125** (closed): Remove the second cell-expression parser in gen_functional.py: use the shared gen_netlists parser (77 lines)
 - **PR #123**: verify: record a limit-checked three-corner arc-delay sweep for T1 item 5
 - **Issue #120** (closed): T1 item 5g: record a limit-checked corner-matrix klt sim report with a per-corner timing-margin measurement
 - **PR #118**: feat(characterize): record the SS/1.08 V/125 C corner, all 40 cells
