@@ -159,6 +159,9 @@ generator freshness, unit tests and the netlist-vs-RTL functional compare):
 npm run check:ci
 ```
 
+`npm test` is an alias for `npm run check:ci` — one entry-point list, so the
+next gate added to `check:ci` needs no second edit.
+
 ## License
 
 Apache License 2.0 — see [LICENSE](LICENSE).

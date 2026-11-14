@@ -5,9 +5,7 @@
   "scripts": {
     "worktree:return": "./.loom/scripts/worktree-return.sh",
     "check:ci": "npm run check:json && npm run check:item6 && npm run check:setup-env && npm run check:signoff && npm run check:design-rtl",
-    "check:all": "npm run check:ci",
-    "test": "npm run check:json",
-    "lint": "npm run check:json",
+    "test": "npm run check:ci",
     "check:json": "python3 -I scripts/check_json.py && bash scripts/test_check_json.sh",
     "check:item6": "python3 -I scripts/check_item6_statement.py && bash scripts/test_check_item6_statement.sh",
     "check:setup-env": "bash scripts/test_setup_env.sh",
