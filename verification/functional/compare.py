@@ -7,6 +7,11 @@ voltages are thresholded: < 0.1*VDD -> 0, > 0.9*VDD -> 1, anything between is
 a failure (indeterminate level), never rounded.
 
     compare.py --report records/tt.report.json --out records/functional.tt.json
+        deliberate regeneration: overwrites the record (run after a new sim).
+    compare.py --report ... --out ... --check
+        the CI gate: compares the record in place and never writes it. Exit 1 =
+        the netlist and RTL disagree, exit 3 = the committed record is stale.
+        Two different diagnoses, two exit codes.
     compare.py --report ... --negative-control   # flip one RTL bit; must FAIL
 """
 from __future__ import annotations
@@ -21,6 +26,11 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 VDD = 1.2
+EXIT_OK = 0
+EXIT_MISMATCH = 1  # the netlist truth tables disagree with the RTL models
+# 2 is argparse's usage-error code, so the stale-record verdict takes 3 and stays
+# distinguishable from a mistyped invocation.
+EXIT_STALE = 3  # --check only: the committed record differs from the regenerated one
 sys.path.insert(0, str(HERE))
 import gen_functional as g  # noqa: E402
 
@@ -68,24 +78,58 @@ def compare(rtl: dict, volts: dict[str, float]) -> dict:
             "cells": cells}
 
 
+def record_text(res: dict) -> str:
+    """The exact bytes of the committed record, for both writing and checking."""
+    return json.dumps(res, indent=1) + "\n"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--report", required=True, type=Path)
     ap.add_argument("--out", type=Path)
+    ap.add_argument("--check", action="store_true",
+                    help="compare the record at --out against the freshly computed "
+                         "result instead of overwriting it (this is the CI gate)")
     ap.add_argument("--negative-control", action="store_true")
     args = ap.parse_args()
+    if args.check and args.negative_control:
+        ap.error("--check cannot be combined with --negative-control: the negative "
+                 "control deliberately computes a wrong truth table, so comparing it "
+                 "against the recorded result is meaningless")
+    if args.check and args.out is None:
+        ap.error("--check requires --out to name the record to check")
     rtl = rtl_tables()
     if args.negative_control:
         key = next(iter(rtl))
         rtl[key] ^= 1  # deliberately wrong truth table
     res = compare(rtl, netlist_levels(json.loads(args.report.read_text())))
-    if args.out and not args.negative_control:
-        args.out.write_text(json.dumps(res, indent=1) + "\n")
+    text = record_text(res)
+    stale = False
+    if args.check:
+        # Compare in memory: --check must never write the file it is checking.
+        stale = not args.out.exists() or args.out.read_text() != text
+    elif args.out and not args.negative_control:
+        args.out.write_text(text)
     print(f"{res['cells_passed']}/{res['cells_total']} cells pass ({'PASS' if res['pass'] else 'FAIL'})")
     for n, c in res["cells"].items():
         if not c["pass"]:
             print(f"  FAIL {n}: " + ", ".join(f"{t['output']}[{t['vector']}]" for t in c["tests"] if not t["pass"]))
-    return 0 if res["pass"] else 1
+    # The two failures are different diagnoses and must not be confused in a red
+    # CI log: the cells disagreeing with RTL is a broken library, a stale record
+    # is only out-of-date bookkeeping. Report both if both fired.
+    sys.stdout.flush()  # keep the verdicts below after the per-cell report
+    if not res["pass"]:
+        print(f"compare: {res['cells_total'] - res['cells_passed']} of {res['cells_total']} "
+              "cell(s) disagree with the RTL models -- a netlist/RTL mismatch, "
+              "not a stale record", file=sys.stderr)
+    if stale:
+        missing = " (missing)" if not args.out.exists() else ""
+        print(f"compare: stale functional record{missing}: {args.out} does not match the "
+              "regenerated comparison; rerun "
+              f"compare.py --report {args.report} --out {args.out}", file=sys.stderr)
+    if not res["pass"]:
+        return EXIT_MISMATCH
+    return EXIT_STALE if stale else EXIT_OK
 
 
 if __name__ == "__main__":
