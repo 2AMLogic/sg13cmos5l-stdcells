@@ -8,7 +8,7 @@ Append-only evidence for the toolchain smoke simulation. All values are
 One `ngspice -b` per bench, run with `klt sim --backend local` on the
 `tt` corner only, to establish that the pinned PDK, the OSDI models and the
 bench work end to end. This is a probe, not the five-corner record the issue
-asks for (see [`../README.md`](../README.md#status-of-the-five-corner-run-blocked-on-the-fleet)).
+asks for (see [`../README.md`](../README.md#status-of-the-five-corner-run)).
 
 | bench | corner | result (simulated) |
 |---|---|---|
