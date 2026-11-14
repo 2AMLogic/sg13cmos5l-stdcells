@@ -4,14 +4,15 @@
   "private": true,
   "scripts": {
     "worktree:return": "./.loom/scripts/worktree-return.sh",
-    "check:ci": "npm run check:json && npm run check:item6 && npm run check:signoff && npm run check:design-rtl && npm run check:layout",
+    "check:ci": "npm run check:json && npm run check:item6 && npm run check:setup-env && npm run check:signoff && npm run check:design-rtl && npm run check:layout",
     "check:all": "npm run check:ci",
     "test": "npm run check:json",
     "lint": "npm run check:json",
     "check:json": "python3 -I scripts/check_json.py && bash scripts/test_check_json.sh",
     "check:item6": "python3 -I scripts/check_item6_statement.py && bash scripts/test_check_item6_statement.sh",
+    "check:setup-env": "bash scripts/test_setup_env.sh",
     "check:signoff": "scripts/check_signoff.sh && bash scripts/test_check_signoff.sh",
-    "check:design-rtl": "python3 design/check_catalog.py && python3 design/gen_netlists.py --check && python3 rtl/gen_models.py --check && python3 -m unittest design/test_check_catalog.py design/tests/test_gen_netlists.py rtl/tests/test_gen_models.py && .venv/bin/python rtl/tests/run_tests.py",
+    "check:design-rtl": "python3 design/check_catalog.py && python3 design/gen_netlists.py --check && python3 rtl/gen_models.py --check && python3 sim/characterize/gen_requests.py --check && python3 -m unittest design/test_check_catalog.py design/tests/test_gen_netlists.py rtl/tests/test_gen_models.py sim/characterize/test_margin.py sim/characterize/test_check_lib_coverage.py && .venv/bin/python rtl/tests/run_tests.py && bash verification/functional/test_functional.sh",
     "check:layout": "python3 -I layout/vendor/sg13g2-stdcells/layout/gen_layouts.py --config layout/sg13cmos5l-cells.config.json --out layout/gds --check"
   }
 }
