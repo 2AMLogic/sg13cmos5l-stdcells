@@ -202,7 +202,7 @@ What the run found (full numbers in `verification/functional/README.md`):
   41 of the 60 multi-state arc edges, by up to **+0.3610 ns** (14.4 % of the
   bound). The library's tightest *passing* margin at SS drops from
   **+6.55 ps** (`s5l_o21ai_1` `Y<-B1` rise, the arc #124 was filed about) to
-  **+0.86 ps** — `s5l_mux4_1` `Y<-A3` rise holding `A0=1 A1=1 A2=1 S0=1
+  **+0.86 ps** — `s5l_mux4_1` `X<-A3` rise holding `A0=1 A1=1 A2=1 S0=1
   S1=1`, a state `arcs()` never reached. The single-state sweep happened to
   measure the *fastest* of that arc's eight states (+72.60 ps).
 - The flagged arc itself is exonerated: `s5l_o21ai_1` `Y<-B1` rise is

@@ -184,7 +184,7 @@ append-only: `corners.*` is byte-for-byte unchanged by this work.
 |---|--:|---|--:|
 | TT / 1.20 V / 25 °C | 416 | 0 | +0.5038 ns (`s5l_nand4_1` `Y<-D` rise) |
 | FF / 1.32 V / −40 °C | 416 | 0 | +0.9596 ns (`s5l_nand4_1` `Y<-D` rise) |
-| SS / 1.08 V / 125 °C | 416 | 5 | **+0.0009 ns** (`s5l_mux4_1` `Y<-A3` rise) |
+| SS / 1.08 V / 125 °C | 416 | 5 | **+0.0009 ns** (`s5l_mux4_1` `X<-A3` rise) |
 
 **No arc that passed in its first state fails in another.** SS is over the
 bound on exactly the five stacked-NMOS rise arcs the single-state record
@@ -198,7 +198,7 @@ slower than the first on **41 of the 60 multi-state arc edges**, by up to
 **+0.3610 ns** — 14.4 % of the bound (39 of 60 at TT, 38 of 60 at FF). The
 library's tightest *passing* margin at SS therefore drops from the +6.55 ps
 that prompted this issue to **+0.86 ps**, 0.03 % under the bound, on
-`s5l_mux4_1` `Y<-A3` rise holding `A0=1 A1=1 A2=1 S0=1 S1=1`. That arc has
+`s5l_mux4_1` `X<-A3` rise holding `A0=1 A1=1 A2=1 S0=1 S1=1`. That arc has
 eight propagating states spanning 2.43480–2.50654 ns, and `arcs()` happened
 to pick the **fastest** of them (+72.60 ps). 16 of the 416 passing delays sit
 within 50 ps of the bound at SS, where the single-state record had 9 of 212.
