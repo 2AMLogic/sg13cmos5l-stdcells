@@ -7,8 +7,11 @@
       "content_hash": "sha256:d4f1a2f04363e6f43532ae5d1b36a666ac67573509d302bfe0d2549bce475f32"
     },
     "5": {
-      "file": "verification/functional/records/tt.report.json",
-      "content_hash": "sha256:e92ebc88154cee1db5f59782f9d3f7c62740c2cfceeafd3f8fc2e88b52898810"
+      "file": "verification/functional/records/corners.report.json",
+      "content_hash": "sha256:0eef0f3706f79d98597ef2c5bdad030a02355277abcbc0d75020b4a785f7f0a2",
+      "rows": [
+        "t_stage_delay_grid_bound"
+      ]
     },
     "9": {
       "file": "sim/attest/item9.envelope.json",
@@ -18,5 +21,13 @@
       "file": "manifests/evidence/item-10-repo-hygiene.json",
       "content_hash": "sha256:dae8ffa95181e62bfffc25a0bb4316b332668370bc6d54a07106ec379d26ebde"
     }
+  },
+  "spec_rows": {
+    "5": [
+      {
+        "id": "t_stage_delay_grid_bound",
+        "timing_margin": true
+      }
+    ]
   }
 }
