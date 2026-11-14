@@ -15,12 +15,20 @@ Everything is generated from design/cells.json (never hand-written per cell):
     once, plus a three-corner `klt sim` request (`corners.request.json`)
     measuring each arc's rising and falling stage delay against the ratified
     grid-validity bound. Three corners => a batch-fleet grid, not local.
+  * all-state corner side (issue #124): the same sweep widened from one
+    side-input state per arc to **every** state that propagates it
+    (`tb_corner_states.cir` + `corner_states.request.json`). 30 of the 106
+    arcs have more than one, 8 of those non-unate, so the single-state sweep
+    bounds one state per arc and this one bounds all of them. Same grid
+    point, same corners, same `limits.max` and `spec_row`; recorded
+    separately, because recorded evidence is append-only.
 
 Results are SIMULATED, never measured.
 
     python3 verification/functional/gen_functional.py          # (re)write
     python3 verification/functional/gen_functional.py --check  # exit 1 if stale
     python3 verification/functional/gen_functional.py --arcs   # list the arcs
+    python3 verification/functional/gen_functional.py --arc-states  # + states
 """
 from __future__ import annotations
 
@@ -198,16 +206,43 @@ def expression(expr: str, pins: list[str]):
         raise SystemExit(f"cannot use cell expression {expr!r}: {exc}") from exc
 
 
+def propagating_states(node, ins: list[str], pin: str) -> list[tuple[dict, bool]]:
+    """Every side-input state under which toggling `pin` toggles the output.
+
+    The single place that decides whether a (related pin -> output) dependence
+    exists in a given state, so the two enumerations below cannot disagree
+    about what propagates: ``arcs()`` keeps the first state this returns and
+    ``arc_states()`` keeps all of them (issue #124).
+
+    States come in MSB-first order over the cell's *other* inputs in
+    declaration order -- the bit convention ``vectors()`` uses -- each paired
+    with the output level a logic-high `pin` produces in it, i.e. which output
+    edge a rising input drives there. An empty list means no state propagates
+    this input to this output: the arc does not exist and is reported as a
+    declared gap rather than dropped.
+    """
+    rest = [q for q in ins if q != pin]
+    found = []
+    for k in range(1 << len(rest)):
+        v = {q: bool((k >> (len(rest) - 1 - b)) & 1) for b, q in enumerate(rest)}
+        lo = evaluate(node, {**v, pin: False})
+        hi = evaluate(node, {**v, pin: True})
+        if lo != hi:
+            found.append((v, bool(hi)))
+    return found
+
+
 def arcs() -> list[dict]:
-    """Every timing arc of every cell, with a propagating side-input state.
+    """Every timing arc of every cell, with one propagating side-input state.
 
     An arc is (cell, output pin, related input pin) -- the same granularity
     as a Liberty ``timing ()`` group, which carries no ``when`` condition in
-    this library's characterized ``.lib`` files. ``side`` is the first
-    assignment of the cell's other inputs (MSB-first over the remaining pins,
-    the same bit convention as ``vectors()``) under which toggling the related
-    pin toggles the output; ``out_on_rise`` is the output level a logic-high
-    related pin produces, i.e. which output edge a rising input drives.
+    this library's characterized ``.lib`` files. ``side`` is the **first**
+    propagating assignment of the cell's other inputs and ``out_on_rise`` the
+    output level a logic-high related pin produces in it; ``state_count`` is
+    how many states propagate the arc in total, so a reader of this list can
+    see which of its entries stand for more than the one state they measure
+    (30 of 106 do -- that is what ``arc_states()`` exists to widen).
 
     ``side is None`` means no state propagates this input to this output: the
     arc does not exist, and it is reported as a declared gap rather than
@@ -219,19 +254,46 @@ def arcs() -> list[dict]:
         for o, expr in c["outputs"].items():
             node = expression(expr, ins)
             for p in ins:
-                rest = [q for q in ins if q != p]
-                side = None
-                high = None
-                for k in range(1 << len(rest)):
-                    v = {q: bool((k >> (len(rest) - 1 - b)) & 1)
-                         for b, q in enumerate(rest)}
-                    lo = evaluate(node, {**v, p: False})
-                    hi = evaluate(node, {**v, p: True})
-                    if lo != hi:
-                        side, high = v, bool(hi)
-                        break
+                states = propagating_states(node, ins, p)
+                side, high = states[0] if states else (None, None)
                 out.append({"cell": c["name"], "output": o, "pin": p,
-                            "side": side, "out_on_rise": high})
+                            "side": side, "out_on_rise": high,
+                            "side_order": [q for q in ins if q != p],
+                            "state_index": 0, "state_count": len(states)})
+    return out
+
+
+def arc_states() -> list[dict]:
+    """Every (timing arc, propagating side-input state) pair -- issue #124.
+
+    Same arc granularity and same dict shape as ``arcs()``, but an arc with
+    *n* propagating states appears *n* times rather than once, so the sweep
+    built from this list measures every state instead of the first one. 106
+    arcs, 208 pairs as of this commit; re-derived here, never hard-coded.
+
+    For a non-unate arc the states disagree about ``out_on_rise``, so covering
+    every state is also what measures each output edge from both input-edge
+    directions (``test_arcs.py`` asserts that it does). An arc with no
+    propagating state is carried through once as a declared gap, exactly as in
+    ``arcs()``.
+    """
+    out = []
+    for c in cells():
+        ins = c["inputs"]
+        for o, expr in c["outputs"].items():
+            node = expression(expr, ins)
+            for p in ins:
+                rest = [q for q in ins if q != p]
+                states = propagating_states(node, ins, p)
+                base = {"cell": c["name"], "output": o, "pin": p,
+                        "side_order": rest, "state_count": len(states)}
+                if not states:
+                    out.append({**base, "side": None, "out_on_rise": None,
+                                "state_index": 0})
+                    continue
+                for i, (side, high) in enumerate(states):
+                    out.append({**base, "side": side, "out_on_rise": high,
+                                "state_index": i})
     return out
 
 
@@ -239,9 +301,62 @@ def arc_meas_name(arc: dict, edge: str) -> str:
     return f"d_{arc['cell']}_{arc['output']}_{arc['pin']}_{edge}".lower()
 
 
-def build_corner_spice(arc_list: list[dict]) -> str:
-    """The timing-arc deck: one cell instance per arc, one shared rail-scaled
-    input ramp, one normalized copy of each output node.
+def held_tag(arc: dict) -> str:
+    """The arc's side-input state as a name fragment: ``a2_1_b1_0``.
+
+    Pin-and-level pairs in the cell's input declaration order, which is the
+    order ``propagating_states()`` assigns bits in, so the fragment names the
+    state outright rather than referring to an index the reader would have to
+    resolve. The level is its own ``_``-separated field because every pin name
+    in this library already ends in a digit, so ``a2_1`` is A2 held high while
+    a fused ``a21`` would not say whether the pin is A2 or A21. Empty for a
+    single-input cell, which has exactly one (empty) state.
+    """
+    return "_".join(f"{q}_{int(arc['side'][q])}" for q in arc["side_order"])
+
+
+def arc_state_meas_name(arc: dict, edge: str) -> str:
+    """Delay measurement name for one (arc, side-input state, output edge).
+
+    ``_s_`` separates the arc from the state it is held in, so the name says
+    which of the arc's states it measures and two states of one arc cannot
+    collide (``test_arcs.py`` asserts uniqueness over the whole list).
+    """
+    tag = held_tag(arc)
+    return (f"d_{arc['cell']}_{arc['output']}_{arc['pin']}_s_"
+            f"{tag + '_' if tag else ''}{edge}").lower()
+
+
+def arc_deck_header(intro: list[str], request: str) -> list[str]:
+    """The arc deck's banner: `intro` names the sweep, the rest is shared.
+
+    Both arc decks realize the same grid point with the same stimulus and are
+    swept the same way, so only the first lines differ between them.
+    """
+    return [
+        "* Generated by verification/functional/gen_functional.py; do not edit.",
+        *intro,
+        "* instance each, at the ratified characterization grid's worst point",
+        f"* (input slew {ARC_SLEW_NS} ns, output load {ARC_LOAD_PF} pF) -- see",
+        "* spec/decision-records/0005-timing-margin-spec-row.md.",
+        f"* The {ARC_SLEW_NS} ns slew is a 20-80% transition per the recorded",
+        f"* Liberty's own thresholds, so the rail-to-rail ramp is {ARC_RAMP_NS} ns",
+        "* (slew / derate / span) -- the same stimulus klt characterize applies.",
+        f"* Swept per corner by {request}: process section,",
+        "* temperature, and the Vdd source. SIMULATED, never measured.",
+    ]
+
+
+def build_arc_deck(arc_list: list[dict], header: list[str],
+                   label_states: bool = False) -> str:
+    """The timing-arc deck: one cell instance per entry of `arc_list`, one
+    shared rail-scaled input ramp, one normalized copy of each output node.
+
+    `arc_list` is ``arcs()`` (one entry per arc, its first propagating state)
+    or ``arc_states()`` (one entry per arc *and* propagating state). Both
+    shapes are instantiated identically -- the state an entry carries is what
+    its non-switching inputs are tied to -- so the all-state deck is the same
+    deck over a longer list, not a second deck (issue #124).
 
     Why the two behavioural sources. ``.meas`` thresholds are numbers baked
     into the netlist, but 50 % of the rail is a different voltage at each of
@@ -258,16 +373,7 @@ def build_corner_spice(arc_list: list[dict]) -> str:
     that propagates it, and only the related pin sees ``vin``.
     """
     lines = [
-        "* Generated by verification/functional/gen_functional.py; do not edit.",
-        f"* Issue #120: every timing arc of all {len(cells())} cells, one",
-        "* instance each, at the ratified characterization grid's worst point",
-        f"* (input slew {ARC_SLEW_NS} ns, output load {ARC_LOAD_PF} pF) -- see",
-        "* spec/decision-records/0005-timing-margin-spec-row.md.",
-        f"* The {ARC_SLEW_NS} ns slew is a 20-80% transition per the recorded",
-        f"* Liberty's own thresholds, so the rail-to-rail ramp is {ARC_RAMP_NS} ns",
-        "* (slew / derate / span) -- the same stimulus klt characterize applies.",
-        "* Swept per corner by corners.request.json: process section,",
-        "* temperature, and the Vdd source. SIMULATED, never measured.",
+        *header,
         f"Vdd vdd 0 {VDD}",
         "* Unitless 0 -> 1 -> 0 shape; Bin scales it to the corner's rail.",
         f"Vshape vshape 0 PWL(0 0 {T_RISE}n 0 {T_RISE + ARC_RAMP_NS}n 1 "
@@ -295,15 +401,40 @@ def build_corner_spice(arc_list: list[dict]) -> str:
             else:
                 conn.append("vdd" if a["side"][port] else "0")
         held = " ".join(f"{q}={int(b)}" for q, b in sorted(a["side"].items()))
+        state = (f" [state {a['state_index'] + 1} of {a['state_count']}, "
+                 f"{'rising' if a['out_on_rise'] else 'falling'} output on a "
+                 f"rising {a['pin']}]" if label_states else "")
         lines.append(f"* arc {a['cell']} {a['pin']} -> {a['output']}"
-                     + (f", holding {held}" if held else ""))
+                     + (f", holding {held}" if held else "") + state)
         lines.append(f"X{i} {' '.join(conn)} {a['cell']}")
         lines.append(f"C{i} {out_node} 0 {ARC_LOAD_PF}p")
         lines.append(f"B{i} n{i} 0 V = v({out_node})/v(vdd)")
     return "\n".join(lines) + "\n"
 
 
-def build_corner_measurements(arc_list: list[dict]) -> list[dict]:
+def build_corner_spice(arc_list: list[dict]) -> str:
+    """`tb_corners.cir` -- the single-state arc deck of issue #120."""
+    return build_arc_deck(arc_list, arc_deck_header(
+        [f"* Issue #120: every timing arc of all {len(cells())} cells, one"],
+        "corners.request.json"))
+
+
+def build_corner_state_spice(arc_list: list[dict]) -> str:
+    """`tb_corner_states.cir` -- the all-state arc deck of issue #124.
+
+    The same deck as `build_corner_spice`, over `arc_states()` instead of
+    `arcs()`, so an arc with several propagating states gets one instance per
+    state rather than one in total.
+    """
+    return build_arc_deck(arc_list, arc_deck_header(
+        [f"* Issue #124: every timing arc of all {len(cells())} cells in",
+         f"* every side-input state that propagates it ({len(arc_list)} in",
+         "* total, against 106 arcs in corners.request.json), one"],
+        "corner_states.request.json"), label_states=True)
+
+
+def build_corner_measurements(arc_list: list[dict],
+                              name=arc_meas_name) -> list[dict]:
     """Two limited, spec-row-tagged delay measurements per instantiated arc.
 
     ``r``/``f`` name the *output* edge, as Liberty's ``cell_rise`` /
@@ -321,32 +452,63 @@ def build_corner_measurements(arc_list: list[dict]) -> list[dict]:
             # The input edge that drives this output edge.
             trig = "RISE" if (a["out_on_rise"] == (edge == "r")) else "FALL"
             targ = "RISE" if edge == "r" else "FALL"
-            name = arc_meas_name(a, edge)
             meas.append({
-                "name": name,
+                "name": name(a, edge),
                 "unit": "s",
                 "limits": {"max": round(LIMIT_NS * 1e-9, 16)},
                 "spec_row": SPEC_ROW,
-                "spice": (f".meas tran {name} TRIG v(vshape) VAL=0.5 {trig}=1 "
-                          f"TARG v(n{i}) VAL=0.5 {targ}=1"),
+                "spice": (f".meas tran {name(a, edge)} TRIG v(vshape) "
+                          f"VAL=0.5 {trig}=1 TARG v(n{i}) VAL=0.5 {targ}=1"),
             })
     return meas
 
 
-def build_corner_request(arc_list: list[dict]) -> dict:
+def arc_gaps(arc_list: list[dict]) -> list[str]:
+    """The declared gaps in `arc_list`: arcs no side-input state propagates."""
+    return [f"{a['cell']}.{a['pin']}->{a['output']}"
+            for a in arc_list if a["side"] is None]
+
+
+def build_arc_request(arc_list: list[dict], netlist: str, comment: str,
+                      name=arc_meas_name) -> dict:
+    """One `klt sim` request over the three ratified corners for an arc deck.
+
+    Shared by both arc sweeps (issues #120 and #124), so they cannot drift
+    apart on the thing being compared: same corner table, same grid point,
+    same `limits.max`, same `spec_row`, same analysis and options. Only the
+    deck, the comment and the measurement namer differ.
+    """
     if abs(LIMIT_NS - ARC_SLEW_NS) > 1e-12:
         raise SystemExit(
             f"margin.py LIMIT_NS ({LIMIT_NS}) is no longer the grid's largest "
             f"input slew ({ARC_SLEW_NS}); decision record 0005 ties the two, "
             "so reconcile them (and the record) before regenerating")
-    gaps = [f"{a['cell']}.{a['pin']}->{a['output']}"
-            for a in arc_list if a["side"] is None]
     units = [{"process": {"name": key, "sections": [c["process"]]},
               "temperature_c": c["temperature_c"],
               "supply_v": {"Vdd": c["supply_v"]}}
              for key, c in char.CORNERS.items()]
     return {
-        "_comment": (
+        "_comment": comment,
+        "engine": "ngspice",
+        "netlist": netlist,
+        "models": {"pdk": "ihp-sg13cmos5l",
+                   "lib": "libs.tech/ngspice/models/cornerMOSlv.lib"},
+        "corners": {"units": units},
+        "analysis": {"kind": "tran", "args": f"20p {T_END}n 0 50p"},
+        "measurements": build_corner_measurements(arc_list, name),
+        "options": {
+            "osdi_preload": [
+                "$PDK_ROOT/ihp-sg13cmos5l/libs.tech/ngspice/osdi/psp103.osdi"],
+            "timeout_s": 900,
+            "stage_model_inputs": True,
+        },
+        "batch": {"capacity_wait_s": 600},
+    }
+
+
+def build_corner_request(arc_list: list[dict]) -> dict:
+    gaps = arc_gaps(arc_list)
+    return build_arc_request(arc_list, "tb_corners.cir", (
             f"Issue #120: stage delay of every timing arc of all {len(cells())} "
             f"cells over the three ratified Liberty corners, at the "
             f"characterization grid's worst point (input slew {ARC_SLEW_NS} ns "
@@ -360,22 +522,39 @@ def build_corner_request(arc_list: list[dict]) -> dict:
             + ". Multi-corner => batch fleet: "
             "`klt sim corners.request.json --backend batch "
             "--wait-for-capacity 600`. SIMULATED, never measured. Generated by "
-            "gen_functional.py; do not edit."),
-        "engine": "ngspice",
-        "netlist": "tb_corners.cir",
-        "models": {"pdk": "ihp-sg13cmos5l",
-                   "lib": "libs.tech/ngspice/models/cornerMOSlv.lib"},
-        "corners": {"units": units},
-        "analysis": {"kind": "tran", "args": f"20p {T_END}n 0 50p"},
-        "measurements": build_corner_measurements(arc_list),
-        "options": {
-            "osdi_preload": [
-                "$PDK_ROOT/ihp-sg13cmos5l/libs.tech/ngspice/osdi/psp103.osdi"],
-            "timeout_s": 900,
-            "stage_model_inputs": True,
-        },
-        "batch": {"capacity_wait_s": 600},
-    }
+            "gen_functional.py; do not edit."))
+
+
+def build_corner_state_request(arc_list: list[dict]) -> dict:
+    """The all-state sweep's request -- issue #124.
+
+    Same corners, grid point, bound and spec row as `corners.request.json`;
+    the measured population is every propagating (arc, state) pair instead of
+    one state per arc, so a per-arc worst-over-states comparison lives inside
+    one job and one environment.
+    """
+    gaps = arc_gaps(arc_list)
+    multi = sorted({f"{a['cell']}.{a['pin']}->{a['output']}"
+                    for a in arc_list if a["state_count"] > 1})
+    return build_arc_request(arc_list, "tb_corner_states.cir", (
+        f"Issue #124: stage delay of every timing arc of all {len(cells())} "
+        f"cells in every side-input state that propagates it, over the three "
+        f"ratified Liberty corners, at the characterization grid's worst "
+        f"point (input slew {ARC_SLEW_NS} ns 20-80%, applied as a "
+        f"{ARC_RAMP_NS} ns rail-to-rail ramp; output load {ARC_LOAD_PF} pF), "
+        f"against the ratified grid-validity bound {LIMIT_NS} ns declared as "
+        f"spec row '{SPEC_ROW}' by "
+        f"spec/decision-records/0005-timing-margin-spec-row.md. "
+        f"corners.request.json measures one state per arc (the first that "
+        f"propagates it); this request measures all of them, so the worst "
+        f"state carries the bound. {len(arc_list) - len(gaps)} (arc, state) "
+        f"pairs instantiated over {len(multi)} multi-state arcs, "
+        f"{len(gaps)} declared gaps"
+        + (f" ({', '.join(gaps)})" if gaps else "")
+        + ". Multi-corner => batch fleet: "
+        "`klt sim corner_states.request.json --backend batch "
+        "--wait-for-capacity 600`. SIMULATED, never measured. Generated by "
+        "gen_functional.py; do not edit."), arc_state_meas_name)
 
 
 def build_verilog() -> str:
@@ -403,6 +582,7 @@ def build_verilog() -> str:
 def outputs() -> dict[Path, str]:
     spice, meas = build_spice()
     arc_list = arcs()
+    state_list = arc_states()
     return {
         HERE / "tb_all.cir": spice,
         HERE / "tt.request.json": json.dumps(build_request(meas), indent=2) + "\n",
@@ -410,6 +590,9 @@ def outputs() -> dict[Path, str]:
         HERE / "tb_corners.cir": build_corner_spice(arc_list),
         HERE / "corners.request.json":
             json.dumps(build_corner_request(arc_list), indent=2) + "\n",
+        HERE / "tb_corner_states.cir": build_corner_state_spice(state_list),
+        HERE / "corner_states.request.json":
+            json.dumps(build_corner_state_request(state_list), indent=2) + "\n",
     }
 
 
@@ -418,13 +601,19 @@ def main() -> int:
     ap.add_argument("--check", action="store_true")
     ap.add_argument("--arcs", action="store_true",
                     help="list every timing arc and its held side inputs")
+    ap.add_argument("--arc-states", action="store_true",
+                    help="list every (arc, propagating side-input state) pair")
     args = ap.parse_args()
-    if args.arcs:
-        for a in arcs():
+    if args.arcs or args.arc_states:
+        for a in (arc_states() if args.arc_states else arcs()):
             held = ("GAP (no propagating state)" if a["side"] is None else
                     " ".join(f"{q}={int(b)}" for q, b in sorted(a["side"].items()))
                     or "(single input)")
-            print(f"{a['cell']}\t{a['pin']} -> {a['output']}\t{held}")
+            extra = (f"\tstate {a['state_index'] + 1}/{a['state_count']}"
+                     f"\t{'rise' if a['out_on_rise'] else 'fall'} on rising "
+                     f"{a['pin']}" if args.arc_states and a["side"] is not None
+                     else "")
+            print(f"{a['cell']}\t{a['pin']} -> {a['output']}\t{held}{extra}")
         return 0
     stale = False
     for path, text in outputs().items():

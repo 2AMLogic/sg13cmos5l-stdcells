@@ -163,3 +163,59 @@ rather than NLDM tables through `klt characterize`). Recorded in
 on it; the timing-margin rule itself is satisfied. Closing that gap needs
 either a ratified delay budget or a grid change — each its own decision
 record, neither of them this one.
+
+## Addendum, 2026-11-14 — every propagating state is measured (issue #124)
+
+Appended, not edited. The row, the bound, the grid point and the corner table
+are all unchanged; what changes is which side-input states the evidence
+covers.
+
+Section 3 above says each arc is measured "with the arc's non-switching inputs
+held in **a** state that propagates the arc". That is what
+`corners.request.json` does: `gen_functional.py` `arcs()` keeps the *first*
+propagating assignment and measures only that one. Of the 106 arcs, **30 have
+more than one propagating state** (8 of them non-unate), so for those 30 the
+row was evidenced in one of several admissible states — disclosed, but a
+weaker claim than the row's "for every timing arc … the stage delay must not
+exceed" reads as.
+
+The row is now evidenced over **all** of them. `corner_states.request.json`
+measures every propagating (arc, state) pair — 208 pairs, 416 delays per
+corner — at the same grid point, the same three corners, the same
+`limits.max` and the same `spec_row`, recorded separately in
+`verification/functional/records/corner_states.report.json` (batch job
+`klt-sim-5a89364ff41a`). **SIMULATED, never measured.** The single-state
+record is left exactly as it is; recorded results are append-only.
+
+**Reading of section 3, from this date:** the row is evidenced by the **worst
+delay over every side-input state that propagates the arc**. The worst state
+carries the limit. A per-arc result quoted from a single state is a lower
+bound on that arc's delay, not the arc's result.
+
+What the run found (full numbers in `verification/functional/README.md`):
+
+- **The verdict does not move.** TT and FF pass all 416 delays. SS fails on
+  exactly the same five stacked-NMOS rise arcs, at the same values — all five
+  are single-state arcs, so widening the state coverage could not have
+  changed them. No arc that passed in its first state fails in another.
+- **But the margins do.** At SS the worst state is slower than the first on
+  41 of the 60 multi-state arc edges, by up to **+0.3610 ns** (14.4 % of the
+  bound). The library's tightest *passing* margin at SS drops from
+  **+6.55 ps** (`s5l_o21ai_1` `Y<-B1` rise, the arc #124 was filed about) to
+  **+0.86 ps** — `s5l_mux4_1` `X<-A3` rise holding `A0=1 A1=1 A2=1 S0=1
+  S1=1`, a state `arcs()` never reached. The single-state sweep happened to
+  measure the *fastest* of that arc's eight states (+72.60 ps).
+- The flagged arc itself is exonerated: `s5l_o21ai_1` `Y<-B1` rise is
+  slowest in the state already measured (2.50085 ns against 2.49603 and
+  2.50083 ns for the other two).
+
+Nothing here is a spec change, and nothing is retuned: the 0.86 ps margin is
+a recorded property of the slow corner at the grid's extreme point, left as
+it stands. It does sharpen the consequence already stated above — that a
+negative margin here is a finding about the reach of the ratified grid's slew
+axis — by showing how little headroom the grid has at SS once every
+admissible state is counted. Acting on that is still a `target-spec.md`
+change with its own decision record, not this one.
+
+Item 5 is unaffected: it is already `unmet` / `check_failed` on the five
+single-state NAND arcs, and this run reproduces them unchanged.
