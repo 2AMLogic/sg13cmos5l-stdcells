@@ -5,6 +5,12 @@ Maintained by the Guide triage role.
 
 ### 2026-11-14
 
+- **PR #153**: docs: quote the evidence rows key in the item-5 grading recipe
+- **Issue #142** (closed): verification/functional/README.md: the item-5 grading note's reproduction recipe is incomplete
+- **PR #146**: feat: measure every propagating side-input state of every timing arc
+- **Issue #124** (closed): Corner arc sweep measures one side-input state per arc; 30 of 106 arcs have more than one
+- **PR #139**: feat: verify the functional record with compare.py --check instead of rewriting it
+- **Issue #138** (closed): verification/functional: the gate rewrites the committed functional.tt.json instead of checking it
 - **PR #140**: fix: derive the signoff gate's attestation re-checks from the manifest
 - **Issue #133** (closed): Re-check the item-1 attestation envelope in check_signoff.sh: the one cited envelope no gate runs reports drifted at the klt pin
 - **PR #127**: docs: state the five-corner batch run as recorded, not blocked
