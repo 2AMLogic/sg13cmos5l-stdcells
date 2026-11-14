@@ -68,21 +68,63 @@ through a decision record and regenerates the signoff output in the same PR.
   Re-attest after any change to the README, LICENSE, CI workflow or check
   scripts, then update the hash and regenerate the signoff record.
 
-- Item 5: cites `verification/functional/records/tt.report.json`, the TT /
-  1.20 V / 25 C `klt sim` functional report (all 40 cells, SIMULATED), by its
-  sha256. **The verdict of record reads `unmet` (`no_limits_checked`), not
-  `met`.** Coverage as of this citation:
-  - TT Liberty: all 40 cells (`sim/characterize/records/s5l_tt_1p20v_25c.lib`).
-  - FF / 1.32 V / -40 C Liberty: 39 of 40 cells (`s5l_mux4_1` timed out); partial.
-  - SS Liberty: none recorded.
-  - Timing-margin code: `sim/characterize/margin.py`; no margin table has been
-    recorded over the 40-cell TT library yet.
-  - Functional report: TT only, 40/40 cells pass.
-  The cited `klt sim` report carries no limited measurement, so klt grades it
-  unmet: klt 0.8.0 did, and the klt 0.9.1 record committed on 2026-11-13 does
-  too. Turning item 5 `met` needs a corner-matrix report whose
-  limits are checked (FF and SS evidence plus the margin metric); that is
-  evidence production, out of scope for the citation step.
+- Item 5: cites `verification/functional/records/corners.report.json`, the
+  three-corner timing-arc `klt sim` report of issue #120 (**SIMULATED**, never
+  measured). The citation's `content_hash` is the report's
+  `provenance.input.content_hash` — the netlist's sha256 — **not** the sha256 of
+  the report file; citing the file's own hash grades `stale_evidence`.
+
+  The entry also declares the one spec row this block's full-custom digital
+  sub-case needs, ratified by
+  [decision record 0005](../spec/decision-records/0005-timing-margin-spec-row.md):
+
+  - top-level `spec_rows` `"5"`: `t_stage_delay_grid_bound`, `timing_margin:
+    true`, ratified (the default). Without a `timing_margin` row a `sim`-only
+    item 5 grades `unmet` / `timing_margin_missing`.
+  - the evidence entry's own `rows`: `["t_stage_delay_grid_bound"]`, naming the
+    row this citation carries. It does not change the grade, but it is what
+    sorts the row into `failed_rows` rather than `uncovered_rows` when the
+    citation fails — i.e. it records that the row *was* measured and came back
+    over the bound, instead of reading as though nothing covered it.
+
+  **The verdict of record reads `unmet`, reason `check_failed`** — not `met`,
+  and no longer `no_limits_checked`. Blocker: `sim__corner__failed_count: 1`.
+  `failed_rows: ["t_stage_delay_grid_bound"]`, `uncovered_rows: []`,
+  `declared_gaps: []`, `unratified_rows: []` — the timing-margin rule itself is
+  satisfied, and only the measurement verdict blocks the item.
+
+  Coverage actually cited, as the report declares it:
+  - Three corners, all three ratified Liberty corners, each simulated:
+    `tt/1.200V/25C` **pass**, `ff/1.320V/-40C` **pass**, `ss/1.080V/125C`
+    **fail**.
+  - 212 arc delays per corner (106 timing arcs of all 40 cells, rise and fall),
+    636 in total. All 212 declared measurements carry `limits`, and all 212 are
+    limit-checked (`coverage.measurements_with_limits` = 212,
+    `unrecognized_limit_keys: []`). Zero declared arc gaps.
+  - One grid point per corner — the ratified characterization grid's worst
+    point, input slew 2.5074 ns and output load 0.3 pF. Stage delay is monotonic
+    in both, so a pass there carries the bound over the whole 7 x 7 grid.
+  - **The recorded fail: 5 of the 636 arc delays exceed the 2.5074 ns bound**,
+    all of them rise arcs at SS / 1.08 V / 125 C: `s5l_nand4_1` `Y<-D`
+    (2.5622 ns, margin **-0.0548 ns**, the least), `s5l_nand4_1` `Y<-C`
+    (-0.0319 ns), `s5l_nand3_1` `Y<-C` (-0.0116 ns), `s5l_nand3b_1` `Y<-C`
+    (-0.0116 ns), `s5l_nand4_1` `Y<-B` (-0.0077 ns). These are the same five
+    arcs, with the same least margin, that `sim/characterize/margin.py`
+    independently records over the characterized Liberty. They are recorded as
+    a fail and left as they are; nothing was retuned to make them pass.
+  - The bound is a **grid-validity** bound, not a timing-closure budget or a
+    delay target (decision record 0005).
+
+  Moving item 5 to `met` from here needs either a ratified delay budget or a
+  change to the characterization grid row — each its own decision record, and
+  neither an agent's call. That ruling is tracked in
+  [#129](https://github.com/2AMLogic/sg13cmos5l-stdcells/issues/129). It is out
+  of scope for this citation, which records the verdict the evidence on main
+  actually supports.
+
+  Earlier coverage note, now superseded: until 2026-11-13 this item cited
+  `tt.report.json` (TT only, no limited measurement) and graded `unmet` /
+  `no_limits_checked`.
 
 ## Regenerate the signoff record
 

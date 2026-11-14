@@ -772,20 +772,37 @@
         "Both require the spec table itself to be ratified \u2014 verdicts against a draft spec are provisional by construction."
       ],
       "status": "unmet",
-      "reason": "no_limits_checked",
+      "reason": "check_failed",
       "graded_by_build": true,
       "citation": null,
       "citations_graded": [
         {
-          "citation": "verification/functional/records/tt.report.json",
+          "citation": "verification/functional/records/corners.report.json",
+          "rows": [
+            "t_stage_delay_grid_bound"
+          ],
           "status": "unmet",
-          "reason": "no_limits_checked"
+          "reason": "check_failed"
         }
       ],
       "detail": {
+        "critical_metric_blockers": [
+          {
+            "metric": "sim__corner__failed_count",
+            "value": 1,
+            "higher_is_better": false
+          }
+        ],
         "failed_citations": [
-          "verification/functional/records/tt.report.json"
-        ]
+          "verification/functional/records/corners.report.json"
+        ],
+        "failed_rows": [
+          "t_stage_delay_grid_bound"
+        ],
+        "uncovered_rows": [],
+        "declared_gaps": [],
+        "unratified_rows": [],
+        "row_sources": {}
       }
     },
     {
