@@ -1,0 +1,141 @@
+{
+  "schema_version": 1,
+  "library": "sg13cmos5l-stdcells",
+  "scope": "combinational",
+  "_comment": "SG13CMOS5L configuration for the pinned origin layout generator (layout/vendor/sg13g2-stdcells/layout/gen_layouts.py, reuse.lock.json). This repo owns this file; the generator is taken by pinned reference and never edited. Invoke: python3 -I layout/vendor/sg13g2-stdcells/layout/gen_layouts.py --config layout/sg13cmos5l-cells.config.json --out layout/gds. Scope is one cell (issue #151, the retarget probe); the other 39 are issue #24. Nothing here is a measured result: it is generator input, and the GDS it produces is generator output, not a DRC/LVS-clean or manufacturable claim (#25, #26).",
+  "_pdk_pin": "All layer numbers and rule values below were read from the PDK at sim/pdk.json pinned_commit f7bca32694fe3d58be0cc7d9df4b9f5db7161a14 (IHP-GmbH/IHP-Open-PDK, subtree ihp-sg13cmos5l). Paths in _citations are relative to pdks/ihp-open-pdk/ihp-sg13cmos5l/.",
+  "process": {
+    "_comment": "Reproduces design/gen_netlists.py's SG13CMOS5L sizing constants (decision record 0003 keeps that generator local), so the layout draws the devices this repo already committed in design/netlists/. Verified device-for-device against design/netlists/s5l_inv_1.spice.",
+    "_citations": {
+      "supply_v": "design/gen_netlists.py VDD_V = 1.20; spec/target-spec.md 'Core supply' row (1.20 V, sg13_lv devices)",
+      "l_nm": "design/gen_netlists.py L_NM = 130",
+      "unit_n_nm": "design/gen_netlists.py UNIT_N_NM = 740 (the sg13cmos5l_inv_1 reference device)",
+      "unit_p_nm": "design/gen_netlists.py UNIT_P_NM = 1120 (the sg13cmos5l_inv_1 reference device)",
+      "finger_max_n": "design/gen_netlists.py FINGER_MAX_N = 1000",
+      "finger_max_p": "design/gen_netlists.py FINGER_MAX_P = 1200",
+      "grid_nm": "libs.tech/klayout/tech/drc/rule_decks/sg13cmos5l_tech_default.json drc_rules.grid = 0.005 um. The generator's own default is 10 nm; SG13CMOS5L is a 5 nm grid.",
+      "nmos_model": "design/netlists/s5l_inv_1.spice (sg13_lv_nmos)",
+      "pmos_model": "design/netlists/s5l_inv_1.spice (sg13_lv_pmos)",
+      "device_params": "design/netlists/s5l_inv_1.spice device line. {w} already expands with a unit suffix (740n), so w={w}n would render the malformed w=740nn."
+    },
+    "supply_v": 1.2,
+    "l_nm": 130,
+    "unit_n_nm": 740,
+    "unit_p_nm": 1120,
+    "finger_max_n": 1000,
+    "finger_max_p": 1200,
+    "grid_nm": 5,
+    "nmos_model": "sg13_lv_nmos",
+    "pmos_model": "sg13_lv_pmos",
+    "nmos_prefix": "XMN",
+    "pmos_prefix": "XMP",
+    "vdd_net": "VDD",
+    "vss_net": "VSS",
+    "device_params": "w={w} l={l} ng={ng} m=1"
+  },
+  "layout": {
+    "_comment": "Row geometry from spec/target-spec.md (ratified by decision record 0001): 3.36 um row of 8 x 0.42 um tracks, 0.42 um routing grid, Metal1-only intra-cell routing. row_height_nm is NOT relaxed here: the ratified fallback to 3780 nm is permitted only through a new decision record citing generator evidence, and belongs to issue #24.",
+    "_margin_budget": "n_diff_y0_nm and p_diff_top_margin_nm are the only free parameters, and they decide whether the 3.36 um row places. Measured on s5l_inv_1 with this generator and these rules (see layout/README.md for the runs): n_diff_y0_nm >= 280 (below it the VSS tap Metal1 is not m1_space clear of Y), p_diff_top_margin_nm >= 260 (same constraint on the VDD tap), and n_diff_y0_nm + p_diff_top_margin_nm <= 750 (above it the channel is too short for track 1 of Y). 350/330 is the maximin point of that region: 70 nm of slack on each of the three constraints. Wider devices shrink the channel, so the sum is the number issue #24 will have to move.",
+    "_citations": {
+      "row_height_nm": "spec/target-spec.md Parameter table, 'Row height' target 3.36 um (8 tracks of 0.42 um)",
+      "gate_pitch_nm": "spec/target-spec.md Parameter table, 'Routing grid' 0.42 um x 0.42 um; must be even (the generator puts node centres on half pitches)",
+      "channel_tracks": "spec/target-spec.md 'Intra-cell routing' Metal1 only; one horizontal channel track, as the origin example",
+      "n_diff_y0_nm": "no PDK rule; free parameter, see _margin_budget",
+      "p_diff_top_margin_nm": "no PDK rule; free parameter, see _margin_budget",
+      "layers.nwell": "libs.tech/klayout/tech/drc/rule_decks/layers_def.drc:481 nwell_drw = get_polygons(31, 0)",
+      "layers.activ": "libs.tech/klayout/tech/drc/rule_decks/layers_def.drc:31 activ_drw = get_polygons(1, 0)",
+      "layers.gatpoly": "libs.tech/klayout/tech/drc/rule_decks/layers_def.drc:86 gatpoly_drw = get_polygons(5, 0)",
+      "layers.psd": "libs.tech/klayout/tech/drc/rule_decks/layers_def.drc:296 psd_drw = get_polygons(14, 0)",
+      "layers.nsd": "libs.tech/klayout/tech/drc/rule_decks/layers_def.drc:131 nsd_drw = get_polygons(7, 0). REQUIRED, not optional, at the pinned generator commit: it raises 'layout.layers.nsd is missing, so the n-well tap cannot be drawn as a well tie (the deck derives the tie as activ & nsd)'. See layout/README.md for why this reverses issue #151's AC8.",
+      "layers.cont": "libs.tech/klayout/tech/drc/rule_decks/layers_def.drc:121 cont_drw = get_polygons(6, 0)",
+      "layers.metal1": "libs.tech/klayout/tech/drc/rule_decks/layers_def.drc:141 metal1_drw = get_polygons(8, 0)",
+      "layers.metal1_label": "libs.tech/klayout/tech/drc/rule_decks/layers_def.drc:171 metal1_text = labels(8, 25)",
+      "rules.poly_width_nm": "Gat.a 'Min. GatPoly width' 0.13 um -- value sg13cmos5l_tech_default.json drc_rules.Gat_a; implemented drc/rule_decks/feol/5_8_gatpoly.drc:30",
+      "rules.poly_space_nm": "Gat.b 'Min. GatPoly space or notch' 0.18 um -- drc_rules.Gat_b; implemented feol/5_8_gatpoly.drc:37",
+      "rules.poly_endcap_nm": "Gat.c 'Min. GatPoly extension over Activ (end cap)' 0.18 um -- drc_rules.Gat_c; rule text drc/rule_decks/sg13cmos5l_maximal.drc:2015 (not implemented in the default deck's feol/beol rule files)",
+      "rules.poly_to_activ_nm": "Gat.d 'Min. GatPoly space to Activ' 0.07 um -- drc_rules.Gat_d; implemented feol/5_8_gatpoly.drc:44",
+      "rules.cont_nm": "Cnt.a 'Min. and max. Cont width' 0.16 um -- drc_rules.Cnt_a; implemented feol/5_14_cont.drc:33",
+      "rules.cont_space_nm": "Cnt.b 'Min. Cont space' 0.18 um -- drc_rules.Cnt_b; implemented feol/5_14_cont.drc:40",
+      "rules.activ_enc_cont_nm": "Cnt.c 'Min. Activ enclosure of Cont' 0.07 um -- drc_rules.Cnt_c; implemented feol/5_14_cont.drc:48",
+      "rules.poly_enc_cont_nm": "Cnt.d 'Min. GatPoly enclosure of Cont' 0.07 um -- drc_rules.Cnt_d; implemented feol/5_14_cont.drc:73",
+      "rules.m1_width_nm": "M1.a 'Min. Metal1 width' 0.16 um -- drc_rules.M1_a; implemented drc/rule_decks/beol/5_16_metal1.drc:30",
+      "rules.m1_space_nm": "M1.b 'Min. Metal1 space or notch' 0.18 um -- drc_rules.M1_b; implemented beol/5_16_metal1.drc:37",
+      "rules.rail_width_nm": "NOT a DRC rule. spec/target-spec.md 'Pin access' row: 'The rail is the baseline's: Metal1, 0.44 um wide, centered on the cell boundary'; design/gen_netlists.py RAIL_UM = 0.44. The origin example config's 160 (the M1 minimum) is deliberately NOT carried over.",
+      "rules.nwell_enc_pactiv_nm": "NW.c 'Min. NWell enclosure of P+Activ not inside ThickGateOx' 0.31 um -- drc_rules.NW_c; rule text sg13cmos5l_maximal.drc:1912 (not implemented in the default deck's rule files)",
+      "rules.nwell_enc_nactiv_nm": "NW.e 'Min. NWell enclosure of NWell tie surrounded entirely by NWell in N+Activ not inside ThickGateOx' 0.24 um -- drc_rules.NW_e; rule text sg13cmos5l_maximal.drc:1924 (not implemented in the default deck's rule files). This is the well-tie rule the generator's n-well tap needs.",
+      "rules.activ_space_nm": "Act.b 'Min. Activ space or notch' 0.21 um -- drc_rules.Act_b; implemented feol/5_5_activ.drc:37",
+      "rules.sd_enc_activ_nm": "pSD.c 'Min. pSD enclosure of P+Activ in NWell' 0.18 um -- drc_rules.pSD_c; rule text sg13cmos5l_maximal.drc:2047 (not implemented in the default deck's rule files)"
+    },
+    "row_height_nm": 3360,
+    "gate_pitch_nm": 420,
+    "channel_tracks": 1,
+    "n_diff_y0_nm": 350,
+    "p_diff_top_margin_nm": 330,
+    "layers": {
+      "nwell": [
+        31,
+        0
+      ],
+      "activ": [
+        1,
+        0
+      ],
+      "gatpoly": [
+        5,
+        0
+      ],
+      "psd": [
+        14,
+        0
+      ],
+      "nsd": [
+        7,
+        0
+      ],
+      "cont": [
+        6,
+        0
+      ],
+      "metal1": [
+        8,
+        0
+      ],
+      "metal1_label": [
+        8,
+        25
+      ]
+    },
+    "rules": {
+      "poly_width_nm": 130,
+      "poly_space_nm": 180,
+      "poly_endcap_nm": 180,
+      "poly_to_activ_nm": 70,
+      "cont_nm": 160,
+      "cont_space_nm": 180,
+      "activ_enc_cont_nm": 70,
+      "poly_enc_cont_nm": 70,
+      "m1_width_nm": 160,
+      "m1_space_nm": 180,
+      "rail_width_nm": 440,
+      "nwell_enc_pactiv_nm": 310,
+      "nwell_enc_nactiv_nm": 240,
+      "activ_space_nm": 210,
+      "sd_enc_activ_nm": 180
+    }
+  },
+  "cells": [
+    {
+      "_comment": "Copied verbatim from design/cells.json so layout and netlist cannot drift. pdk_counterpart is an extra key the generator ignores.",
+      "name": "s5l_inv_1",
+      "pdk_counterpart": "sg13cmos5l_inv_1",
+      "family": "inv",
+      "drive": 1,
+      "inputs": [
+        "A"
+      ],
+      "outputs": {
+        "Y": "!(A)"
+      }
+    }
+  ]
+}

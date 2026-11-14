@@ -57,6 +57,23 @@
           "sha256": "89f72ec2a1fac9de7b09b955e9d4be46513ecf714b0231b4eea420968a6a4303"
         }
       ]
+    },
+    {
+      "from": "2AMLogic/sg13g2-stdcells",
+      "commit": "26935d337bdacf8f46ed59678e4d0c9725965408",
+      "mode": "vendored",
+      "files": [
+        {
+          "upstream": "layout/gen_layouts.py",
+          "local": "layout/vendor/sg13g2-stdcells/layout/gen_layouts.py",
+          "sha256": "025546c04868c551a05ef5d00d7a86627aef9d2b6f60c9d7d3bca808285c509c"
+        },
+        {
+          "upstream": "design/gen_netlists.py",
+          "local": "layout/vendor/sg13g2-stdcells/design/gen_netlists.py",
+          "sha256": "9d8398922c378ef602748ce24b24d4dd83f38b1fcd1cfe3bc2807b7cfe7d1e95"
+        }
+      ]
     }
   ]
 }
