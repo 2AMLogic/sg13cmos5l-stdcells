@@ -2,7 +2,9 @@ name: CI
 
 # Keeps the harness and evidence formats valid. The gates here are the same
 # scripts `npm run check:ci` runs locally: scripts/check_json.py (+ its self-test),
-# scripts/check_item6_statement.py (+ its self-test) and scripts/check_signoff.sh (+ its self-test), plus the PDK-free design/RTL checks (`check:design-rtl`). Keep the two in step.
+# scripts/check_item6_statement.py (+ its self-test), scripts/test_setup_env.sh
+# (`check:setup-env`) and scripts/check_signoff.sh (+ its self-test), plus the
+# PDK-free design/RTL checks (`check:design-rtl`). Keep the two in step.
 
 on:
   push:
@@ -34,6 +36,20 @@ jobs:
           python3 -I scripts/check_item6_statement.py
           bash scripts/test_check_item6_statement.sh
 
+      # scripts/setup-env.sh refuses to run at all without bison and flex (it
+      # builds ngspice), so the fail-closed test cannot reach the pin check
+      # without them: install them rather than let a missing tool be reported
+      # as a pin disagreement. No PDK and no large download -- the test aborts
+      # setup-env.sh at the pin/script comparison, after the small
+      # klayout-tools fetch scripts.
+      - name: Install the build tools setup-env.sh requires
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends bison flex
+
+      - name: scripts/setup-env.sh fails closed on a bad checksum or doctored pin
+        run: bash scripts/test_setup_env.sh
+
       # The item-9 inventory's copy of the tool and PDK pins against the files
       # that own them. Needs no klt, so it runs here rather than in `signoff`;
       # `signoff` runs the same comparison again as check_signoff.sh's first step.
@@ -63,9 +79,12 @@ jobs:
         run: scripts/check_signoff.sh
 
   design-rtl:
-    # PDK-free design and RTL checks: generator freshness, catalog, switch-level
-    # and cocotb + Icarus truth tables. Same commands as `npm run check:design-rtl`,
-    # and the same cocotb pin as `scripts/setup-env.sh` installs locally.
+    # PDK-free design and RTL checks: generator freshness (netlists, RTL models,
+    # characterization requests, functional testbenches), catalog, switch-level
+    # and cocotb + Icarus truth tables, the characterization self-tests, and the
+    # netlist-vs-RTL functional comparison against the committed report.
+    # Same commands as `npm run check:design-rtl`, and the same cocotb pin as
+    # `scripts/setup-env.sh` installs locally.
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -103,8 +122,18 @@ jobs:
       - name: Committed RTL models match the generator
         run: python3 rtl/gen_models.py --check
 
-      - name: Switch-level truth tables and generator unit tests
-        run: python3 -m unittest design/test_check_catalog.py design/tests/test_gen_netlists.py rtl/tests/test_gen_models.py
+      - name: Committed characterization requests match the generator
+        run: python3 sim/characterize/gen_requests.py --check
+
+      - name: Switch-level truth tables, generator and characterization unit tests
+        run: python3 -m unittest design/test_check_catalog.py design/tests/test_gen_netlists.py rtl/tests/test_gen_models.py sim/characterize/test_margin.py sim/characterize/test_check_lib_coverage.py
 
       - name: Exhaustive cocotb + Icarus truth tables of all models
         run: .venv/bin/python rtl/tests/run_tests.py
+
+      # Covers verification/functional/gen_functional.py --check (its first
+      # step) and test_arcs.py (its last), so neither needs a step of its own.
+      # The netlist side is the committed records/tt.report.json: no PDK, no
+      # SPICE run.
+      - name: Functional testbenches fresh; netlist-vs-RTL compare and arcs
+        run: bash verification/functional/test_functional.sh
