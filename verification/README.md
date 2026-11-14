@@ -8,10 +8,13 @@
   `scripts/check_item6_statement.py --write-json`.
 - `item1-attest.json` — T1 item 1 (design sources) attestation envelope from
   `klt signoff --attest 1 --inventory design/item1-inventory.json`: 40
-  netlists and 40 Verilog models, each with its generator's `--check`. Verify
-  with `klt signoff --attest 1 --inventory design/item1-inventory.json --check
-  verification/item1-attest.json`. The `--attest` flag is newer than the pinned
-  klt 0.7.0 (which still grades the envelope); produce and check it with a
-  current `uvx --from klayout-tools klt`.
+  netlists and 40 Verilog models, each with its generator's `--check`.
+  `scripts/check_signoff.sh`, which CI runs, re-checks it at the klt pin of
+  record (`layout/toolchain.json`) along with every other attestation envelope
+  the block manifest cites — the list is derived from the manifest, so there is
+  no per-item block to add (issue #133). Re-attest after any change to a source
+  or derived file, then update the item-1 `content_hash` in
+  `manifests/sg13cmos5l-stdcells.json` and regenerate the signoff record; see
+  `manifests/README.md`.
 
 See the repo README for scope.
