@@ -69,6 +69,7 @@ def check_row_fit(layout, process):
             f"against a {budget} nm budget; revisit the sizing (decision record 0006)"
         )
 
+
 # Header line 1 names the catalog the netlists derive from; passing the repo
 # path keeps that line byte-identical to the pre-pin output.
 CONFIG_NAME = "design/cells.json"
