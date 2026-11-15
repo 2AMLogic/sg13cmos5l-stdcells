@@ -7,11 +7,15 @@ The inventory is the input to `klt signoff --attest 1` (decision record 0004).
 Its `derived` array is two entries per catalog cell -- the SG13CMOS5L netlist
 and the functional Verilog model -- each declaring its own generator's `--check`
 as the freshness check. That is 100% derivable from the catalog, so it is
-generated here rather than hand-maintained: a catalog edit that keeps the
-count at 40 and regenerates both views -- a rename, say -- passes every
-other check (`check_catalog.py`, `gen_netlists.py --check`,
-`rtl/gen_models.py --check`) while the inventory still names the old cell,
-and re-attesting item 1 then attests the wrong set (issue #144).
+generated here rather than hand-maintained: no check other than this
+generator's `--check` compares `design/item1-inventory.json` against
+`design/cells.json` -- the signoff gate only re-hashes it -- so a catalog
+edit that keeps the count at 40 and regenerates both derived views -- a
+rename, say -- leaves the catalog and both views agreeing while the
+inventory still names the old cell, and re-attesting item 1 then attests
+the wrong set (issue #144). The `--check` gate fails before anyone
+re-attests; the signoff gate only notices after the envelope has gone
+stale.
 
 With --check, writes nothing and exits 1 if the committed inventory is missing
 or stale, naming the paths that differ.
