@@ -5,6 +5,15 @@ Maintained by the Guide triage role.
 
 ### 2026-11-15
 
+- **PR #168**: refactor(design): generate netlists with the pinned upstream generator
+- **PR #178**: fix: anchor reuse-lock self-test oracle's lock read to repo root
+- **PR #150**: docs: roadmap as of 2026-11-13
+- **PR #171**: docs: update README status and repo layout to the committed records
+- **PR #173**: gate: re-check functional records' netlist identities from the tree
+- **Issue #165** (closed): Replace local design/gen_netlists.py with the pinned upstream generator (0003 follow-up): 40/40 netlist bodies already identical
+- **Issue #172** (closed): test_check_reuse_lock.sh's lock-coverage assertion is cwd-dependent: a misplaced `cd $ROOT` sends the oracle's read to the caller's directory
+- **Issue #152** (closed): README status and repo-layout block no longer match the committed records
+- **Issue #170** (closed): Item-5 functional records' netlist_closure hashes no longer resolve to the tree (120 entries), and no gate notices
 - **PR #174**: docs(design): motivate the item-1 inventory gate with the rename scenario
 - **PR #164**: gate: verify reuse.lock.json sha256s, wire into check:ci and CI
 - **PR #169**: package.json: remove dead worktree:return npm alias
