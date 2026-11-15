@@ -3,8 +3,18 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-15
+
+- **PR #162**: docs: correct test_setup_env.sh header's network claim
+- **Issue #156** (closed): scripts/test_setup_env.sh's header says "No network", but its last two checks require one — and it is now a gated CI step
+
 ### 2026-11-14
 
+- **PR #154**: feat: pin the origin layout generator and place s5l_inv_1 on the 3.36 um row
+- **Issue #151** (closed): Pin the sg13g2-stdcells generators in reuse.lock.json and record a one-cell SG13CMOS5L layout probe
+- **PR #136**: evidence: cite the three-corner report for T1 item 5 and regenerate the verdict
+- **PR #130**: ci: gate the characterization self-tests, request freshness and the functional compare
+- **Issue #116** (closed): Wire up or remove the self-tests and --check freshness modes that no gate runs (4 test files, 240 lines, absent from CI and check:ci)
 - **PR #153**: docs: quote the evidence rows key in the item-5 grading recipe
 - **Issue #142** (closed): verification/functional/README.md: the item-5 grading note's reproduction recipe is incomplete
 - **PR #146**: feat: measure every propagating side-input state of every timing arc
