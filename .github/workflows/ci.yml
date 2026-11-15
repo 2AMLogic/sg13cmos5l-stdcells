@@ -131,10 +131,12 @@ jobs:
         run: python3 rtl/gen_models.py --check
 
       # The item-1 attestation inventory is two derived entries per catalog
-      # cell, so it is generated too. Without this step a catalog edit that
-      # keeps the count at 40 and regenerates both views above passes every
-      # check here while the inventory still names the old cell, and
-      # re-attesting item 1 then attests the wrong set (issue #144).
+      # cell, so it is generated too. Nothing else reads
+      # design/item1-inventory.json, so without this step a catalog edit
+      # that keeps the count at 40 and regenerates both views above leaves
+      # the catalog and both views agreeing while the inventory still names
+      # the old cell -- a rename, say -- and re-attesting item 1 then
+      # attests the wrong set (issue #144).
       - name: Committed item-1 attestation inventory matches the catalog
         run: python3 design/gen_item1_inventory.py --check
 

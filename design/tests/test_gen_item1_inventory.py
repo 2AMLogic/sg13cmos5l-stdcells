@@ -3,9 +3,10 @@
 The byte-identity test is the load-bearing one: item 1's attestation
 `content_hash` covers the inventory, so a generator that reformats it would
 silently invalidate `verification/item1-attest.json`. The drift test is the
-regression this generator closes -- a catalog edit that every other
-`check:design-rtl` gate passes clean while the inventory still names the old
-cell (issue #144).
+regression this generator closes -- nothing else reads
+`design/item1-inventory.json`, so a catalog edit that keeps the count at 40
+and regenerates both derived views -- a rename, say -- leaves the inventory
+still naming the old cell (issue #144).
 """
 import copy
 import json
