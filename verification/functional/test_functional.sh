@@ -8,6 +8,9 @@
 # rewritten -- `compare.py --check` below is the freshness gate, and the
 # stale-record negative control at the end proves it goes red and leaves the
 # record alone.
+# Plus issue #148: the all-state assertions of test_arcs.py carry their own
+# negative controls, run last, so a future edit that weakens one of them fails
+# here instead of going quietly green.
 set -euo pipefail
 cd "$(dirname "$0")"
 REPORT=records/tt.report.json
@@ -89,3 +92,20 @@ fi
 echo "ok: stale-record control goes red, names the record, and leaves it doctored"
 
 python3 test_arcs.py
+
+# The all-state assertions' negative controls (issue #148). Nine mutations --
+# five of the arc_states() enumeration, four of the parsed all-state report --
+# each of which must be rejected by the assertion it names. A control caught by
+# a *different* assertion is a failing control, not a passing one: four of the
+# five enumeration mutations are caught by the same comparison, so "exited
+# nonzero" alone would not prove the targeted assertion still bites. Unlike the
+# stale-record control above, every mutation here is applied to a deep copy in
+# memory, so there is no file to doctor and nothing to restore.
+rc=0
+python3 test_arcs.py --negative-control || rc=$?
+if [ "$rc" -ne 0 ]; then
+  echo "FAIL: the all-state negative controls exited $rc -- an assertion in" \
+       "test_arcs.py no longer bites on the mutation it is credited with" \
+       "catching (see the per-control verdicts above)" >&2
+  exit 1
+fi
