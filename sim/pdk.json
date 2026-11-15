@@ -9,6 +9,8 @@
   "tarball_sha256": "5eb6f8a9b0b2ecc4fa08cc30627668406f85b1a97834f278036c43f0c0dbc70b",
   "subtree": "ihp-sg13cmos5l/",
   "variant": "ihp-sg13cmos5l",
+  "model_lib": "libs.tech/ngspice/models/cornerMOSlv.lib",
+  "model_lib_note": "The ngspice MOS corner library (mos_tt/mos_ff/mos_ss sections) the request generators load, relative to the variant directory; like the OSDI models it resolves through symlinks into the sibling ihp-sg13g2 tree (see sibling._comment). Key named per sim/harness/pdk.py's extension-point schema; the request generators read it from here instead of restating it (issue #145).",
   "install_layout": "pdks/ihp-open-pdk/ihp-sg13cmos5l (this tree) next to pdks/ihp-open-pdk/ihp-sg13g2 (sibling). PDK_ROOT=pdks/ihp-open-pdk PDK=ihp-sg13cmos5l. pdks/ is gitignored.",
   "sibling": {
     "_comment": "The CMOS5L subtree's shared device models (psp103, r3_cmc, mosvar Verilog-A sources and cornerMOSlv.lib among others) are relative symlinks into a sibling ihp-sg13g2/ tree. Without it they dangle (klayout-tools#1406). The sibling is whatever scripts/fetch-ihp-sg13g2.sh installs.",

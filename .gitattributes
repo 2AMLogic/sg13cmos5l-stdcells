@@ -5,3 +5,7 @@
 # fully re-derived by the next resync regardless of which side "wins".
 .loom/install-metadata.json merge=ours
 # END LOOM-MANAGED (merge drivers, #4528)
+
+# GDSII stream files are binary; make the contract explicit rather than rely
+# on git's NUL-byte auto-detection (#24 brings 39 more of them).
+*.gds binary
