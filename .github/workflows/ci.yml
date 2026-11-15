@@ -122,11 +122,19 @@ jobs:
       - name: Committed RTL models match the generator
         run: python3 rtl/gen_models.py --check
 
+      # The item-1 attestation inventory is two derived entries per catalog
+      # cell, so it is generated too. Without this step a catalog edit that
+      # keeps the count at 40 and regenerates both views above passes every
+      # check here while the inventory still names the old cell, and
+      # re-attesting item 1 then attests the wrong set (issue #144).
+      - name: Committed item-1 attestation inventory matches the catalog
+        run: python3 design/gen_item1_inventory.py --check
+
       - name: Committed characterization requests match the generator
         run: python3 sim/characterize/gen_requests.py --check
 
       - name: Switch-level truth tables, generator and characterization unit tests
-        run: python3 -m unittest design/test_check_catalog.py design/tests/test_gen_netlists.py rtl/tests/test_gen_models.py sim/characterize/test_margin.py sim/characterize/test_check_lib_coverage.py
+        run: python3 -m unittest design/test_check_catalog.py design/tests/test_gen_netlists.py design/tests/test_gen_item1_inventory.py rtl/tests/test_gen_models.py sim/characterize/test_margin.py sim/characterize/test_check_lib_coverage.py
 
       - name: Exhaustive cocotb + Icarus truth tables of all models
         run: .venv/bin/python rtl/tests/run_tests.py
