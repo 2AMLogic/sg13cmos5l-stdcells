@@ -169,8 +169,19 @@ cp -r "$ROOT/design" "$ROOT/verification" "$NI/"
 check "the committed records' netlist identities recompute" "$?" "0"
 grep -q "corners.report.json" "$tmp/log"
 check "the ok line names a record it re-checked" "$?" "0"
-grep -q "records/functional.tt.json" "$tmp/log"
-check "a record with no netlist_identity is not selected" "$?" "1"
+
+# A record whose environment carries no netlist_identity is skipped, never
+# failed or counted. functional.tt.json, the committed record of that shape,
+# is not under the *.report.json glob, so the branch is exercised with a
+# synthetic record the glob does select.
+printf '%s\n' '{"environment": {"ngspice": "44"}}' >"$NI/verification/functional/records/noident.report.json"
+( check_netlist_identities "$NI" ) >"$tmp/log" 2>&1
+check "a record with no netlist_identity is skipped, not failed" "$?" "0"
+grep -q "noident.report.json" "$tmp/log"
+check "the skipped record is not named as checked" "$?" "1"
+grep -q "3 functional records" "$tmp/log"
+check "the skipped record is not counted as checked" "$?" "0"
+rm "$NI/verification/functional/records/noident.report.json"
 
 # s5l_a21o_1.spice is in all three closures; doctoring it exercises the gate.
 NET="$NI/design/netlists/s5l_a21o_1.spice"
@@ -199,6 +210,10 @@ check "a missing closure file exits non-zero" "$?" "1"
 grep -q "s5l_a21o_1.spice" "$tmp/log"
 check "that failure names the missing file" "$?" "0"
 
+# Back to the committed tree: the cases below must trip their own branches,
+# not this one's missing-file failure still standing in the clone.
+cp "$ROOT/design/netlists/s5l_a21o_1.spice" "$NET"
+
 # Zero records under the glob would make the re-check cover nothing; the
 # attest_envelopes precedent says that is a failure, not a pass.
 mv "$NI/verification/functional/records" "$NI/verification/functional/records.away"
@@ -223,8 +238,8 @@ with open(sys.argv[1], "w", encoding="utf-8") as handle:
 PY
 ( check_netlist_identities "$NI" ) >/dev/null 2>"$tmp/log"
 check "a record with netlist_identity_error exits non-zero" "$?" "1"
-grep -q "corners.report.json" "$tmp/log"
-check "that failure names the record" "$?" "0"
+grep -q "could not compute its netlist_identity" "$tmp/log"
+check "that failure is the identity-error branch, not the missing-file one" "$?" "0"
 cp "$tmp/corners.pristine" "$NI/verification/functional/records/corners.report.json"
 
 # Discovery is by rule, not a hand-kept list, so a fourth record is covered
