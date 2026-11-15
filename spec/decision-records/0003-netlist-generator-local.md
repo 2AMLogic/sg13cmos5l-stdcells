@@ -1,6 +1,6 @@
 # 0003 — Netlist generator lives locally until upstreamed
 
-- **Status**: accepted
+- **Status**: superseded by [0006](0006-netlist-generator-pinned.md) (issue #165)
 - **Date**: 2026-10-27
 - **Issue**: #34 (part of #23)
 

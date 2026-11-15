@@ -29,7 +29,8 @@ T1 item 5 functional evidence. Everything here is **simulated**, never measured.
   `test_arcs.py`. It only reads the records; a passing or failing run leaves
   `git status` clean.
 - `test_arcs.py` — cross-checks the derived arc list two ways: the evaluator
-  that derives it (`design/gen_netlists.py`'s `evaluate`, behind the one shared
+  that derives it (the pinned upstream generator's `evaluate`, re-exported by
+  `design/gen_netlists.py` behind the one shared
   Liberty-function parser the RTL models are generated from too) must reproduce
   the iverilog RTL truth tables on every one of the 356 vectors, and the arc
   count must equal the number of `timing ()` groups in the recorded TT Liberty

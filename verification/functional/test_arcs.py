@@ -11,9 +11,10 @@ two things it must not be allowed to drift from:
     `compare.py` uses), so an expression this sweep reads differently from
     the shipped RTL fails here rather than silently mis-measuring the
     library. Since issue #125 both sides parse with the one shared parser
-    (`design/gen_netlists.py`), so there is no second grammar left to
+    (the pinned upstream `gen_netlists.py`, re-exported by
+    `design/gen_netlists.py`), so there is no second grammar left to
     disagree. What this still guards is the two independent *evaluators* of
-    that one parse tree -- `gen_netlists.evaluate()`, which derives the arcs,
+    that one parse tree -- the shared `evaluate()`, which derives the arcs,
     against `gen_models.to_verilog()` as iverilog elaborates it.
   * the **characterized Liberty** -- the arc count must equal the number of
     `timing ()` groups in the recorded TT `.lib`, so an arc the
@@ -81,7 +82,7 @@ def check_evaluator_against_rtl() -> int:
     """The evaluator that derives the arcs must reproduce the RTL truth tables.
 
     Both views now parse with the same shared parser, so this is a check of
-    `gen_netlists.evaluate()` against the Verilog `gen_models.py` renders from
+    the shared `evaluate()` against the Verilog `gen_models.py` renders from
     the same parse tree, exhaustively, through iverilog. It also pins the
     committed `rtl/<cell>.v` to the catalog the arc list is derived from.
     """

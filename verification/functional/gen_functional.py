@@ -126,7 +126,8 @@ import gen_requests as char  # noqa: E402
 import margin as marg  # noqa: E402
 
 # The cell expressions are parsed by the one shared Liberty-function parser
-# (design/gen_netlists.py `parse`/`evaluate`, design/README.md), reached through
+# (the pinned upstream generator's `parse`/`evaluate`, re-exported by
+# design/gen_netlists.py; design/README.md), reached through
 # rtl/gen_models.py's `parse(expr, pins)` so the pin-name check comes with it
 # rather than being re-implemented here. The netlists, the RTL models and this
 # arc list therefore cannot disagree about what an expression means (issue #125).

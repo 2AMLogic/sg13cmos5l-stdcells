@@ -1,10 +1,19 @@
 """Tests for design/gen_netlists.py and the committed design/netlists/*.spice.
 
-The committed netlists are parsed independently of the generator: a switch-
-level truth-table check runs on all 40 cells, and a few cells (plus a load of
-all 40) also go through ngspice with logic-level stub models
-(design/tests/stub_models.inc, not the PDK models).
+design/gen_netlists.py is the SG13CMOS5L adapter (decision record 0006): it
+merges design/cells.json with the `process` sizing block of
+layout/sg13cmos5l-cells.config.json and delegates to the pinned upstream
+generator (layout/vendor/sg13g2-stdcells/design/gen_netlists.py,
+reuse.lock.json). The engine tests here pin that delegation -- the vendored
+file by hash, the parser by identity -- and the committed netlists are parsed
+independently of the generator: a switch-level truth-table check runs on all
+40 cells, and a few cells (plus a load of all 40) also go through ngspice
+with logic-level stub models (design/tests/stub_models.inc, not the PDK
+models).
 """
+import contextlib
+import hashlib
+import io
 import itertools
 import json
 import pathlib
@@ -16,6 +25,7 @@ import tempfile
 import unittest
 
 DESIGN = pathlib.Path(__file__).resolve().parents[1]
+REPO = DESIGN.parent
 sys.path.insert(0, str(DESIGN))
 import gen_netlists as gn  # noqa: E402
 
@@ -23,6 +33,7 @@ CAT = json.load(open(DESIGN / "cells.json"))
 NETLISTS = DESIGN / "netlists"
 STUB = pathlib.Path(__file__).resolve().parent / "stub_models.inc"
 NGSPICE = shutil.which("ngspice")
+VENDORED = REPO / "layout" / "vendor" / "sg13g2-stdcells" / "design" / "gen_netlists.py"
 
 
 def parse_netlist(text):
@@ -69,24 +80,65 @@ def switch_level(ports, devs, vec):
     return val
 
 
+class EngineTest(unittest.TestCase):
+    """The adapter must run the pinned vendored engine, never a second copy."""
+
+    def test_engine_is_the_pinned_vendored_file(self):
+        self.assertEqual(pathlib.Path(gn.engine.__file__).resolve(), VENDORED.resolve())
+
+    def test_vendored_engine_matches_the_reuse_pin(self):
+        """sha256 of the vendored file equals the reuse.lock.json entry, so a
+        hand-edit of the vendored copy fails here instead of drifting from the
+        pin of record."""
+        lock = json.load(open(REPO / "reuse.lock.json"))
+        entries = [
+            f
+            for imp in lock["imports"]
+            for f in imp["files"]
+            if f["local"] == "layout/vendor/sg13g2-stdcells/design/gen_netlists.py"
+        ]
+        self.assertEqual(len(entries), 1)
+        want = entries[0]["sha256"]
+        got = hashlib.sha256(VENDORED.read_bytes()).hexdigest()
+        self.assertEqual(got, want)
+
+    def test_parser_is_the_engine_single_parser(self):
+        """`parse`/`evaluate` are re-exports, so there is exactly one parser."""
+        self.assertIs(gn.parse, gn.engine.parse)
+        self.assertIs(gn.evaluate, gn.engine.evaluate)
+
+    def test_config_is_catalog_plus_process(self):
+        config = gn.build_config()
+        self.assertEqual(config["cells"], CAT["cells"])
+        proc = config["process"]
+        self.assertEqual(proc["supply_v"], 1.2)
+        self.assertEqual(proc["l_nm"], 130)
+        self.assertEqual((proc["unit_n_nm"], proc["unit_p_nm"]), (740, 1120))
+        self.assertEqual((proc["finger_max_n"], proc["finger_max_p"]), (1000, 1200))
+        self.assertEqual((proc["nmos_model"], proc["pmos_model"]), ("sg13_lv_nmos", "sg13_lv_pmos"))
+        self.assertEqual((proc["vdd_net"], proc["vss_net"]), ("VDD", "VSS"))
+
+
 class GeneratorTest(unittest.TestCase):
     def test_freshness_check_passes_on_committed(self):
-        self.assertEqual(gn.check(gn.generate(CAT), NETLISTS), [])
+        for name, text in gn.generate().items():
+            self.assertEqual((NETLISTS / name).read_text(), text)
 
     def test_forty_netlists_committed(self):
         self.assertEqual(len(list(NETLISTS.glob("*.spice"))), 40)
 
     def test_check_detects_stale_missing_and_stray(self):
-        files = gn.generate(CAT)
         with tempfile.TemporaryDirectory() as td:
             out = pathlib.Path(td)
-            for n, t in files.items():
-                (out / n).write_text(t)
-            self.assertEqual(gn.check(files, out), [])
+            self.assertEqual(gn.main(["--out", str(out)]), 0)
             (out / "s5l_inv_1.spice").write_text("x\n")
             (out / "s5l_inv_2.spice").unlink()
             (out / "s5l_extra_1.spice").write_text("x\n")
-            errs = " ".join(gn.check(files, out))
+            err = io.StringIO()
+            with contextlib.redirect_stderr(err):
+                rc = gn.main(["--check", "--out", str(out)])
+            self.assertEqual(rc, 1)
+            errs = err.getvalue()
             self.assertIn("stale", errs)
             self.assertIn("missing", errs)
             self.assertIn("stray", errs)
@@ -97,16 +149,17 @@ class GeneratorTest(unittest.TestCase):
             self.assertEqual(gn.main(["--check", "--out", td]), 1)
 
     def test_sizing_fits_row(self):
+        proc = gn.process()
         for p in NETLISTS.glob("*.spice"):
             _, devs = parse_netlist(p.read_text())
             for model, _, _, _, prm in devs:
                 w, ng = int(prm["w"][:-1]), int(prm["ng"])
-                cap = gn.FINGER_MAX_N if model == "sg13_lv_nmos" else gn.FINGER_MAX_P
+                cap = proc["finger_max_n"] if model == "sg13_lv_nmos" else proc["finger_max_p"]
                 self.assertLessEqual(w / ng, cap, p.name)
                 self.assertEqual(w % ng, 0, p.name)
 
     def test_rejects_mixed_operators_like_the_verilog_view(self):
-        sys.path.insert(0, str(DESIGN.parent / "rtl"))
+        sys.path.insert(0, str(REPO / "rtl"))
         import gen_models as gm
 
         for bad in ("A^B*C", "A+B^C", "A*B+C", "!(A*B+C)"):
