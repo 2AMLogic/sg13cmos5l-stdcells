@@ -67,8 +67,8 @@ Important`, `Important` and `Ready` sections there. This section carries no
 hand-written work rows (issue #186): a Now row is built and closed within the
 hour, so a row written here is stale by the time it merges — the same
 reasoning that removed the `(#N)` references (#180), applied to the row
-itself. The gate `scripts/check_roadmap_now.py` rejects any numbered row
-under this heading.
+itself. The gate `scripts/check_roadmap_now.py` rejects any hand-written work
+row under this heading, numbered or bulleted.
 
 ## Next
 
