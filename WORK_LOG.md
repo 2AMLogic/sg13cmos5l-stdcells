@@ -5,6 +5,16 @@ Maintained by the Guide triage role.
 
 ### 2026-11-15
 
+- **PR #193**: fix: make the ROADMAP ## Now gate reject bulleted rows; FAIL text matches
+- **PR #191**: docs: make ROADMAP ## Now a WORK_PLAN.md pointer; gate rejects numbered rows
+- **PR #185**: fix(design): raise the row-fit rule instead of asserting it, and pin it with tests
+- **PR #184**: fix: keep work-item issue numbers out of ROADMAP.md ## Now
+- **PR #181**: docs: narrow the item-1 inventory gate rationale to the inventory's uniqueness
+- **Issue #192** (closed): check_roadmap_now.py says "no hand-written rows" but only rejects numbered ones
+- **Issue #186** (closed): ROADMAP.md `## Now` rows describe work that is already merged
+- **Issue #180** (closed): No gate catches a ROADMAP.md "Now" row that cites a closed issue
+- **Issue #179** (closed): Row-fit invariant in design/gen_netlists.py is a bare assert: no test pins it, and python -O strips it silently
+- **Issue #175** (closed): docs: "passes every other check" overstates the item-1 gate in two sites — gen_requests.py --check also catches a rename
 - **PR #182**: test(signoff): make the netlist-identity self-test assertions able to fail
 - **Issue #176** (closed): test_check_signoff.sh: three new netlist-identity assertions cannot fail (vacuous grep + cumulative clone state)
 - **PR #168**: refactor(design): generate netlists with the pinned upstream generator
