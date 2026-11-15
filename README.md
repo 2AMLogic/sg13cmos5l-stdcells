@@ -19,10 +19,31 @@ Liberty) that every downstream tool reads.
 0004). The committed signoff record
 ([`manifests/sg13cmos5l-stdcells.signoff.json`](manifests/sg13cmos5l-stdcells.signoff.json))
 grades 3 of 11 tier-1 items met: design sources (1), testbenches shipped (9)
-and repo hygiene (10). The rest are unmet: the layout generator blocks layout,
-DRC and LVS (issue #24), corner verification still needs the per-corner
-characterization sweep of the cells (issue #27), and the Monte Carlo item waits
-on a klt release (issue #28). Nothing has been taped out
+and repo hygiene (10). For the unmet items, what is committed and which open
+issue each waits on:
+
+- **Layout, DRC and LVS (item 2, issue #24):** the origin's cell generators
+  are pinned in [`reuse.lock.json`](reuse.lock.json) and the SG13CMOS5L
+  generator configuration plus a one-cell retarget probe are committed under
+  [`layout/`](layout/README.md); the generator currently places 3 of the 40
+  cells (census on issue #24), and item 2 waits on an operator ruling on how
+  it proceeds.
+- **Corner verification (item 5, issue #27):** Liberty for all 40 cells at
+  TT, FF and SS is committed under
+  [`sim/characterize/records/`](sim/characterize/records), and the
+  three-corner limit-checked functional sweep is recorded in
+  [`verification/functional/records/corners.report.json`](verification/functional/records/corners.report.json) —
+  status `fail`, 2 of 3 corners pass. Item 5 waits on #87 (cite the report as
+  item-5 evidence and regenerate the verdict of record) and #129 (the ruling
+  on the five SS rise arcs over the bound ratified by
+  [decision record 0005](spec/decision-records/0005-timing-margin-spec-row.md)).
+- **Monte Carlo (item 6, issue #28):** the not_applicable statement covering
+  every ratified row is committed
+  ([`verification/item6-not-applicable.md`](verification/item6-not-applicable.md)),
+  and item 6 waits on a ruling about a `Status:` line in the ratified
+  [`spec/target-spec.md`](spec/target-spec.md).
+
+Nothing has been taped out
 and nothing has been measured; every number from the smoke benches is
 simulated, not measured.
 
@@ -108,11 +129,13 @@ silicon. **Current position: spec ratified.**
 
 ```
 spec/          ratified spec + decision records
-design/        per-cell schematics (xschem)
-rtl/           functional Verilog models of each cell
+design/        cell catalog (cells.json), the netlist generator, the 40 generated SPICE netlists
+rtl/           functional Verilog models of each cell (model tests in rtl/tests/)
 sim/           per-cell SPICE characterization + PVT corner results (ngspice)
-verification/  checks of the synthesis benchmark (model tests live in rtl/tests/)
-layout/        generated GDS + DRC/LVS reports (klayout-tools driven)
+verification/  committed verification records: netlist-vs-RTL functional and three-corner sweeps, tier evidence
+layout/        SG13CMOS5L generator config + vendored origin generators, generated GDS, DRC/LVS smoke
+manifests/     evidence-tier definitions + the graded signoff record
+scripts/       bring-up (setup-env.sh) + the check:ci gate scripts
 measurements/  silicon characterization (empty until tape-out)
 ```
 
