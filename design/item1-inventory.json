@@ -2,7 +2,7 @@
   "schema_version": 1,
   "kind": "t1-attestation-inventory",
   "t1_item": 1,
-  "description": "T1 item 1 (design sources), full-custom digital sub-case: the ratified 40-cell catalog (design/cells.json) and the two generators that derive from it (design/gen_netlists.py for the SG13CMOS5L transistor-level netlists; rtl/gen_models.py for the functional Verilog models, which imports the shared Liberty-function parser from gen_netlists.py), plus every derived file. Each derived entry declares its generator's own --check as the freshness check (it rewrites nothing). No schematic capture and no synthesis step: the cells are generated, not hand-drawn.",
+  "description": "T1 item 1 (design sources), full-custom digital sub-case: the ratified 40-cell catalog (design/cells.json) and the two generators that derive from it (design/gen_netlists.py, which merges the catalog with the process sizing of layout/sg13cmos5l-cells.config.json and drives the pinned upstream generator layout/vendor/sg13g2-stdcells/design/gen_netlists.py (reuse.lock.json, decision record 0006) for the SG13CMOS5L transistor-level netlists; rtl/gen_models.py for the functional Verilog models, which imports the shared Liberty-function parser that same pinned generator carries), plus every derived file. Each derived entry declares its generator's own --check as the freshness check (it rewrites nothing). No schematic capture and no synthesis step: the cells are generated, not hand-drawn.",
   "sources": [
     "design/cells.json",
     "design/gen_netlists.py",

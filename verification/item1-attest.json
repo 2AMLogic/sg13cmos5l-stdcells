@@ -24,294 +24,294 @@
         "role": "source",
         "path": "design/gen_netlists.py",
         "passed": true,
-        "content_hash": "sha256:b0a4aba6b42e0de217f3bd705144aba4b6c8cd2b92083fee0a6ac4b3faa35728"
+        "content_hash": "sha256:7580399fe0567cd43f0af982a2c1a8a65fb69da158f37a1f198e4955eeb6cca9"
       },
       {
         "check": "present",
         "role": "source",
         "path": "rtl/gen_models.py",
         "passed": true,
-        "content_hash": "sha256:93c2321dec3b1e9ccb65fcd75fe6301fa055635c371540673760e6b21b3e490c"
+        "content_hash": "sha256:fd0e96780efadec013a780fc78093e120953af49de352f1fd5aa6c361e64c146"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_a21o_1.spice",
         "passed": true,
-        "content_hash": "sha256:c3df438214f0ae00c27020e6e15a390d2e2aa5f3178bbd3cd467fbf9ecbb4fa7"
+        "content_hash": "sha256:964b17f0cb4cdea6ed18a64a6b7397e77d7f1ea54e61c7dcd9827e8532d27320"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_a21o_2.spice",
         "passed": true,
-        "content_hash": "sha256:ab1f64c6b5c6fb61160433094e9e5858c774d5bac68b5013c70bf50a9fd61267"
+        "content_hash": "sha256:e014696dcae7a103d1506f87566de92d6e194c94bb49413376bc51e64c9bb391"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_a21oi_1.spice",
         "passed": true,
-        "content_hash": "sha256:7108153ab20b82ce0f55fb1af15215664dd0e399079f282bb99dfc802c7a2254"
+        "content_hash": "sha256:3b58566e9c2b6e4015464bef1c8a291309c6537819dea8b859f2857bd76498bf"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_a21oi_2.spice",
         "passed": true,
-        "content_hash": "sha256:5f7983ae0d5246cdf6d6160dde8ac88f156784ed80edebba30211b96185b54f2"
+        "content_hash": "sha256:6533efc9d4a5d7adeab5d338265ea649b84ab88c8c8b935259ca43712c75a480"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_a221oi_1.spice",
         "passed": true,
-        "content_hash": "sha256:a4e396bc2e9a254967d8b37fe12c5cbc97f2c6616d7840bd278eff0c610792af"
+        "content_hash": "sha256:b480e1eceb5e412e6e11d09f5650d7ed217dd2716bafbcc0237e9021e4191525"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_a22oi_1.spice",
         "passed": true,
-        "content_hash": "sha256:32d96290d65acd71729bd7d2db8327819ab1e31571ee68ece54d9e55a3df2fd7"
+        "content_hash": "sha256:ecdee0c2e0d08e6f8f6254aea70ddd4493a455120f297583d3d93690d103e58e"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_and2_1.spice",
         "passed": true,
-        "content_hash": "sha256:9a10903f8154efc11de27fc98e077c31f449c9f574e23ed1ad80bd57115004bc"
+        "content_hash": "sha256:13e62685656ae86c2673827c3560c8462c897596fbc2cb61e91f7b8eaf8106e2"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_and2_2.spice",
         "passed": true,
-        "content_hash": "sha256:fcc5479df7b8e9710c87bea1d52574006f08149f3633432fb6dc45c78945e973"
+        "content_hash": "sha256:fe95b8710c73cde974fce47c0e9704174c30af12a955a211da4fbb138f1670d9"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_and3_1.spice",
         "passed": true,
-        "content_hash": "sha256:de5c9fa312855c9e0d47113fe51a076ab9ef642624f33a31321e271d47ff42b0"
+        "content_hash": "sha256:3e00bf553292f7bc82026bd2d116ecc62a93fb9d439a427c7685dd2dba161a27"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_and3_2.spice",
         "passed": true,
-        "content_hash": "sha256:f328ce9806c31d3419d741ec9e641c649d749d5784ffb4ffc0f4c2d904a96ebe"
+        "content_hash": "sha256:9568d2aa69e096ee20b1c6f0c5a81da5f229dae37a4cde73a76eaab3e2185e31"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_and4_1.spice",
         "passed": true,
-        "content_hash": "sha256:0c39abd69b2097840ebb1adf728e91373aabb0206f02ac9c7ed659c5e7fb57c3"
+        "content_hash": "sha256:18c6206833892dd9b29b6cf963244f3299cd68fb9660865749198a1a5a33280a"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_buf_1.spice",
         "passed": true,
-        "content_hash": "sha256:421978947e4830770a88c7f323f2d03b47bdb0357d899d7f8892e0a9ed295ac2"
+        "content_hash": "sha256:c293aace8236945cfd5623e079f1a3f368a05940143941606435318d93fdd450"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_buf_2.spice",
         "passed": true,
-        "content_hash": "sha256:fba55e3b8ad0a664d5c842ef0d2b055e7085bd3f4caf278f23bc24e667f9609d"
+        "content_hash": "sha256:3845ca55a5feabc94a35718056126a7532686e6bbedcb4d38ddb333ab048f54c"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_buf_4.spice",
         "passed": true,
-        "content_hash": "sha256:d1c5d0dcdbdaa394f5fe4e2186e36772b39d368e37fbae938c05ad305248cd9f"
+        "content_hash": "sha256:e4154b74b01e38409176dda9e38779a69a56f4b2c5ce6b5f9b510edcab8d79f4"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_inv_1.spice",
         "passed": true,
-        "content_hash": "sha256:8d3df57ffce29266a3eede64f24dd7a46e0ff5f0e83769ff538a663acd928db5"
+        "content_hash": "sha256:da0f2bdb80574e064185f28c79d204f2ad31fb09e29a7ed34af1b4fb55127c06"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_inv_2.spice",
         "passed": true,
-        "content_hash": "sha256:7a15be5c2896449961d35e618a7c86ba776a11936397bc0eab4a147fac97800e"
+        "content_hash": "sha256:b12fc92998f4a736124b1db8f600c2d11d5d1ead0b20529b0427f4e48c474f73"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_inv_4.spice",
         "passed": true,
-        "content_hash": "sha256:9aed716e6e79ed503c5dac864dd73759ce54f6464950dacdedf0f3b43db8fbed"
+        "content_hash": "sha256:a90695e76fe5f3854e20da5041efe37c8c64e6c2a8f2947a50cb5f440b0baff2"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_mux2_1.spice",
         "passed": true,
-        "content_hash": "sha256:21970380f0075a369e498756736c6db8be8d3ea6217c4377cd55183331f1e394"
+        "content_hash": "sha256:48fd0b64b992254dcf5f79c8153124cd33d20213cbb47013b8c2274f24265d24"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_mux2_2.spice",
         "passed": true,
-        "content_hash": "sha256:c19a8604bdafccfc59e07d8696d6c4284637fe10c324f9526159972f625c9446"
+        "content_hash": "sha256:c767a0f7910c0a4abf98f942cd6e2165ea870fa0e42c69ebb4dda20391df0f44"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_mux4_1.spice",
         "passed": true,
-        "content_hash": "sha256:83c6755dffa2e072d0e9e80907beec405a0f15fe849efab8d6998dc33d0a060c"
+        "content_hash": "sha256:bc5fbe4ad6cbd0ab0e5dc6af7d5a5928e7af9efd08a040de508a219063f68df8"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nand2_1.spice",
         "passed": true,
-        "content_hash": "sha256:4ff2645bfa17a77fb68e556c1ad2e2f7df220c714438046c4f10980841d4f027"
+        "content_hash": "sha256:476a1032e994d683feb329c4656ac44b8749c0485d759f48dee7b8936d9c38a4"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nand2_2.spice",
         "passed": true,
-        "content_hash": "sha256:e51c3adf5ada0eeccfe2a4d42a1448513116596b1b257c4802243764cbfb29af"
+        "content_hash": "sha256:592c39067e76991f98d15eb18817f5d868659478c87e0340cf71ae19f4ff964a"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nand2b_1.spice",
         "passed": true,
-        "content_hash": "sha256:79c8e388a02c4d915d95f2f33e9c88b6fdb8a76092d719442f7b4ed3159dda7c"
+        "content_hash": "sha256:a415f20b421c1d4e0d97e8e96b9af1f3d4e139d2db01fb82b1ee663087b2cfb6"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nand3_1.spice",
         "passed": true,
-        "content_hash": "sha256:f7c049bc4815006dd0c47b252d6dead4efee826af171a721ddc355a88b0f35f4"
+        "content_hash": "sha256:f943859b8efcf4d84fe9a381382c76b6a910c68addde2a5f778ff85bf046e65b"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nand3b_1.spice",
         "passed": true,
-        "content_hash": "sha256:ed5a2500e9c783bc97545b2b39e277a59d088e1ae3bf9243c3d1a263ffde0176"
+        "content_hash": "sha256:e67025953aba0d58327f5e6342a5101c0beb9789334285192948fdb68f7c9954"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nand4_1.spice",
         "passed": true,
-        "content_hash": "sha256:a28848b1ab411a7a21b3e0a4553fe73f6bb975fb56f498ee8ed16f3c3191a527"
+        "content_hash": "sha256:a9dd2f5984c5fc026a6dc7a23aebd20356e9f950323a0232261f361385260eca"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nor2_1.spice",
         "passed": true,
-        "content_hash": "sha256:901de78a562e21bd544b66b0a9b7f8804ee14b54e6942ccbb45517ecc81943dd"
+        "content_hash": "sha256:c88e31b29b4bb7ed8fda24967ab5f66b50aa0e99c6906191af285fbda2b42a0d"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nor2_2.spice",
         "passed": true,
-        "content_hash": "sha256:83e5dfc4f604704a56731eb5b602e333de689088c745609abd9d95a6b38aa1a1"
+        "content_hash": "sha256:f3ae32d8ac64c39f456da19e2fd2c58bc1c0c17548fb462c177bb17213d59145"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nor2b_1.spice",
         "passed": true,
-        "content_hash": "sha256:260100f1a3b3026fffb98426e54a4f8826480c7f0be6068cbf321f27ae4ae892"
+        "content_hash": "sha256:a265e16b88f226d87fa5ffe42de54ab3c5181d7649bb91eb9f9a3bf63aa9bffd"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nor3_1.spice",
         "passed": true,
-        "content_hash": "sha256:d80cf48b71879d0738b1ae68c0ede3c0630daf934e6841350c94a699c8959764"
+        "content_hash": "sha256:7b6045e0953282eca064a1df229c8448ef3bf1649a0c010dd3de0f75fe8215ed"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nor3_2.spice",
         "passed": true,
-        "content_hash": "sha256:cf79c6432b65ec4efa3def933053e60fe0ed425fe3a77e6e050a5e653e758e1e"
+        "content_hash": "sha256:f3d7d611c2fb97a7ba372a7520ed63e72289ecf7bdd15215ce777ffb67cd43c0"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_nor4_1.spice",
         "passed": true,
-        "content_hash": "sha256:c2ba4efe4fb37812d71872977f80efb3dbcb87d4ca2be78b33dc47db0a2230a9"
+        "content_hash": "sha256:f94b41fb9bf1b4bfb6eb47d510e588ed1fd7efad76a3e7dca35da7b4c15fb785"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_o21ai_1.spice",
         "passed": true,
-        "content_hash": "sha256:7de7e2f987391fd900153866eb42d5a83e1ced3d7352e18f8223ce4262562d32"
+        "content_hash": "sha256:c373033a45e185de689dce0373dface43bc2895500600da6f29bd3b91daced01"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_or2_1.spice",
         "passed": true,
-        "content_hash": "sha256:6872bfedf8fadbf7ce1bb3dce54dc214320863dda13c4759e0f76dd5181dceb4"
+        "content_hash": "sha256:16840e225d6f8387171eceb6b133dbc03735ff140cb23a9eeaddafa07948c856"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_or2_2.spice",
         "passed": true,
-        "content_hash": "sha256:00d5d5f67dc30126d1b5a618df549eb808cbda709ba6eb93ae26bb62416aaa50"
+        "content_hash": "sha256:a5cfd0d1dc4d837b87d959d435de59f4e96ed25602a700627ebc621aa659d5cd"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_or3_1.spice",
         "passed": true,
-        "content_hash": "sha256:1ea2f6638dc835188b605f1e84532425a46c5fbda6e290b66d047a7752dd8351"
+        "content_hash": "sha256:4346319c3e181ce7bd5889efe12cda1400df8fad010503c2617540582d2a75dc"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_or3_2.spice",
         "passed": true,
-        "content_hash": "sha256:1e74a55d5508d590aaea39c0882b15a8ae082e6816c8dccbf6e0a6f6ad9a8926"
+        "content_hash": "sha256:8c840c574d7777d4fead23bbff6adc6286e3efbf4e05c7c9441fdde1f202fffd"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_or4_1.spice",
         "passed": true,
-        "content_hash": "sha256:1a183bbcac2a2017ab0015b18d21dc49fdfd01dca0bb03f560cb9724bfa586dd"
+        "content_hash": "sha256:d685f1db9d9e9d1b473c3d93ea5fa4bd5efa3fb5d1cc530697766e591ad70040"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_xnor2_1.spice",
         "passed": true,
-        "content_hash": "sha256:0ca428cc3599e1ce2e172cd6638b60975af74fc9dd64d087c76616027da759e9"
+        "content_hash": "sha256:f56e0af974683cc6cdab175d366e8940bafd773c31aa041b1886f2a897126e00"
       },
       {
         "check": "present",
         "role": "derived",
         "path": "design/netlists/s5l_xor2_1.spice",
         "passed": true,
-        "content_hash": "sha256:2ff0bae65ccf4c5485eb446c13346111a295436236ce7b8fc2ec0c12465d01a4"
+        "content_hash": "sha256:c7359c5ce91a46093f791ce87cde31b2ba3fc2eea86bb072b119044a7000ca7c"
       },
       {
         "check": "present",
@@ -1814,301 +1814,301 @@
             "path": "design/gen_netlists.py",
             "scope": "repo"
           },
-          "content_hash": "sha256:b0a4aba6b42e0de217f3bd705144aba4b6c8cd2b92083fee0a6ac4b3faa35728"
+          "content_hash": "sha256:7580399fe0567cd43f0af982a2c1a8a65fb69da158f37a1f198e4955eeb6cca9"
         },
         {
           "path": {
             "path": "design/item1-inventory.json",
             "scope": "repo"
           },
-          "content_hash": "sha256:675f505c4070f0840e289a528113fd53770fdf7ebceb640c75afe9927a56a805"
+          "content_hash": "sha256:f65e526856f82725f534f82c981553258e3c48ab67e8a941640116ceabea5fe2"
         },
         {
           "path": {
             "path": "design/netlists/s5l_a21o_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:c3df438214f0ae00c27020e6e15a390d2e2aa5f3178bbd3cd467fbf9ecbb4fa7"
+          "content_hash": "sha256:964b17f0cb4cdea6ed18a64a6b7397e77d7f1ea54e61c7dcd9827e8532d27320"
         },
         {
           "path": {
             "path": "design/netlists/s5l_a21o_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:ab1f64c6b5c6fb61160433094e9e5858c774d5bac68b5013c70bf50a9fd61267"
+          "content_hash": "sha256:e014696dcae7a103d1506f87566de92d6e194c94bb49413376bc51e64c9bb391"
         },
         {
           "path": {
             "path": "design/netlists/s5l_a21oi_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:7108153ab20b82ce0f55fb1af15215664dd0e399079f282bb99dfc802c7a2254"
+          "content_hash": "sha256:3b58566e9c2b6e4015464bef1c8a291309c6537819dea8b859f2857bd76498bf"
         },
         {
           "path": {
             "path": "design/netlists/s5l_a21oi_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:5f7983ae0d5246cdf6d6160dde8ac88f156784ed80edebba30211b96185b54f2"
+          "content_hash": "sha256:6533efc9d4a5d7adeab5d338265ea649b84ab88c8c8b935259ca43712c75a480"
         },
         {
           "path": {
             "path": "design/netlists/s5l_a221oi_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:a4e396bc2e9a254967d8b37fe12c5cbc97f2c6616d7840bd278eff0c610792af"
+          "content_hash": "sha256:b480e1eceb5e412e6e11d09f5650d7ed217dd2716bafbcc0237e9021e4191525"
         },
         {
           "path": {
             "path": "design/netlists/s5l_a22oi_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:32d96290d65acd71729bd7d2db8327819ab1e31571ee68ece54d9e55a3df2fd7"
+          "content_hash": "sha256:ecdee0c2e0d08e6f8f6254aea70ddd4493a455120f297583d3d93690d103e58e"
         },
         {
           "path": {
             "path": "design/netlists/s5l_and2_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:9a10903f8154efc11de27fc98e077c31f449c9f574e23ed1ad80bd57115004bc"
+          "content_hash": "sha256:13e62685656ae86c2673827c3560c8462c897596fbc2cb61e91f7b8eaf8106e2"
         },
         {
           "path": {
             "path": "design/netlists/s5l_and2_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:fcc5479df7b8e9710c87bea1d52574006f08149f3633432fb6dc45c78945e973"
+          "content_hash": "sha256:fe95b8710c73cde974fce47c0e9704174c30af12a955a211da4fbb138f1670d9"
         },
         {
           "path": {
             "path": "design/netlists/s5l_and3_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:de5c9fa312855c9e0d47113fe51a076ab9ef642624f33a31321e271d47ff42b0"
+          "content_hash": "sha256:3e00bf553292f7bc82026bd2d116ecc62a93fb9d439a427c7685dd2dba161a27"
         },
         {
           "path": {
             "path": "design/netlists/s5l_and3_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:f328ce9806c31d3419d741ec9e641c649d749d5784ffb4ffc0f4c2d904a96ebe"
+          "content_hash": "sha256:9568d2aa69e096ee20b1c6f0c5a81da5f229dae37a4cde73a76eaab3e2185e31"
         },
         {
           "path": {
             "path": "design/netlists/s5l_and4_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:0c39abd69b2097840ebb1adf728e91373aabb0206f02ac9c7ed659c5e7fb57c3"
+          "content_hash": "sha256:18c6206833892dd9b29b6cf963244f3299cd68fb9660865749198a1a5a33280a"
         },
         {
           "path": {
             "path": "design/netlists/s5l_buf_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:421978947e4830770a88c7f323f2d03b47bdb0357d899d7f8892e0a9ed295ac2"
+          "content_hash": "sha256:c293aace8236945cfd5623e079f1a3f368a05940143941606435318d93fdd450"
         },
         {
           "path": {
             "path": "design/netlists/s5l_buf_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:fba55e3b8ad0a664d5c842ef0d2b055e7085bd3f4caf278f23bc24e667f9609d"
+          "content_hash": "sha256:3845ca55a5feabc94a35718056126a7532686e6bbedcb4d38ddb333ab048f54c"
         },
         {
           "path": {
             "path": "design/netlists/s5l_buf_4.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:d1c5d0dcdbdaa394f5fe4e2186e36772b39d368e37fbae938c05ad305248cd9f"
+          "content_hash": "sha256:e4154b74b01e38409176dda9e38779a69a56f4b2c5ce6b5f9b510edcab8d79f4"
         },
         {
           "path": {
             "path": "design/netlists/s5l_inv_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:8d3df57ffce29266a3eede64f24dd7a46e0ff5f0e83769ff538a663acd928db5"
+          "content_hash": "sha256:da0f2bdb80574e064185f28c79d204f2ad31fb09e29a7ed34af1b4fb55127c06"
         },
         {
           "path": {
             "path": "design/netlists/s5l_inv_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:7a15be5c2896449961d35e618a7c86ba776a11936397bc0eab4a147fac97800e"
+          "content_hash": "sha256:b12fc92998f4a736124b1db8f600c2d11d5d1ead0b20529b0427f4e48c474f73"
         },
         {
           "path": {
             "path": "design/netlists/s5l_inv_4.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:9aed716e6e79ed503c5dac864dd73759ce54f6464950dacdedf0f3b43db8fbed"
+          "content_hash": "sha256:a90695e76fe5f3854e20da5041efe37c8c64e6c2a8f2947a50cb5f440b0baff2"
         },
         {
           "path": {
             "path": "design/netlists/s5l_mux2_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:21970380f0075a369e498756736c6db8be8d3ea6217c4377cd55183331f1e394"
+          "content_hash": "sha256:48fd0b64b992254dcf5f79c8153124cd33d20213cbb47013b8c2274f24265d24"
         },
         {
           "path": {
             "path": "design/netlists/s5l_mux2_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:c19a8604bdafccfc59e07d8696d6c4284637fe10c324f9526159972f625c9446"
+          "content_hash": "sha256:c767a0f7910c0a4abf98f942cd6e2165ea870fa0e42c69ebb4dda20391df0f44"
         },
         {
           "path": {
             "path": "design/netlists/s5l_mux4_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:83c6755dffa2e072d0e9e80907beec405a0f15fe849efab8d6998dc33d0a060c"
+          "content_hash": "sha256:bc5fbe4ad6cbd0ab0e5dc6af7d5a5928e7af9efd08a040de508a219063f68df8"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nand2_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:4ff2645bfa17a77fb68e556c1ad2e2f7df220c714438046c4f10980841d4f027"
+          "content_hash": "sha256:476a1032e994d683feb329c4656ac44b8749c0485d759f48dee7b8936d9c38a4"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nand2_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:e51c3adf5ada0eeccfe2a4d42a1448513116596b1b257c4802243764cbfb29af"
+          "content_hash": "sha256:592c39067e76991f98d15eb18817f5d868659478c87e0340cf71ae19f4ff964a"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nand2b_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:79c8e388a02c4d915d95f2f33e9c88b6fdb8a76092d719442f7b4ed3159dda7c"
+          "content_hash": "sha256:a415f20b421c1d4e0d97e8e96b9af1f3d4e139d2db01fb82b1ee663087b2cfb6"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nand3_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:f7c049bc4815006dd0c47b252d6dead4efee826af171a721ddc355a88b0f35f4"
+          "content_hash": "sha256:f943859b8efcf4d84fe9a381382c76b6a910c68addde2a5f778ff85bf046e65b"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nand3b_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:ed5a2500e9c783bc97545b2b39e277a59d088e1ae3bf9243c3d1a263ffde0176"
+          "content_hash": "sha256:e67025953aba0d58327f5e6342a5101c0beb9789334285192948fdb68f7c9954"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nand4_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:a28848b1ab411a7a21b3e0a4553fe73f6bb975fb56f498ee8ed16f3c3191a527"
+          "content_hash": "sha256:a9dd2f5984c5fc026a6dc7a23aebd20356e9f950323a0232261f361385260eca"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nor2_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:901de78a562e21bd544b66b0a9b7f8804ee14b54e6942ccbb45517ecc81943dd"
+          "content_hash": "sha256:c88e31b29b4bb7ed8fda24967ab5f66b50aa0e99c6906191af285fbda2b42a0d"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nor2_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:83e5dfc4f604704a56731eb5b602e333de689088c745609abd9d95a6b38aa1a1"
+          "content_hash": "sha256:f3ae32d8ac64c39f456da19e2fd2c58bc1c0c17548fb462c177bb17213d59145"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nor2b_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:260100f1a3b3026fffb98426e54a4f8826480c7f0be6068cbf321f27ae4ae892"
+          "content_hash": "sha256:a265e16b88f226d87fa5ffe42de54ab3c5181d7649bb91eb9f9a3bf63aa9bffd"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nor3_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:d80cf48b71879d0738b1ae68c0ede3c0630daf934e6841350c94a699c8959764"
+          "content_hash": "sha256:7b6045e0953282eca064a1df229c8448ef3bf1649a0c010dd3de0f75fe8215ed"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nor3_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:cf79c6432b65ec4efa3def933053e60fe0ed425fe3a77e6e050a5e653e758e1e"
+          "content_hash": "sha256:f3d7d611c2fb97a7ba372a7520ed63e72289ecf7bdd15215ce777ffb67cd43c0"
         },
         {
           "path": {
             "path": "design/netlists/s5l_nor4_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:c2ba4efe4fb37812d71872977f80efb3dbcb87d4ca2be78b33dc47db0a2230a9"
+          "content_hash": "sha256:f94b41fb9bf1b4bfb6eb47d510e588ed1fd7efad76a3e7dca35da7b4c15fb785"
         },
         {
           "path": {
             "path": "design/netlists/s5l_o21ai_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:7de7e2f987391fd900153866eb42d5a83e1ced3d7352e18f8223ce4262562d32"
+          "content_hash": "sha256:c373033a45e185de689dce0373dface43bc2895500600da6f29bd3b91daced01"
         },
         {
           "path": {
             "path": "design/netlists/s5l_or2_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:6872bfedf8fadbf7ce1bb3dce54dc214320863dda13c4759e0f76dd5181dceb4"
+          "content_hash": "sha256:16840e225d6f8387171eceb6b133dbc03735ff140cb23a9eeaddafa07948c856"
         },
         {
           "path": {
             "path": "design/netlists/s5l_or2_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:00d5d5f67dc30126d1b5a618df549eb808cbda709ba6eb93ae26bb62416aaa50"
+          "content_hash": "sha256:a5cfd0d1dc4d837b87d959d435de59f4e96ed25602a700627ebc621aa659d5cd"
         },
         {
           "path": {
             "path": "design/netlists/s5l_or3_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:1ea2f6638dc835188b605f1e84532425a46c5fbda6e290b66d047a7752dd8351"
+          "content_hash": "sha256:4346319c3e181ce7bd5889efe12cda1400df8fad010503c2617540582d2a75dc"
         },
         {
           "path": {
             "path": "design/netlists/s5l_or3_2.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:1e74a55d5508d590aaea39c0882b15a8ae082e6816c8dccbf6e0a6f6ad9a8926"
+          "content_hash": "sha256:8c840c574d7777d4fead23bbff6adc6286e3efbf4e05c7c9441fdde1f202fffd"
         },
         {
           "path": {
             "path": "design/netlists/s5l_or4_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:1a183bbcac2a2017ab0015b18d21dc49fdfd01dca0bb03f560cb9724bfa586dd"
+          "content_hash": "sha256:d685f1db9d9e9d1b473c3d93ea5fa4bd5efa3fb5d1cc530697766e591ad70040"
         },
         {
           "path": {
             "path": "design/netlists/s5l_xnor2_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:0ca428cc3599e1ce2e172cd6638b60975af74fc9dd64d087c76616027da759e9"
+          "content_hash": "sha256:f56e0af974683cc6cdab175d366e8940bafd773c31aa041b1886f2a897126e00"
         },
         {
           "path": {
             "path": "design/netlists/s5l_xor2_1.spice",
             "scope": "repo"
           },
-          "content_hash": "sha256:2ff0bae65ccf4c5485eb446c13346111a295436236ce7b8fc2ec0c12465d01a4"
+          "content_hash": "sha256:c7359c5ce91a46093f791ce87cde31b2ba3fc2eea86bb072b119044a7000ca7c"
         },
         {
           "path": {
             "path": "rtl/gen_models.py",
             "scope": "repo"
           },
-          "content_hash": "sha256:93c2321dec3b1e9ccb65fcd75fe6301fa055635c371540673760e6b21b3e490c"
+          "content_hash": "sha256:fd0e96780efadec013a780fc78093e120953af49de352f1fd5aa6c361e64c146"
         },
         {
           "path": {
@@ -2391,7 +2391,7 @@
           "content_hash": "sha256:d20ec6e795011b21b19b83091a1507eebfd61eddc93161fa4464a5f46547d7dc"
         }
       ],
-      "content_hash": "sha256:d4f1a2f04363e6f43532ae5d1b36a666ac67573509d302bfe0d2549bce475f32"
+      "content_hash": "sha256:2418479be7ac395484751bd094f7d92610b01d841ca38530d4179ddc2cf61183"
     }
   }
 }
