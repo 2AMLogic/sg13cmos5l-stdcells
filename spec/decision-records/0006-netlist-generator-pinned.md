@@ -66,3 +66,23 @@ local copy:
 - If a future SG13CMOS5L need cannot be expressed by the upstream generator,
   that is an upstream change with its own timing; it must not become a local
   fork. A local stopgap would need a new decision record.
+
+## Addendum, 2026-11-15 — the row-fit rule is raised, not asserted (issue #179)
+
+Appended, not edited. The rule is unchanged — finger caps plus the 440 nm
+rail plus the 700 nm N-P diffusion-spacing reserve must still fit inside the
+3360 nm row, and the layout config and the adapter still cannot drift; what
+changes is the enforcement mechanism named in the Decision bullet above.
+
+PR #185 (issue #179) replaced that bullet's bare `assert` with
+`check_row_fit(layout, process)` in `design/gen_netlists.py`, called at
+import so the guard runs whenever the adapter loads. It raises `ValueError`
+rather than asserting: `python -O` / `PYTHONOPTIMIZE` strips `assert`
+statements, so only a raise survives an optimized interpreter, and the
+raised message cites this record. The rule is additionally pinned by tests
+in `design/tests/test_gen_netlists.py` — `test_ratified_config_fits_the_row`,
+`test_rejects_out_of_row_sum_with_the_rule_message`,
+`test_boundary_equality_accepted_one_nm_over_rejected`,
+`test_row_height_and_rail_width_participate`,
+`test_out_of_row_config_breaks_the_adapter_under_O` — the last of which runs
+the adapter itself, under plain `python3` and under `-O` alike.
