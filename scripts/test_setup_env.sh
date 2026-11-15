@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
-# Checks that scripts/setup-env.sh fails closed (issue #4). No network, no
-# large downloads: exercises fetch_verified against a local file:// URL.
+# Checks that scripts/setup-env.sh fails closed (issue #4). No PDK and no large
+# download: nothing here fetches a tarball. Not offline, though -- the checks
+# split three ways. The fetch_verified checks run against a local file:// URL
+# and need no network. The doctored-sim/pdk.json case runs the real
+# setup-env.sh, which fetches the four small sha256-checked klayout-tools
+# scripts before it can abort at the pin/script comparison -- so that case
+# needs network. The unreadable-rtl/toolchain.json case aborts at the pin read,
+# before any fetch.
 set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
