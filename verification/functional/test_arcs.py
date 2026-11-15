@@ -42,14 +42,25 @@ every side-input state that propagates an arc rather than the first one:
     per-arc worst-over-states is printed against the single-state record so
     the comparison is reproducible rather than transcribed.
 
+Every assertion over the all-state sweep carries a committed negative control
+that proves it still bites (issue #148). They run in-process over deep copies
+of the enumeration and of the parsed report, so no control writes to, doctors,
+or restores any committed record:
+
     python3 verification/functional/test_arcs.py
+    python3 verification/functional/test_arcs.py --negative-control
 """
 from __future__ import annotations
 
+import argparse
+import contextlib
+import copy
+import io
 import json
 import re
 import sys
 from pathlib import Path
+from typing import Callable, NamedTuple
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
@@ -65,16 +76,6 @@ STATE_REPORT = HERE / "records" / "corner_states.report.json"
 
 def arc_key(a: dict) -> tuple[str, str, str]:
     return (a["cell"], a["output"], a["pin"])
-
-
-def trig_edge(arc: dict, edge: str) -> str:
-    """The input edge that drives output edge `edge` of `arc` in its state.
-
-    The same expression `gen_functional.build_corner_measurements` bakes into
-    the `.meas` line, so the unateness this test asserts over is the unateness
-    the deck actually measures.
-    """
-    return "RISE" if (arc["out_on_rise"] == (edge == "r")) else "FALL"
 
 
 def check_evaluator_against_rtl() -> int:
@@ -244,7 +245,7 @@ def check_arc_states(arcs: list[dict], states: list[dict],
                          "has mux and xor cells, so that cannot be right")
     for k in nonunate:
         for edge in ("r", "f"):
-            dirs = {trig_edge(s, edge) for s in by_arc[k]}
+            dirs = {g.trig_edge(s, edge) for s in by_arc[k]}
             if dirs != {"RISE", "FALL"}:
                 raise SystemExit(
                     f"non-unate arc {k} measures its {edge} output edge from "
@@ -257,9 +258,14 @@ def check_arc_states(arcs: list[dict], states: list[dict],
           f"output edges from both input-edge directions")
 
 
-def check_state_report(states: list[dict]) -> None:
-    """Coverage and shape of the all-state report. Verdict printed, not asserted."""
-    report = json.loads(STATE_REPORT.read_text())
+def check_state_report(states: list[dict], report: dict) -> None:
+    """Coverage and shape of the all-state report. Verdict printed, not asserted.
+
+    Takes the parsed report rather than reading `STATE_REPORT` itself, which is
+    the whole seam the report-side negative controls need: a control injects a
+    mutated copy in memory instead of doctoring the committed record on disk
+    and restoring it afterwards (issue #148).
+    """
     want = {g.arc_state_meas_name(s, e) for s in states
             if s["side"] is not None for e in ("r", "f")}
     rollup = {m["name"]: m for m in report["measurements"]}
@@ -437,7 +443,394 @@ def check_report(arcs: list[dict]) -> None:
               + (f"; over the bound: {', '.join(bad)}" if bad else ""))
 
 
-def main() -> int:
+# ---------------------------------------------------------------------------
+# Negative controls for the all-state assertions (issue #148)
+#
+# PR #146 added `check_arc_states` and `check_state_report` and justified them
+# with negative controls reported in its description and committed nowhere, so
+# nothing re-checked that the assertions still bit after a later edit. These
+# are those controls, re-derived and committed, in the shape this directory
+# already uses for `compare.py --negative-control`.
+#
+# A control that merely makes a check exit nonzero is not enough. Four of the
+# five enumeration controls are caught by the *same* assertion -- the oracle
+# state-list comparison -- so a mutation can be rejected for the wrong reason
+# and still look green. Each control therefore declares the diagnosis it
+# expects and is **failed** if a different assertion catches it. That is not
+# hypothetical: the obvious way to build the name-collision control, by
+# mutating `side`, is shadowed by the oracle comparison and asserts nothing
+# about name uniqueness. `SHADOW_PROBE` below is that control, and the runner
+# asserts it is reported as shadowed.
+# ---------------------------------------------------------------------------
+EXIT_CONTROL_QUIET = 1  # a control was not rejected by the assertion it names
+
+
+class Control(NamedTuple):
+    """One mutation that must be rejected by one named assertion.
+
+    `expect` holds the substrings the diagnosis must contain; `mutate` returns
+    any further ones it can only name once it has chosen its target (the arc it
+    dropped a state from, the measurement it untagged), which is what keeps a
+    control from being satisfied by the right assertion firing about the wrong
+    arc. `reproduces` names the silent failure mode the mutation stands for,
+    in the style of `sim/harness/corners.py`'s `sabotage()`.
+    """
+
+    name: str
+    target: str  # "enumeration" (mutate arc_states()) | "report" (inject one)
+    assertion: str
+    reproduces: str
+    expect: tuple[str, ...]
+    mutate: Callable[..., tuple[str, ...]]
+
+
+def _group(states: list[dict], k: tuple[str, str, str]) -> list[dict]:
+    return [s for s in states if arc_key(s) == k]
+
+
+def _first_multi_state(states: list[dict]) -> tuple[str, str, str]:
+    """The first arc with more than one propagating state, in enumeration order."""
+    seen: dict[tuple[str, str, str], int] = {}
+    for s in states:
+        seen[arc_key(s)] = seen.get(arc_key(s), 0) + 1
+    for k, n in seen.items():
+        if n > 1:
+            return k
+    raise SystemExit("no multi-state arc to mutate: the enumeration controls "
+                     "assume this library has at least one")
+
+
+def _first_nonunate(ctx: dict) -> tuple[str, str, str]:
+    """The first arc the RTL oracle calls non-unate, by sorted arc key."""
+    nonunate = sorted(k for k, v in ctx["oracle"].items()
+                      if len({h for _, h in v}) > 1)
+    if not nonunate:
+        raise SystemExit("the RTL oracle finds no non-unate arc to flatten")
+    return nonunate[0]
+
+
+# --- enumeration-side mutations: the states list, never the RTL oracle -----
+
+def _drop_state(states: list[dict], ctx: dict) -> tuple[str, ...]:
+    k = _first_multi_state(states)
+    states.remove(_group(states, k)[-1])
+    return (f"{k}: arc_states() yields",)
+
+
+def _flatten_nonunate(states: list[dict], ctx: dict) -> tuple[str, ...]:
+    k = _first_nonunate(ctx)
+    for s in _group(states, k):
+        s["out_on_rise"] = True
+    return (f"{k}: arc_states() yields",)
+
+
+def _invert_directions(states: list[dict], ctx: dict) -> tuple[str, ...]:
+    for s in states:
+        if s["out_on_rise"] is not None:
+            s["out_on_rise"] = not s["out_on_rise"]
+    return ()
+
+
+def _swap_states(states: list[dict], ctx: dict) -> tuple[str, ...]:
+    k = _first_multi_state(states)
+    a, b = _group(states, k)[:2]
+    # Swap the two states but leave `state_index` alone, so the index run
+    # 0..n-1 still holds and only the enumeration *order* has moved -- the
+    # index check must not be what catches this.
+    a["side"], b["side"] = b["side"], a["side"]
+    a["out_on_rise"], b["out_on_rise"] = b["out_on_rise"], a["out_on_rise"]
+    return (f"{k}: arc_states() yields",)
+
+
+def _collide_names(states: list[dict], ctx: dict) -> tuple[str, ...]:
+    k = _first_multi_state(states)
+    group = _group(states, k)
+    # Truncate only `side_order`, which the oracle state-list comparison does
+    # not read, so this reaches the name-collision check. Mutating `side`
+    # instead would collide the names too but be rejected by the oracle
+    # comparison first -- see SHADOW_PROBE.
+    for s in group:
+        s["side_order"] = []
+    return (g.arc_state_meas_name(group[0], "f"),)
+
+
+def _collide_names_via_side(states: list[dict], ctx: dict) -> tuple[str, ...]:
+    k = _first_multi_state(states)
+    group = _group(states, k)
+    group[1]["side"] = dict(group[0]["side"])
+    return ()
+
+
+# --- report-side mutations: a parsed copy, never the file on disk ----------
+
+def _drop_triple_at_ss(report: dict, ctx: dict) -> tuple[str, ...]:
+    corner = next(c for c in report["corners"]
+                  if c["corner_id"].startswith("ss"))
+    # Drop the lexicographically first name so it is inside the diagnosis's
+    # truncated `missing [...]` head and this control can require it by name.
+    gone = min(corner["measurements"], key=lambda m: m["name"])
+    corner["measurements"].remove(gone)
+    return (f"corner {corner['corner_id']} measures", gone["name"])
+
+
+def _drop_spec_row(report: dict, ctx: dict) -> tuple[str, ...]:
+    m = report["measurements"][0]
+    del m["spec_row"]
+    return (m["name"],)
+
+
+def _empty_limits(report: dict, ctx: dict) -> tuple[str, ...]:
+    m = report["measurements"][0]
+    m["limits"] = {}
+    return (m["name"],)
+
+
+def _drop_corner(report: dict, ctx: dict) -> tuple[str, ...]:
+    report["corners"] = [c for c in report["corners"]
+                         if not c["corner_id"].startswith("ss")]
+    return ()
+
+
+_ORACLE_CMP = ("arc_states() yields", "iverilog RTL truth tables give")
+
+CONTROLS: tuple[Control, ...] = (
+    Control(
+        name="dropped_state",
+        target="enumeration",
+        assertion="the oracle state-list comparison in check_arc_states",
+        reproduces="arc_states() stops emitting one of a multi-state arc's "
+                   "states, so the sweep silently measures fewer states than "
+                   "propagate the arc",
+        expect=_ORACLE_CMP,
+        mutate=_drop_state,
+    ),
+    Control(
+        name="unate_flattening",
+        target="enumeration",
+        assertion="the oracle state-list comparison in check_arc_states",
+        reproduces="a non-unate arc's states all claim the same output "
+                   "direction, which is the mutation an earlier draft of this "
+                   "test accepted because it derived non-unateness from the "
+                   "same out_on_rise field it was checking",
+        expect=_ORACLE_CMP,
+        mutate=_flatten_nonunate,
+    ),
+    Control(
+        name="inverted_directions",
+        target="enumeration",
+        assertion="the oracle state-list comparison in check_arc_states",
+        reproduces="every state's out_on_rise is inverted, so the deck "
+                   "measures each delay from the wrong input edge",
+        expect=_ORACLE_CMP,
+        mutate=_invert_directions,
+    ),
+    Control(
+        name="swapped_states",
+        target="enumeration",
+        assertion="the oracle state-list comparison in check_arc_states",
+        reproduces="two states of one arc come out of propagating_states() "
+                   "order, so state_index no longer names the state the "
+                   "report's measurement name says it holds",
+        expect=_ORACLE_CMP,
+        mutate=_swap_states,
+    ),
+    Control(
+        name="name_collision",
+        target="enumeration",
+        assertion="the measurement-name uniqueness check in check_arc_states",
+        reproduces="two states of one arc produce the same .meas name, so one "
+                   "silently overwrites the other in the report and a state "
+                   "goes unmeasured while the count still looks right",
+        expect=("all-state measurement names collide",),
+        mutate=_collide_names,
+    ),
+    Control(
+        name="missing_triple_at_ss",
+        target="report",
+        assertion="the per-corner coverage loop in check_state_report",
+        reproduces="one (arc, state, output edge) is absent at the slow "
+                   "corner, so the worst-case corner bounds one delay fewer "
+                   "than the rollup claims",
+        expect=("(arc, state, edge) triples: missing",),
+        mutate=_drop_triple_at_ss,
+    ),
+    Control(
+        name="missing_spec_row",
+        target="report",
+        assertion="the spec_row tag check in check_state_report",
+        reproduces="a measurement is not tagged with the spec row it bounds, "
+                   "so it is evidence for nothing the spec asked for",
+        expect=("is not tagged spec_row",),
+        mutate=_drop_spec_row,
+    ),
+    Control(
+        name="missing_limits_max",
+        target="report",
+        assertion="the limits.max check in check_state_report",
+        reproduces="a measurement carries no upper bound, so `klt sim` grades "
+                   "it no_limits_checked and its pass verdict means nothing",
+        expect=("carries no limits.max",),
+        mutate=_empty_limits,
+    ),
+    Control(
+        name="missing_corner",
+        target="report",
+        assertion="the corner-count check in check_state_report",
+        reproduces="a ratified corner is absent from the report, so the "
+                   "all-state claim covers fewer corners than the spec "
+                   "ratified",
+        expect=("all-state report has corners",
+                "expected one per ratified corner"),
+        mutate=_drop_corner,
+    ),
+)
+
+SHADOW_PROBE = Control(
+    name="name_collision_via_side",
+    target="enumeration",
+    assertion="the measurement-name uniqueness check -- which it never reaches",
+    reproduces="the name-collision control built the obvious way, by mutating "
+               "`side`: the oracle state-list comparison rejects it first, so "
+               "it looks green while asserting nothing about name uniqueness",
+    expect=("all-state measurement names collide",),
+    mutate=_collide_names_via_side,
+)
+
+
+def control_context() -> dict:
+    """The honest inputs every control mutates a deep copy of.
+
+    The iverilog oracle is built once and shared: it is 0.1 s of the 0.15 s a
+    full pass costs, and every control needs an *unmutated* one -- the
+    mutations are applied to the enumeration and to the parsed report, never
+    to the RTL tables the assertions check them against.
+    """
+    import compare
+
+    rtl = compare.rtl_tables()
+    if not rtl:
+        raise SystemExit("no RTL truth tables; iverilog/vvp produced nothing")
+    if not STATE_REPORT.exists():
+        raise SystemExit(
+            f"{STATE_REPORT.relative_to(ROOT)} is not recorded, so the "
+            "report-side controls have nothing to inject a mutated copy of; "
+            "the controls read the committed record and never write one")
+    return {"arcs": g.arcs(), "states": g.arc_states(), "rtl": rtl,
+            "oracle": states_from_rtl(rtl),
+            "report": json.loads(STATE_REPORT.read_text())}
+
+
+def run_control(control: Control, ctx: dict) -> tuple[str, str]:
+    """Apply one control to deep copies and classify what its check did.
+
+    Returns one of three verdicts with the diagnosis that produced it:
+
+      * ``rejected`` -- the check raised, and the diagnosis is the one this
+        control declares. The only passing verdict.
+      * ``shadowed`` -- the check raised, but with a different diagnosis: some
+        other assertion caught the mutation first, so this control proves
+        nothing about the one it targets.
+      * ``quiet`` -- the check did not raise at all. The assertion this
+        control targets has been deleted or weakened.
+    """
+    if control.target == "enumeration":
+        subject = copy.deepcopy(ctx["states"])
+        extra = control.mutate(subject, ctx)
+
+        def call() -> None:
+            check_arc_states(ctx["arcs"], subject, ctx["rtl"])
+    else:
+        subject = copy.deepcopy(ctx["report"])
+        extra = control.mutate(subject, ctx)
+
+        def call() -> None:
+            check_state_report(ctx["states"], subject)
+
+    want = [" ".join(w.split()) for w in (*control.expect, *extra)]
+    try:
+        # A check that fails to bite prints its "ok:" line; keep that out of
+        # the control log, where it would read as a pass.
+        with contextlib.redirect_stdout(io.StringIO()):
+            call()
+    except SystemExit as exc:
+        diag = " ".join(str(exc.code).split())
+        if all(w in diag for w in want):
+            return "rejected", diag
+        return "shadowed", diag
+    return "quiet", ""
+
+
+def run_negative_controls() -> int:
+    """Run every control twice, then the shadow probe. Exit 0 only if all bite."""
+    ctx = control_context()
+    enum_n = sum(c.target == "enumeration" for c in CONTROLS)
+    print(f"negative controls: {len(CONTROLS)} mutations over the all-state "
+          f"assertions -- {enum_n} of the enumeration (check_arc_states) and "
+          f"{len(CONTROLS) - enum_n} of the recorded report "
+          f"(check_state_report). Each must be rejected by the assertion it "
+          f"names, not merely rejected.")
+    first = [run_control(c, ctx) for c in CONTROLS]
+    # Run the whole table a second time in the same process: every control
+    # mutates a deep copy, so a control that leaked into the shared inputs
+    # would change another's verdict here.
+    again = [run_control(c, ctx) for c in CONTROLS]
+
+    failed = []
+    for c, (verdict, diag) in zip(CONTROLS, first):
+        print(f"  {verdict:8} {c.name:21} rejected by {c.assertion}"
+              if verdict == "rejected" else
+              f"  {verdict:8} {c.name:21} should be rejected by {c.assertion}")
+        head = diag[:150] or "(no diagnosis: the check did not raise at all)"
+        print(f"           {head}")
+        if verdict != "rejected":
+            failed.append((c, verdict, diag))
+
+    sys.stdout.flush()  # keep every diagnosis below after the per-control log
+    if first != again:
+        drifted = [c.name for c, a, b in zip(CONTROLS, first, again) if a != b]
+        print("FAIL: controls leaked into one another -- a second pass in the "
+              f"same process changed the verdict of {drifted}", file=sys.stderr)
+        return EXIT_CONTROL_QUIET
+    print(f"  ok: the same {len(CONTROLS)} verdicts on a second pass in this "
+          "process, so no control leaks into another's inputs")
+
+    # The shadow probe: the name-collision control built the obvious way must
+    # be reported as shadowed, which is what proves the per-control diagnosis
+    # match above is doing work rather than accepting any nonzero exit.
+    probe, probe_diag = run_control(SHADOW_PROBE, ctx)
+    if probe != "shadowed":
+        print(f"FAIL: the shadow probe ({SHADOW_PROBE.name}) was reported "
+              f"{probe!r}, expected 'shadowed'. It mutates `side`, which the "
+              "oracle state-list comparison reads, so it must be caught there "
+              "and not by the name-collision check it nominally targets; a "
+              "runner that reports it rejected is accepting any nonzero exit "
+              f"as proof. Diagnosis: {probe_diag[:200]}", file=sys.stderr)
+        return EXIT_CONTROL_QUIET
+    print(f"  ok: shadow probe {SHADOW_PROBE.name} is reported shadowed, not "
+          "rejected -- it is caught by the oracle state-list comparison "
+          "before the name-collision check it targets, so it would prove "
+          "nothing about name uniqueness")
+
+    if failed:
+        for c, verdict, diag in failed:
+            why = ("was caught by a different assertion, so it proves nothing "
+                   "about the one it targets"
+                   if verdict == "shadowed" else
+                   "did not fail at all: the assertion it targets is gone or "
+                   "weakened")
+            print(f"control: {c.name} {why}. It reproduces: {c.reproduces}. "
+                  f"Expected a diagnosis containing {list(c.expect)}, got "
+                  f"{diag[:200]!r}", file=sys.stderr)
+        print(f"control: {len(failed)} of {len(CONTROLS)} negative controls "
+              "did not bite; the all-state assertions no longer hold the "
+              "ground they are credited with", file=sys.stderr)
+        return EXIT_CONTROL_QUIET
+    print(f"ok: all {len(CONTROLS)} negative controls rejected, each by the "
+          "assertion it names")
+    return 0
+
+
+def run_checks() -> int:
     arcs = g.arcs()
     states = g.arc_states()
     checked = check_evaluator_against_rtl()
@@ -452,10 +845,31 @@ def main() -> int:
     else:
         print(f"skip: {REPORT.relative_to(ROOT)} not recorded yet")
     if STATE_REPORT.exists():
-        check_state_report(states)
+        check_state_report(states, json.loads(STATE_REPORT.read_text()))
     else:
         print(f"skip: {STATE_REPORT.relative_to(ROOT)} not recorded yet")
     return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(
+        description="Checks for the corner-matrix timing-arc evidence.")
+    ap.add_argument("--checks", action="store_true",
+                    help="run the normal pass (the default when no mode is "
+                         "given)")
+    ap.add_argument("--negative-control", action="store_true",
+                    help="run only the committed negative controls: every "
+                         "mutation must be rejected by the assertion it names")
+    args = ap.parse_args(argv)
+    if args.checks and args.negative_control:
+        ap.error("--checks cannot be combined with --negative-control: a "
+                 "control run asserts that the checks *fail* on a deliberately "
+                 "mutated copy, so a zero exit there means the opposite of "
+                 "what it means for a normal pass, and one process must not "
+                 "report both under one status")
+    if args.negative_control:
+        return run_negative_controls()
+    return run_checks()
 
 
 if __name__ == "__main__":
