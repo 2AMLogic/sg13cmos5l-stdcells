@@ -16,8 +16,8 @@ check "committed tree passes" "$?" "0"
 
 # No list to keep in step: the set of ok: lines the gate prints must equal the
 # set of local paths the lock lists.
-python3 -c 'import json; [print(f["local"]) for e in json.load(open("reuse.lock.json"))["imports"] for f in e["files"]]' \
-  | ( cd "$ROOT" && sort ) >"$tmp/want"
+( cd "$ROOT" && python3 -I -c 'import json; [print(f["local"]) for e in json.load(open("reuse.lock.json"))["imports"] for f in e["files"]]' ) \
+  | sort >"$tmp/want"
 sed -n 's/^ok:  *\(.*\)$/\1/p' "$tmp/log" | sort >"$tmp/got"
 diff -u "$tmp/want" "$tmp/got" >"$tmp/diff" 2>&1
 check "covers every local path the lock lists" "$?" "0"
