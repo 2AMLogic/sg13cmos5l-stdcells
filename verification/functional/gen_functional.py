@@ -244,23 +244,15 @@ def arcs() -> list[dict]:
     see which of its entries stand for more than the one state they measure
     (30 of 106 do -- that is what ``arc_states()`` exists to widen).
 
+    Derived from ``arc_states()`` by keeping each arc's first propagating
+    state, so the two enumerations cannot disagree about which arcs exist
+    or what those arcs measure.
+
     ``side is None`` means no state propagates this input to this output: the
     arc does not exist, and it is reported as a declared gap rather than
     dropped.
     """
-    out = []
-    for c in cells():
-        ins = c["inputs"]
-        for o, expr in c["outputs"].items():
-            node = expression(expr, ins)
-            for p in ins:
-                states = propagating_states(node, ins, p)
-                side, high = states[0] if states else (None, None)
-                out.append({"cell": c["name"], "output": o, "pin": p,
-                            "side": side, "out_on_rise": high,
-                            "side_order": [q for q in ins if q != p],
-                            "state_index": 0, "state_count": len(states)})
-    return out
+    return [a for a in arc_states() if a["state_index"] == 0]
 
 
 def arc_states() -> list[dict]:
