@@ -61,25 +61,14 @@ Two facts shape everything below.
 
 ## Now
 
-Can start today; each is one pull request. Live issue numbers are tracked in
-[`WORK_PLAN.md`](WORK_PLAN.md), not here: a Now row is built and closed within
-the hour, so a row that names its issue is stale by the time it merges.
-
-1. **Bring the README status in line with the record**. Done when the
-   Status paragraph and the Repo layout block match the table above: the
-   retarget has begun (first generated cell committed), item 5 is recorded
-   `unmet` (`check_failed`) pending the #129 decision, item 6 waits on the
-   #28 decision, and `design/` holds a catalog and a generator rather than
-   xschem schematics.
-2. **Reduce the local netlist generator to configuration** (decision
-   record [0003](spec/decision-records/0003-netlist-generator-local.md)).
-   Done when the pinned upstream generator reproduces the 40 committed
-   netlists under `--check`, `design/gen_netlists.py` holds only the
-   SG13CMOS5L sizing, and item 1 is re-attested.
-3. **Gate and hygiene follow-ups**, one pull request each: done
-   when `scripts/test_check_reuse_lock.sh` passes from any working directory
-   and the item-1 inventory docstring no longer states the premise PR #147
-   corrected.
+What can start today is tracked in [`WORK_PLAN.md`](WORK_PLAN.md), regenerated
+from live GitHub label state by the Guide triage role — see its `Very
+Important`, `Important` and `Ready` sections there. This section carries no
+hand-written work rows (issue #186): a Now row is built and closed within the
+hour, so a row written here is stale by the time it merges — the same
+reasoning that removed the `(#N)` references (#180), applied to the row
+itself. The gate `scripts/check_roadmap_now.py` rejects any numbered row
+under this heading.
 
 ## Next
 

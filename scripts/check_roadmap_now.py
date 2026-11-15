@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Fail when a ROADMAP.md `## Now` row names its work item by issue number (issue #180).
+"""Fail when ROADMAP.md `## Now` carries a hand-written numbered work row (issue #186).
 
-A Now row is by definition startable today, so it is built and closed within
-the hour; a row that carries a leading `(#N)` work-item reference is stale at
-merge time. Live issue numbers belong in WORK_PLAN.md, the generated label
-view. Explanatory references inside a row's prose (#129, #28) and PR
-references are not work-item references and pass.
+`## Now` is a pointer, not a second work queue: what can start today lives
+in WORK_PLAN.md, regenerated from live GitHub label state, so it cannot go
+stale. A hand-written Now row is built and closed within the hour — stale
+by the time it merges — so any numbered row under `## Now` is rejected,
+whether or not it cites an issue number. Prose references inside the
+pointer text (#129, #28) and PR references are not work rows and pass.
 
 Hermetic by construction: reads the file, no network, no gh call.
 """
@@ -19,7 +20,6 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 NOW_HEADING = re.compile(r"^##\s+Now\s*$")
 NEXT_HEADING = re.compile(r"^##\s")
 NUMBERED_ROW = re.compile(r"^[0-9]+\.\s")
-WORK_ITEM_REF = re.compile(r"^([0-9]+\. \*\*.*\*\* \()#([0-9]+)")
 
 
 def now_section(text):
@@ -47,19 +47,12 @@ def check(text):
         return ["ROADMAP.md has no `## Now` heading; the check cannot run "
                 "(rename the section back or update this script)"]
     start, body = sec
-    rows = 0
     for offset, line in enumerate(body):
-        lineno = start + offset
         if NUMBERED_ROW.match(line):
-            rows += 1
-        m = WORK_ITEM_REF.match(line)
-        if m:
-            errors.append(f"line {lineno}: ## Now row cites #{m.group(2)} as "
-                          "its work item; live issue numbers belong in "
-                          "WORK_PLAN.md, not ROADMAP.md ## Now")
-    if rows == 0:
-        errors.append("## Now parses to zero rows; the check cannot run "
-                      "(restore the numbered rows or update this script)")
+            lineno = start + offset
+            errors.append(f"line {lineno}: ## Now carries a hand-written "
+                          "numbered work row; ## Now is a pointer to "
+                          "WORK_PLAN.md, not a queue — remove the row")
     return errors
 
 
@@ -73,7 +66,8 @@ def main(argv=None):
     for e in errors:
         print(f"FAIL {e}", file=sys.stderr)
     if not errors:
-        print("ok   ROADMAP.md ## Now cites no work-item issue number")
+        print("ok   ROADMAP.md ## Now is a WORK_PLAN.md pointer with no "
+              "hand-written rows")
     return 1 if errors else 0
 
 
