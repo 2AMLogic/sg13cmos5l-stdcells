@@ -74,6 +74,26 @@ through a decision record and regenerates the signoff output in the same PR.
   `provenance.input.content_hash` — the netlist's sha256 — **not** the sha256 of
   the report file; citing the file's own hash grades `stale_evidence`.
 
+  That `content_hash` pins only the top deck: it is
+  `environment.netlist_sha256`, the sha256 of
+  `verification/functional/tb_corners.cir` alone. The 40 cell netlists the run
+  simulated are pinned by the report itself — `environment.netlist_closure`,
+  one sha256 per file, summarized in `environment.netlist_identity`, klt's
+  sha256 over the *normalized* netlist text (comment and blank lines dropped,
+  trailing `;`/`$` comments stripped, `+` continuations folded, whitespace
+  collapsed, case-folded, `.include` targets reduced to the directive name) of
+  the top deck and every closure file in recorded order.
+  `scripts/check_signoff.sh` re-checks the **identity**: it recomputes it from
+  the working tree for every `verification/functional/records/*.report.json`
+  carrying the field and fails on a mismatch, so a netlist change that moves
+  electrical content goes red before any re-grade could bless it (issue #170).
+  The identity is invariant under a comment-only netlist regeneration, which
+  is why it — not the raw closure bytes — is what the gate checks: a
+  comment-only regeneration legitimately stales the per-file byte pins (the
+  hash of record for that generation stays auditable through git history), and
+  a gate on raw bytes would need a hand-maintained exception entry per
+  regeneration, which is how gates stop being gates.
+
   The entry also declares the one spec row this block's full-custom digital
   sub-case needs, ratified by
   [decision record 0005](../spec/decision-records/0005-timing-margin-spec-row.md):
