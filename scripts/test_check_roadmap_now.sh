@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Checks that scripts/check_roadmap_now.py passes on the committed ROADMAP.md
-# (`## Now` as a WORK_PLAN.md pointer, zero numbered rows) and fails loudly on
-# any restored hand-written numbered row — whether or not it cites an issue —
-# and on an absent `## Now` heading (issue #186, inverting issue #180's gate).
+# (`## Now` as a WORK_PLAN.md pointer, zero hand-written rows) and fails loudly
+# on any restored hand-written work row — numbered or bulleted, whether or not
+# it cites an issue — and on an absent `## Now` heading (issues #186, #192).
 set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
@@ -29,10 +29,29 @@ want_line="$(grep -n 'Bring the README status' "$tmp/roadmap_row.md" | cut -d: -
 grep -q "line $want_line:" "$tmp/log"; check "  names the line ($want_line)" "$?" "0"
 grep -q "## Now" "$tmp/log"; check "  names the section" "$?" "0"
 
-# the row itself is the defect: a numbered row citing no issue fails too, so
-# the old work-item-reference branch stays deleted (issue #186)
+# a row citing no issue fails too, so the old work-item-reference branch
+# stays deleted (issue #186)
 mutate 's/^## Now$/## Now\n\n2. **A row citing nothing in particular**. Done when it is gone./' "$tmp/roadmap_plain.md"
 run "$tmp/roadmap_plain.md"; check "numbered row citing no issue fails too" "$?" "1"
+
+# a bulleted work row is rejected too: bullets are the house list style of
+# every sibling section in ROADMAP.md, so a bulleted queue is the likely
+# regression shape, not an exotic one (issue #192)
+mutate 's/^## Now$/## Now\n\n- **A row written as a dash bullet**. Done when it is gone./' "$tmp/roadmap_dash.md"
+run "$tmp/roadmap_dash.md"; check "bulleted row (dash) fails" "$?" "1"
+want_line="$(grep -n 'A row written as a dash bullet' "$tmp/roadmap_dash.md" | cut -d: -f1)"
+grep -q "line $want_line:" "$tmp/log"; check "  names the line ($want_line)" "$?" "0"
+grep -q "## Now" "$tmp/log"; check "  names the section" "$?" "0"
+
+mutate 's/^## Now$/## Now\n\n* **A row written as a star bullet**. Done when it is gone./' "$tmp/roadmap_star.md"
+run "$tmp/roadmap_star.md"; check "bulleted row (star) fails" "$?" "1"
+
+mutate 's/^## Now$/## Now\n\n+ **A row written as a plus bullet**. Done when it is gone./' "$tmp/roadmap_plus.md"
+run "$tmp/roadmap_plus.md"; check "bulleted row (plus) fails" "$?" "1"
+
+# prose that merely begins with a hyphenated word is not a list row (#192)
+mutate 's/^## Now$/## Now\n\nCross-cutting work lives in WORK_PLAN.md, not here.\nA well-known fact: this is prose, not a - bullet item./' "$tmp/roadmap_hyphen.md"
+run "$tmp/roadmap_hyphen.md"; check "hyphenated prose words are not list rows" "$?" "0"
 
 # prose references in the pointer text are not work rows and keep passing
 mutate 's/(issue #186)/(issue (#186))/' "$tmp/roadmap_prose.md"
