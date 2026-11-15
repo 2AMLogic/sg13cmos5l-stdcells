@@ -1,7 +1,24 @@
 #!/usr/bin/env python3
-"""Generate transistor-level SPICE netlists for the 40-cell catalog.
+"""Generate the 40 transistor-level SPICE netlists with the pinned upstream generator.
 
-Usage: gen_netlists.py [--check] [--catalog design/cells.json] [--out design/netlists]
+Usage: gen_netlists.py [--check] [--out design/netlists]
+
+This file is the SG13CMOS5L adapter (decision record 0006, superseding 0003).
+It merges the ratified catalog (design/cells.json) with this PDK's sizing --
+the `process` block of layout/sg13cmos5l-cells.config.json, which carries the
+citation for every value -- into the config the pinned generator consumes, and
+delegates everything else to the vendored upstream copy
+(layout/vendor/sg13g2-stdcells/design/gen_netlists.py, byte-identical to
+2AMLogic/sg13g2-stdcells at the `reuse.lock.json` pin). The topology code and
+the Liberty-function parser live upstream now; this repo keeps no second copy.
+
+Sizing rule (all numbers in the `process` block; the only PDK-specific part):
+the finger caps (1000 nm N / 1200 nm P) split each device into fingers that
+keep the N and P diffusion rows (1000 + 1200 nm) plus the 440 nm rail and a
+700 nm N-P diffusion-spacing reserve inside the 3360 nm row target
+(spec/target-spec.md, 8 tracks of 0.42 um; fallback 3.78 um only through a new
+decision record). The assert below is that rule, checked against the config
+so the two files cannot drift apart.
 
 Default mode (re)writes one `<cell>.spice` per catalog cell under --out.
 `--check` regenerates in memory and exits 1 on any difference against the
@@ -9,307 +26,91 @@ files on disk (changed, missing, or stray `.spice` files); this is the
 declared freshness check for `klt signoff --attest 1`. Output is
 deterministic (sorted, no timestamps), so the check is a byte compare.
 
-Topology (PDK-independent). Each output function is parsed into an AST
-(`!` `*` `^` `+`) and put in negation normal form over literals; XOR is
-expanded to (a*!b)+(!a*b). The parser is strict and is shared with
-rtl/gen_models.py: `*`, `+` and `^` may not be mixed at one nesting level
-without parentheses, so no precedence between them is assumed. A literal that
-appears inverted gets one shared unit inverter per cell. The remaining
-function g is positive in its literals, so static CMOS applies directly:
-pull-down = g (AND series, OR parallel), pull-up = the dual, stage output = !g.
-  * output is `!g`            -> one inverting stage drives the pin;
-  * output is `g` (non-inv.)  -> an inverting stage then an output inverter.
-
-Sizing rule (SG13CMOS5L configuration; the only PDK-specific part):
-  * unit widths are the sg13cmos5l_inv_1 reference: N 740 nm, P 1120 nm,
-    L 130 nm, on `sg13_lv_nmos` / `sg13_lv_pmos`, supply 1.20 V;
-  * a device's width is unit * stage_scale * D, where D is the longest series
-    path through that device in its own pull network (stack compensation);
-  * stage_scale is the drive for the stage that drives the pin; for the first
-    stage of a non-inverting cell it is max(1, drive // 2); input inverters
-    for inverted literals are unit size;
-  * row fit: the width `w` is the TOTAL device width, split into `ng` equal
-    fingers, each at most FINGER_MAX_N / FINGER_MAX_P. These caps keep the N
-    and P diffusion rows (1000 + 1200 nm) plus rail clearance inside the
-    3.36 um row target (rail 0.44 um at the cell boundary, 0.7 um reserved for
-    the N-P diffusion spacing). This is a sizing constraint, not a layout
-    claim: the row height is a target (spec/target-spec.md), fallback 3.78 um.
+`parse` and `evaluate` are re-exported from the pinned engine: this module is
+still the one shared Liberty-function parser home for the digital views
+(rtl/gen_models.py imports it and, through it,
+verification/functional/gen_functional.py's arc derivation), but the grammar
+has exactly one implementation -- the pinned one.
 """
 import argparse
-import difflib
+import importlib.util
 import json
 import pathlib
-import re
 import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
+REPO = HERE.parent
+VENDOR = REPO / "layout" / "vendor" / "sg13g2-stdcells" / "design" / "gen_netlists.py"
+PROCESS_CONFIG = REPO / "layout" / "sg13cmos5l-cells.config.json"
 
-VDD_V = 1.20
-L_NM = 130
-UNIT_N_NM = 740
-UNIT_P_NM = 1120
-FINGER_MAX_N = 1000
-FINGER_MAX_P = 1200
-ROW_UM = 3.36
-RAIL_UM = 0.44
-DIFF_RESERVE_UM = 0.70
-assert (FINGER_MAX_N + FINGER_MAX_P) / 1000 <= ROW_UM - RAIL_UM - DIFF_RESERVE_UM
+# Row-fit reserve for the N-P diffusion spacing, nm: part of the sizing rule
+# above, not a PDK rule, so it lives here and only here.
+DIFF_RESERVE_NM = 700
 
-TOKEN_RE = re.compile(r"\s*(?:([A-Z][A-Z0-9_]*)|(.))")
-OPS = {"*": "and", "+": "or", "^": "xor"}
+# Header line 1 names the catalog the netlists derive from; passing the repo
+# path keeps that line byte-identical to the pre-pin output.
+CONFIG_NAME = "design/cells.json"
 
 
-# ---------------------------------------------------------------- parsing
-def parse(expr):
-    toks = []
-    for m in TOKEN_RE.finditer(expr):
-        if m.group(1):
-            toks.append(("id", m.group(1)))
-        elif m.group(2) and m.group(2).strip():
-            toks.append((m.group(2), m.group(2)))
-    pos = [0]
+def _load_engine():
+    """The pinned upstream generator, loaded by path under its own module name.
 
-    def peek():
-        return toks[pos[0]][0] if pos[0] < len(toks) else None
-
-    def take(kind):
-        if peek() != kind:
-            raise ValueError(f"expected {kind!r} in {expr!r}")
-        pos[0] += 1
-        return toks[pos[0] - 1][1]
-
-    def atom():
-        if peek() == "!":
-            take("!")
-            return ("not", atom())
-        if peek() == "(":
-            take("(")
-            e = chain()
-            take(")")
-            return e
-        return ("var", take("id"))
-
-    def chain():
-        first = atom()
-        sym = peek()
-        if sym not in OPS:
-            return first
-        items = [first]
-        while peek() == sym:
-            take(sym)
-            items.append(atom())
-        if peek() in OPS:
-            raise ValueError(f"mixed operators without parentheses in {expr!r}")
-        return (OPS[sym], items)
-
-    e = chain()
-    if pos[0] != len(toks):
-        raise ValueError(f"trailing input in {expr!r}")
-    return e
+    Both this adapter and the engine are named `gen_netlists.py`, so a plain
+    `import gen_netlists` here could resolve back to this file; the explicit
+    spec makes the delegation unambiguous.
+    """
+    spec = importlib.util.spec_from_file_location("sg13g2_stdcells_gen_netlists", VENDOR)
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
-def evaluate(e, env):
-    k = e[0]
-    if k == "var":
-        return env[e[1]]
-    if k == "not":
-        return 1 - evaluate(e[1], env)
-    if k == "and":
-        return int(all(evaluate(x, env) for x in e[1]))
-    if k == "or":
-        return int(any(evaluate(x, env) for x in e[1]))
-    r = 0
-    for x in e[1]:
-        r ^= evaluate(x, env)
-    return r
+engine = _load_engine()
+
+# The one shared Liberty-function parser, from the pinned copy.
+parse = engine.parse
+evaluate = engine.evaluate
+
+_LAYOUT = json.loads(PROCESS_CONFIG.read_text())
+_PROCESS = _LAYOUT["process"]
+assert (
+    _PROCESS["finger_max_n"] + _PROCESS["finger_max_p"]
+    <= _LAYOUT["layout"]["row_height_nm"] - _LAYOUT["layout"]["rules"]["rail_width_nm"] - DIFF_RESERVE_NM
+), "finger caps do not fit the ratified row: revisit the sizing (decision record)"
 
 
-def nnf(e, neg=False):
-    """Negation normal form: ('lit', name, inverted) / ('and'|'or', [..])."""
-    k = e[0]
-    if k == "var":
-        return ("lit", e[1], neg)
-    if k == "not":
-        return nnf(e[1], not neg)
-    if k == "xor":
-        a = e[1][0]
-        for b in e[1][1:]:
-            a = ("or", [("and", [a, ("not", b)]), ("and", [("not", a), b])])
-        return nnf(a, neg)
-    op = k if not neg else ("or" if k == "and" else "and")
-    kids = [nnf(x, neg) for x in e[1]]
-    flat = []
-    for kid in kids:
-        flat.extend(kid[1] if kid[0] == op else [kid])
-    return flat[0] if len(flat) == 1 else (op, flat)
+def process():
+    """The SG13CMOS5L sizing block (the only PDK-specific part)."""
+    return dict(_PROCESS)
 
 
-def split_output_inversion(e):
-    neg = False
-    while e[0] == "not":
-        neg, e = not neg, e[1]
-    return neg, e
+def build_config():
+    """The config the pinned engine consumes: catalog cells + process sizing."""
+    return dict(json.loads((HERE / "cells.json").read_text()), process=process())
 
 
-# ---------------------------------------------------------------- networks
-def depth(t):
-    if t[0] == "lit":
-        return 1
-    ds = [depth(x) for x in t[1]]
-    return sum(ds) if t[0] == "and" else max(ds)
-
-
-class Cell:
-    def __init__(self, name):
-        self.name = name
-        self.devices = []  # (kind, drain, gate, source, w_nm, ng)
-        self.counter = 0
-
-    def node(self, hint="n"):
-        self.counter += 1
-        return f"{hint}{self.counter}"
-
-    def add(self, kind, d, g, s, w_nm):
-        cap = FINGER_MAX_N if kind == "n" else FINGER_MAX_P
-        ng = 1
-        while w_nm % (10 * ng) or w_nm // ng > cap:
-            ng += 1
-        self.devices.append((kind, d, g, s, w_nm, ng))
-
-    def network(self, tree, kind, top, bot, signal, unit, scale, outside=0):
-        """Emit tree between top and bot. `kind` n: AND=series; p: AND=parallel."""
-        if tree[0] == "lit":
-            self.add(kind, top, signal(tree), bot, unit * scale * (outside + 1))
-            return
-        series = (tree[0] == "and") == (kind == "n")
-        kids = tree[1]
-        if not series:
-            for k in kids:
-                self.network(k, kind, top, bot, signal, unit, scale, outside)
-            return
-        ds = [depth_for(k, kind) for k in kids]
-        nodes = [top] + [self.node() for _ in kids[:-1]] + [bot]
-        for i, k in enumerate(kids):
-            others = sum(ds) - ds[i]
-            self.network(k, kind, nodes[i], nodes[i + 1], signal, unit, scale, outside + others)
-
-    def stage(self, g, out, signal, scale):
-        self.network(g, "n", out, "VSS", signal, UNIT_N_NM, scale)
-        self.network(g, "p", out, "VDD", signal, UNIT_P_NM, scale)
-
-    def inverter(self, a, y, scale):
-        self.add("n", y, a, "VSS", UNIT_N_NM * scale)
-        self.add("p", y, a, "VDD", UNIT_P_NM * scale)
-
-
-def depth_for(t, kind):
-    """Series depth of a subtree in the n (AND series) or p (OR series) network."""
-    if t[0] == "lit":
-        return 1
-    ds = [depth_for(x, kind) for x in t[1]]
-    series = (t[0] == "and") == (kind == "n")
-    return sum(ds) if series else max(ds)
-
-
-def build(cell):
-    c = Cell(cell["name"])
-    drive = cell["drive"]
-    inverted = {}  # input pin -> inverted-literal node (shared per cell)
-
-    def signal(lit):
-        _, name, inv = lit
-        if not inv:
-            return name
-        if name not in inverted:
-            inverted[name] = f"{name}_b"
-            c.inverter(name, inverted[name], 1)
-        return inverted[name]
-
-    for pin, fn in sorted(cell["outputs"].items()):
-        out_neg, inner = split_output_inversion(parse(fn))
-        g = nnf(inner)
-        if out_neg:
-            c.stage(g, pin, signal, drive)
-        else:
-            mid = f"{pin}_i"
-            c.stage(g, mid, signal, max(1, drive // 2))
-            c.inverter(mid, pin, drive)
-    return c
-
-
-# ---------------------------------------------------------------- emission
-def fmt_w(nm):
-    return f"{nm}n"
-
-
-def render(cell):
-    c = build(cell)
-    ins = cell["inputs"]
-    outs = sorted(cell["outputs"])
-    out = [
-        f"* {cell['name']} -- generated by design/gen_netlists.py from design/cells.json; do not edit.",
-        f"* family {cell['family']}, drive {cell['drive']}, sg13_lv devices, L={L_NM}n, supply {VDD_V:.2f} V.",
-    ]
-    for p in outs:
-        out.append(f"* {p} = {cell['outputs'][p]}")
-    out.append(f".subckt {cell['name']} {' '.join(ins + outs)} VDD VSS")
-    nn = pp = 0
-    for kind, d, g, s, w, ng in c.devices:
-        if kind == "n":
-            tag, model, bulk, nn = f"XMN{nn}", "sg13_lv_nmos", "VSS", nn + 1
-        else:
-            tag, model, bulk, pp = f"XMP{pp}", "sg13_lv_pmos", "VDD", pp + 1
-        out.append(f"{tag} {d} {g} {s} {bulk} {model} w={fmt_w(w)} l={L_NM}n ng={ng} m=1")
-    out.append(f".ends {cell['name']}")
-    return "\n".join(out) + "\n"
-
-
-def generate(catalog):
-    return {f"{c['name']}.spice": render(c) for c in catalog["cells"]}
-
-
-def check(files, outdir):
-    errs = []
-    on_disk = {p.name for p in outdir.glob("*.spice")} if outdir.is_dir() else set()
-    for name, text in sorted(files.items()):
-        path = outdir / name
-        if name not in on_disk:
-            errs.append(f"missing: {path}")
-        elif path.read_text() != text:
-            diff = difflib.unified_diff(
-                path.read_text().splitlines(), text.splitlines(), f"{name} (committed)", f"{name} (regenerated)", lineterm="", n=0
-            )
-            errs.append(f"stale: {path}\n" + "\n".join(diff))
-    for name in sorted(on_disk - set(files)):
-        errs.append(f"stray: {outdir / name} is not in the catalog")
-    return errs
+def generate():
+    """{cell.spice: text} exactly as committed under the pinned engine."""
+    return engine.generate(build_config(), config_name=CONFIG_NAME)
 
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--check", action="store_true", help="fail if committed netlists differ from regenerated ones")
-    ap.add_argument("--catalog", default=str(HERE / "cells.json"))
     ap.add_argument("--out", default=str(HERE / "netlists"))
     a = ap.parse_args(argv)
-    files = generate(json.load(open(a.catalog)))
     outdir = pathlib.Path(a.out)
-    if a.check:
-        errs = check(files, outdir)
-        for e in errs:
-            print(e, file=sys.stderr)
-        if errs:
-            print(f"gen_netlists: {len(errs)} netlist(s) out of date; run design/gen_netlists.py", file=sys.stderr)
-            return 1
-        print(f"gen_netlists: {len(files)} netlists fresh")
-        return 0
-    outdir.mkdir(parents=True, exist_ok=True)
-    for stale in outdir.glob("*.spice"):
-        if stale.name not in files:
-            stale.unlink()
-    for name, text in files.items():
-        (outdir / name).write_text(text)
-    print(f"gen_netlists: wrote {len(files)} netlists to {outdir}")
-    return 0
+    try:
+        files = generate()
+    except ValueError as e:
+        print(f"gen_netlists: invalid config: {e}", file=sys.stderr)
+        return 2
+    return engine.sync_outputs(
+        files, outdir, "*.spice", check=a.check, tool="gen_netlists",
+        script="design/gen_netlists.py", plural="netlists",
+        out_of_date="netlist(s)", describe_stale=engine.describe_text_diff,
+    )
 
 
 if __name__ == "__main__":

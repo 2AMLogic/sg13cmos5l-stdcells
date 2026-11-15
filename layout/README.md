@@ -29,9 +29,10 @@ placed (the reason is named, and no partial GDS is written for any cell).
 resolved **relative to its own grandparent**, so the two files have to keep the
 upstream `…/layout/gen_layouts.py` + `…/design/gen_netlists.py` shape under one
 root. That root cannot be the repo root: `/design/gen_netlists.py` here is this
-repo's recorded local divergence (decision record 0003 — it is not
-config-driven and has no `validate`/`PROCESS_KEYS`), and `rtl/gen_models.py`
-imports it for the Liberty-function parser. The vendor subtree keeps both, with
+repo's SG13CMOS5L adapter (decision record 0006 — it merges `design/cells.json`
+with the layout config's `process` sizing and delegates to the vendored
+engine), and `rtl/gen_models.py` imports the shared Liberty-function parser
+through it. The vendor subtree keeps both upstream files, with
 no edit to either file.
 
 ## What the retarget probe established (issue #151, one cell)

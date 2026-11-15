@@ -9,7 +9,7 @@ there are now two:
 | Commit | Read at | Covers |
 |---|---|---|
 | `f450813c6a5eecf3cf67aaf899db90d11f4ee68c` | 2026-10-17 | the characterization harness, `sim/harness/` (10 files) |
-| `26935d337bdacf8f46ed59678e4d0c9725965408` | 2026-11-14 | the cell layout generator, `layout/vendor/sg13g2-stdcells/` (2 files) — issue #151 |
+| `26935d337bdacf8f46ed59678e4d0c9725965408` | 2026-11-14 | the cell layout + netlist generators, `layout/vendor/sg13g2-stdcells/` (2 files) — issues #151, #165 |
 
 The second pin re-reads the origin at a later commit; it does **not** re-pin the
 harness, whose element is untouched. Rows below are tagged with the pin they
@@ -33,7 +33,7 @@ were read at where it matters.
 | `layout/README.md` | not applicable | `layout/README.md` | this repo keeps its own README |
 | `layout/toolchain.json` | diverged (template only) | `layout/toolchain.json` | taken as a template, not vendored, so it is not in the lock. This repo's copy carries its own `klt` pin (`klt.commit`, `klt.install_spec`, plus `klt.klt_required_commands`), set from the first `klt` commit verified on this PDK (issue #4). The origin's pin is not carried over. No decision record: a template is not a divergence from a shared file. |
 | `layout/gen_layouts.py` | adopted | `layout/vendor/sg13g2-stdcells/layout/gen_layouts.py` | vendored, byte-identical at `26935d33`. Under `vendor/` because the file resolves its netlist-generator import relative to its own grandparent, so the upstream `layout/` + `design/` shape has to be preserved under one root — and that root cannot be the repo root without overwriting this repo's local `design/gen_netlists.py`. Driven by this repo's `layout/sg13cmos5l-cells.config.json`. |
-| `design/gen_netlists.py` | adopted (second copy) | `layout/vendor/sg13g2-stdcells/design/gen_netlists.py` | vendored, byte-identical at `26935d33`, **imported only by the vendored `gen_layouts.py`**. This does not replace `/design/gen_netlists.py`, which stays the local divergence of decision record 0003 (not config-driven, no `validate`/`PROCESS_KEYS`, and imported by `rtl/gen_models.py`). The two copies coexist deliberately; replacing the local one with the upstream one is 0003's follow-up, not this row. |
+| `design/gen_netlists.py` | adopted | `layout/vendor/sg13g2-stdcells/design/gen_netlists.py` | vendored, byte-identical at `26935d33`. Adopted as the one netlist engine by issue #165 (decision record 0006): the pre-pin local copy of this file — the recorded divergence of 0003 — was deleted, and `design/gen_netlists.py` is now the SG13CMOS5L adapter that merges `design/cells.json` with the layout config's `process` sizing and delegates to the vendored engine. The engine is imported by the vendored `gen_layouts.py`, driven by the adapter, and (through the adapter's re-exported `parse`/`evaluate`) by `rtl/gen_models.py`. |
 | `layout/example_config.json` | not applicable (template only) | `layout/sg13cmos5l-cells.config.json` | read as a template, not vendored, so it is not in the lock. Every layer number and rule value in this repo's config was read from the SG13CMOS5L PDK at the `/sim/pdk.json` pin and carries its citation in `layout._citations`; `rail_width_nm` is this repo's ratified 440 nm, not the origin example's 160 nm. Same treatment as `layout/toolchain.json`. |
 
 No vendored file differs from upstream, so no decision record is needed and
@@ -55,6 +55,13 @@ no lock entry carries `"diverged"`.
   files on the harness element — one element per commit. The generator retargets
   to SG13CMOS5L by configuration alone and places `s5l_inv_1` on the 3.36 um
   row; evidence and the margin budget are in `layout/README.md`.
+- **Netlist generator: pinned upstream, local copy retired (issue #165).** The
+  engine rode the same `26935d33` element as the layout generator, and record
+  0006 adopts it as the one engine: `design/gen_netlists.py` is now the sizing
+  adapter, the shared Liberty-function parser is the pinned implementation, and
+  the repo keeps no second copy of either. The committed netlists were
+  regenerated; bodies are byte-identical, header line 2 drops the "sg13_lv
+  devices" phrase the engine does not emit.
 - **The origin's `nsd` layer is required, not optional.** The generator lists
   `nsd` in `OPTIONAL_LAYERS` but its placer refuses without it (the tap is drawn
   as a well tie, `activ & nsd`). The config carries `nsd` as `7/0`. The
@@ -85,7 +92,14 @@ no lock entry carries `"diverged"`.
   The local-copy half is now enforced on every run by
   `scripts/check_reuse_lock.py` (`check:reuse-lock`, wired into `check:ci`);
   the commit-reachability half needs network, so re-check it by hand whenever
-  a pin moves.
+  a pin moves. For the netlist-generator file the pin is also asserted by
+  `design/tests/test_gen_netlists.py`, so editing the vendored copy fails a
+  test instead of drifting silently (issue #165).
+- [x] The vendored netlist generator is the one engine (issue #165, record
+  0006): regenerating over the merged `design/cells.json` + `process` config
+  reproduced the previously committed 40 netlists with zero body differences
+  and header line 1 byte-identical; only header line 2 moved (the "sg13_lv
+  devices" phrase), and the netlists were regenerated on top of it.
 - [x] The vendored layout generator runs on this repo's config: writes
   `layout/gds/s5l_inv_1.gds`, `--check` exits 0, output byte-identical across
   independent runs (`npm run check:layout`, wired into `check:ci`).

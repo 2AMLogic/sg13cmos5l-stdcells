@@ -8,8 +8,9 @@ exits 1 if any committed model is missing, stale, or has no catalog cell.
 
 Catalog functions are Liberty style: `!` not, `*` and, `+` or, `^` xor, with
 parentheses. `^` may not be mixed with `*` or `+` at one nesting level without
-parentheses, so no precedence between them is assumed. The parser is
-design/gen_netlists.py's `parse`, shared so both views accept the same grammar.
+parentheses, so no precedence between them is assumed. The parser is the pinned
+upstream generator's `parse` (layout/vendor/sg13g2-stdcells/design/gen_netlists.py,
+re-exported by design/gen_netlists.py), shared so both views accept the same grammar.
 """
 import argparse
 import json
