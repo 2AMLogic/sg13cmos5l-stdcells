@@ -3,7 +3,8 @@ name: CI
 # Keeps the harness and evidence formats valid. The gates here are the same
 # scripts `npm run check:ci` runs locally: scripts/check_json.py (+ its self-test),
 # scripts/check_reuse_lock.py (+ its self-test),
-# scripts/check_item6_statement.py (+ its self-test), scripts/test_setup_env.sh
+# scripts/check_item6_statement.py (+ its self-test),
+# scripts/check_roadmap_now.py (+ its self-test), scripts/test_setup_env.sh
 # (`check:setup-env`) and scripts/check_signoff.sh (+ its self-test), plus the
 # PDK-free design/RTL checks (`check:design-rtl`). Keep the two in step.
 
@@ -43,6 +44,14 @@ jobs:
         run: |
           python3 -I scripts/check_item6_statement.py
           bash scripts/test_check_item6_statement.sh
+
+      # A Now row is startable today and closes within the hour, so a row that
+      # names its issue is stale at merge time; live issue numbers live in
+      # WORK_PLAN.md. Prose references to held issues are allowed (issue #180).
+      - name: ROADMAP.md Now rows carry no work-item issue reference
+        run: |
+          python3 -I scripts/check_roadmap_now.py
+          bash scripts/test_check_roadmap_now.sh
 
       # scripts/setup-env.sh refuses to run at all without bison and flex (it
       # builds ngspice), so the fail-closed test cannot reach the pin check
