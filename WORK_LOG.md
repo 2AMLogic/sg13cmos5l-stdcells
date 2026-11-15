@@ -5,6 +5,22 @@ Maintained by the Guide triage role.
 
 ### 2026-11-15
 
+- **PR #174**: docs(design): motivate the item-1 inventory gate with the rename scenario
+- **PR #164**: gate: verify reuse.lock.json sha256s, wire into check:ci and CI
+- **PR #169**: package.json: remove dead worktree:return npm alias
+- **PR #158**: test: add --negative-control to test_arcs.py and share gen_functional.trig_edge
+- **PR #160**: build: point npm test at the full check:ci gate list; drop check:all and lint aliases
+- **PR #161**: refactor: single-source the request PDK models/options block from sim/pdk.json
+- **PR #163**: refactor: derive arcs() from arc_states() in gen_functional
+- **PR #147**: feat(design): generate the item-1 attestation inventory from the cell catalog
+- **Issue #149** (closed): design/gen_item1_inventory.py docstring states the added-cell premise PR #147 itself corrected
+- **Issue #159** (closed): No gate verifies reuse.lock.json's vendored-file sha256s, so a local edit to a pinned file passes CI
+- **Issue #166** (closed): package.json: `worktree:return` points at a script that does not exist
+- **Issue #148** (closed): Commit the arc-state negative controls, and share one trigger-edge helper between the deck and its test
+- **Issue #141** (closed): Realign the package.json entry points: npm test runs 1 of the 4 gates check:ci runs, and check:all is a bare alias
+- **Issue #145** (closed): Deduplicate the PDK model/OSDI literals in the klt request generators
+- **Issue #157** (closed): Derive arcs() from arc_states() in gen_functional.py: two enumerations of the same arc list, kept in step by assertion
+- **Issue #144** (closed): Generate design/item1-inventory.json from design/cells.json: 960 of its 973 lines are two entries repeated 40x each
 - **PR #162**: docs: correct test_setup_env.sh header's network claim
 - **Issue #156** (closed): scripts/test_setup_env.sh's header says "No network", but its last two checks require one — and it is now a gated CI step
 
