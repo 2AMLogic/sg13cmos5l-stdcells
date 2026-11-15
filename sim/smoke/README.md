@@ -20,8 +20,9 @@ is what the batch backend needs to accept an OSDI preload.
 
 ## Status of the five-corner run
 
-klt 0.9.1 (pinned in `layout/toolchain.json`) accepts `ihp-sg13cmos5l` on the
-batch backend (klayout-tools#2727, fixed by #4733).
+klt 0.9.2 (pinned in `layout/toolchain.json`) accepts `ihp-sg13cmos5l` on the
+batch backend (klayout-tools#2727, fixed by #4733, first carried by the
+0.9.1 pin).
 
 - `inverter_tran.request.json`: five corners passed on the fleet; record in
   [`records/five-corner.2026-11-11.md`](records/five-corner.2026-11-11.md).

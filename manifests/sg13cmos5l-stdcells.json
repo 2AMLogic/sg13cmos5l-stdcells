@@ -15,7 +15,7 @@
     },
     "9": {
       "file": "sim/attest/item9.envelope.json",
-      "content_hash": "sha256:e0d99250b4f68ee9050a60df0254dfc82147d7f03ec35efe8339acbce7d93739"
+      "content_hash": "sha256:8f58c3d4546b3c95368bb67179b352f3c28b8bba3f5cecc0d894b7872c20bd38"
     },
     "10": {
       "file": "manifests/evidence/item-10-repo-hygiene.json",

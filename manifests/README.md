@@ -22,7 +22,8 @@ through a decision record and regenerates the signoff output in the same PR.
   `design/item1-inventory.json` with `klt signoff --attest 1`. The citation's
   `content_hash` is the envelope's `provenance.input.content_hash`, not the
   envelope file's — for item 1 that is one hash over the inventory *and* every
-  source and derived file it lists (84 paths at klt 0.9.1; a pre-0.9 klt hashed
+  source and derived file it lists (84 paths, hashed at klt 0.9.1, the pin
+  of record when item 1 was last re-attested; a pre-0.9 klt hashed
   the inventory file alone, so the committed envelope reported `drifted` under
   the pin until issue #133 re-attested it). A change to any netlist or model
   therefore moves this hash. Re-attest after any change to a source, derived

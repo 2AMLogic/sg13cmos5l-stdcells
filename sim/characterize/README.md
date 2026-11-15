@@ -123,7 +123,8 @@ to be a `klt` fault, so the run used a `/tmp` mirror of the PDK `lib/` and
 - PDK: `sim/pdk.json` pin (`f7bca32694fe3d58be0cc7d9df4b9f5db7161a14`),
   `cornerMOSlv.lib` section `mos_tt`
 - tools: `klt characterize` from klayout-tools 0.9.2.dev683 (host `klt`),
-  ngspice-46 on the host; the repo pin is klt 0.9.1 / ngspice 47
+  ngspice-46 on the host; the repo pin at the time of that run was
+  klt 0.9.1 / ngspice 47
 - run: one local single-unit run, 49 points, 2 arcs; about 100 s wall, 13 min CPU
 
 ## What is not here yet

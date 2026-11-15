@@ -5,13 +5,14 @@
     "This comment is APPEND-ONLY: record each later pin bump as a new paragraph naming the issue, what changed upstream, and why; a correction gets its own new paragraph, never an edit to the one it corrects.",
     "Issue #4: first pin, klt at dce956c3c399; drc and lvs are the required commands (smoke evidence in layout/smoke/).",
     "Issue #49: pin moved to the klayout-tools 0.8.0 release (tag v0.8.0, commit c572046be644). install_spec is now the PyPI release `klayout-tools==0.8.0`, because a git build reports a dev version that does not satisfy `==0.8.0` (klayout-tools#2823); setup-env.sh therefore checks `klt --version` against version_reported instead of a g<sha> suffix. fetch-ihp-sg13g2.sh and fetch-ihp-sg13cmos5l.sh changed upstream (new sha256); _install_common.sh and fetch-sg13g2-sim-toolchain.sh are unchanged. Recorded evidence from the dce956c3c399 build is left as is.",
-    "Issue #4 (five-corner record): pin moved to the klayout-tools 0.9.1 release (tag v0.9.1, commit 4d0d29be4fd9). It carries klayout-tools#4733 (merge 56c8a0249a7b), which lets `klt sim --backend batch` accept ihp-sg13cmos5l (klayout-tools#2727, closed); the previous pin 0.8.0 predates that fix. install_spec and version_reported follow; the four fetch scripts were re-hashed at the new commit and are byte-identical to the 0.8.0 ones, so their sha256 values are unchanged. Recorded evidence from the 0.8.0 build is left as is."
+    "Issue #4 (five-corner record): pin moved to the klayout-tools 0.9.1 release (tag v0.9.1, commit 4d0d29be4fd9). It carries klayout-tools#4733 (merge 56c8a0249a7b), which lets `klt sim --backend batch` accept ihp-sg13cmos5l (klayout-tools#2727, closed); the previous pin 0.8.0 predates that fix. install_spec and version_reported follow; the four fetch scripts were re-hashed at the new commit and are byte-identical to the 0.8.0 ones, so their sha256 values are unchanged. Recorded evidence from the 0.8.0 build is left as is.",
+    "Issue #109: pin moved to the klayout-tools 0.9.2 release (tag v0.9.2, commit 046ba74652fc). It is the first release carrying `--split-grid`, `--wait-for-capacity` and `--resume` on `klt characterize`, which every recorded characterization run was made with (unreleased 0.9.2.dev* host builds; 0.9.1 has none of the three) — at 0.9.2 the documented `source .cache/env.sh` + `klt characterize` invocation runs the pin of record itself. install_spec and version_reported follow; the four fetch scripts were re-hashed at the new commit and are byte-identical to the 0.9.1 ones, so their sha256 values are unchanged. Recorded characterization and smoke evidence is append-only and left as is (decision record spec/decision-records/0007-klt-pin-bump.md)."
   ],
   "klt": {
     "repo": "2AMLogic/klayout-tools",
-    "commit": "4d0d29be4fd991f499d59e783a908082d5e24c56",
-    "install_spec": "klayout-tools==0.9.1",
-    "version_reported": "0.9.1",
+    "commit": "046ba74652fc096bd97071fc3237f7159dd40183",
+    "install_spec": "klayout-tools==0.9.2",
+    "version_reported": "0.9.2",
     "klt_required_commands": [
       "drc",
       "lvs"
@@ -23,7 +24,7 @@
   },
   "klt_fetch_scripts": {
     "_comment": "Downloaded from raw.githubusercontent.com/2AMLogic/klayout-tools/<commit>/scripts/<name>; a sha256 mismatch aborts setup.",
-    "base_url": "https://raw.githubusercontent.com/2AMLogic/klayout-tools/4d0d29be4fd991f499d59e783a908082d5e24c56/scripts",
+    "base_url": "https://raw.githubusercontent.com/2AMLogic/klayout-tools/046ba74652fc096bd97071fc3237f7159dd40183/scripts",
     "sha256": {
       "_install_common.sh": "d3c045f1ae6510a7078e8202b99f6236a6258c1a9471e4799b34d8b42f8d1d3f",
       "fetch-ihp-sg13g2.sh": "3ea23a2e3073ad4f543ab954e89051e664ad7629e0d9b6a2d4d92bcd468e86b3",
