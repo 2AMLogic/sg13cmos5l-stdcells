@@ -80,6 +80,11 @@ def switch_level(ports, devs, vec):
     return val
 
 
+def row_fit_layout(row_height_nm=3360, rail_width_nm=440):
+    """A minimal layout dict shaped like sg13cmos5l-cells.config.json."""
+    return {"layout": {"row_height_nm": row_height_nm, "rules": {"rail_width_nm": rail_width_nm}}}
+
+
 class EngineTest(unittest.TestCase):
     """The adapter must run the pinned vendored engine, never a second copy."""
 
@@ -117,6 +122,74 @@ class EngineTest(unittest.TestCase):
         self.assertEqual((proc["finger_max_n"], proc["finger_max_p"]), (1000, 1200))
         self.assertEqual((proc["nmos_model"], proc["pmos_model"]), ("sg13_lv_nmos", "sg13_lv_pmos"))
         self.assertEqual((proc["vdd_net"], proc["vss_net"]), ("VDD", "VSS"))
+
+
+class RowFitRuleTest(unittest.TestCase):
+    """The row-fit rule (decision record 0006) as an exercised rule, not a
+    value pin: check_row_fit must reject any finger-cap sum over the row
+    budget -- including a coordinated re-size that moves the config caps and
+    every value pin together -- and it must raise, not assert, so `python -O`
+    keeps the guard."""
+
+    def test_ratified_config_fits_the_row(self):
+        # Reads the committed config with no cap literals: a deliberate
+        # re-size that moves only finger_max_* (and any value pin elsewhere)
+        # fails here, because the budget still comes from the ratified row.
+        layout = json.loads(gn.PROCESS_CONFIG.read_text())
+        gn.check_row_fit(layout, layout["process"])
+
+    def test_rejects_out_of_row_sum_with_the_rule_message(self):
+        proc = {"finger_max_n": 1000, "finger_max_p": 1225}
+        with self.assertRaises(ValueError) as raised:
+            gn.check_row_fit(row_fit_layout(), proc)
+        msg = str(raised.exception)
+        self.assertIn("finger caps do not fit the ratified row", msg)
+        self.assertIn("decision record", msg)
+
+    def test_boundary_equality_accepted_one_nm_over_rejected(self):
+        budget = 3360 - 440 - gn.DIFF_RESERVE_NM  # 2220 at the ratified geometry
+        at = {"finger_max_n": budget - 1200, "finger_max_p": 1200}
+        gn.check_row_fit(row_fit_layout(), at)
+        over = dict(at, finger_max_n=at["finger_max_n"] + 1)
+        with self.assertRaises(ValueError):
+            gn.check_row_fit(row_fit_layout(), over)
+
+    def test_row_height_and_rail_width_participate(self):
+        caps = {"finger_max_n": 1000, "finger_max_p": 1220}  # sum == 2220
+        gn.check_row_fit(row_fit_layout(3361), caps)  # taller row: room to spare
+        with self.assertRaises(ValueError):
+            gn.check_row_fit(row_fit_layout(3359), caps)  # shorter row: over
+        gn.check_row_fit(row_fit_layout(3360, 439), caps)  # narrower rail: fits
+        with self.assertRaises(ValueError):
+            gn.check_row_fit(row_fit_layout(3360, 441), caps)  # wider rail: over
+
+    def test_out_of_row_config_breaks_the_adapter_under_O(self):
+        """End-to-end where the assert sat: a config over the row budget must
+        break the adapter itself -- a fresh run of gen_netlists.py, not just
+        the function -- under plain python3 and under -O alike. This is what
+        the old bare assert could not provide: stripped by -O, and deletable
+        with the whole suite staying green."""
+        bad = json.loads(gn.PROCESS_CONFIG.read_text())
+        bad["process"]["finger_max_p"] = 1225
+        with tempfile.TemporaryDirectory() as td:
+            root = pathlib.Path(td)
+            (root / "design").mkdir()
+            (root / "layout").mkdir()
+            # The script resolves REPO from its own __file__, so the shadow
+            # tree carries a copy of the script (symlinks would resolve back
+            # to the real config) and symlinks for the pinned engine inputs.
+            shutil.copy(DESIGN / "gen_netlists.py", root / "design" / "gen_netlists.py")
+            shutil.copy(DESIGN / "cells.json", root / "design" / "cells.json")
+            (root / "layout" / "vendor").symlink_to(REPO / "layout" / "vendor")
+            (root / "layout" / "sg13cmos5l-cells.config.json").write_text(json.dumps(bad))
+            for opt in ([], ["-O"]):
+                r = subprocess.run(
+                    [sys.executable, *opt, str(root / "design" / "gen_netlists.py"),
+                     "--check", "--out", str(NETLISTS)],
+                    capture_output=True, text=True, timeout=300, cwd=str(root),
+                )
+                self.assertNotEqual(r.returncode, 0, f"guard did not fire under {opt or 'python3'}")
+                self.assertIn("finger caps do not fit the ratified row", r.stderr)
 
 
 class GeneratorTest(unittest.TestCase):

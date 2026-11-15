@@ -17,8 +17,9 @@ the finger caps (1000 nm N / 1200 nm P) split each device into fingers that
 keep the N and P diffusion rows (1000 + 1200 nm) plus the 440 nm rail and a
 700 nm N-P diffusion-spacing reserve inside the 3360 nm row target
 (spec/target-spec.md, 8 tracks of 0.42 um; fallback 3.78 um only through a new
-decision record). The assert below is that rule, checked against the config
-so the two files cannot drift apart.
+decision record). check_row_fit below is that rule, raised at import (a
+raise, not an assert, so `python -O` cannot strip it) and checked against the
+config so the two files cannot drift apart.
 
 Default mode (re)writes one `<cell>.spice` per catalog cell under --out.
 `--check` regenerates in memory and exits 1 on any difference against the
@@ -47,6 +48,27 @@ PROCESS_CONFIG = REPO / "layout" / "sg13cmos5l-cells.config.json"
 # above, not a PDK rule, so it lives here and only here.
 DIFF_RESERVE_NM = 700
 
+
+def check_row_fit(layout, process):
+    """The row-fit rule (decision record 0006), raised not asserted so -O keeps it.
+
+    The finger caps (process.finger_max_n + process.finger_max_p) plus the
+    rail and the N-P diffusion-spacing reserve must fit the ratified row
+    height. Plain-dict arguments make the rule directly testable; raising
+    instead of asserting keeps the guard under PYTHONOPTIMIZE.
+    """
+    budget = (
+        layout["layout"]["row_height_nm"]
+        - layout["layout"]["rules"]["rail_width_nm"]
+        - DIFF_RESERVE_NM
+    )
+    total = process["finger_max_n"] + process["finger_max_p"]
+    if total > budget:
+        raise ValueError(
+            f"finger caps do not fit the ratified row: {total} nm of fingers "
+            f"against a {budget} nm budget; revisit the sizing (decision record 0006)"
+        )
+
 # Header line 1 names the catalog the netlists derive from; passing the repo
 # path keeps that line byte-identical to the pre-pin output.
 CONFIG_NAME = "design/cells.json"
@@ -74,10 +96,9 @@ evaluate = engine.evaluate
 
 _LAYOUT = json.loads(PROCESS_CONFIG.read_text())
 _PROCESS = _LAYOUT["process"]
-assert (
-    _PROCESS["finger_max_n"] + _PROCESS["finger_max_p"]
-    <= _LAYOUT["layout"]["row_height_nm"] - _LAYOUT["layout"]["rules"]["rail_width_nm"] - DIFF_RESERVE_NM
-), "finger caps do not fit the ratified row: revisit the sizing (decision record)"
+# Where the assert sat: drift between this config and the ratified row is
+# caught the moment anything imports the adapter.
+check_row_fit(_LAYOUT, _PROCESS)
 
 
 def process():
