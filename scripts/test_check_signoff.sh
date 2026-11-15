@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
-# Self-test for the two checks scripts/check_signoff.sh can run without klt:
+# Self-test for the checks scripts/check_signoff.sh can run without klt:
 # check_attest_pins, which refuses an item-9 attestation inventory whose
 # hand-copied pins have drifted from this repo's pins of record (issue #131),
-# and attest_envelopes, which derives the list of attestation envelopes to
+# attest_envelopes, which derives the list of attestation envelopes to
 # re-check from the manifest rather than hand-copying a block per item (issue
-# #133). No network, no uvx and no klt: sources the script with
-# CHECK_SIGNOFF_SOURCE_ONLY=1 and exercises both against doctored copies of the
-# pin files and a synthetic manifest, plus `--help`, which also runs klt-free.
+# #133), and check_netlist_identities, which recomputes each functional
+# record's environment.netlist_identity from the tree so a netlist change that
+# moves electrical content cannot silently stale the item-5 evidence (issue
+# #170). No network, no uvx and no klt: sources the script with
+# CHECK_SIGNOFF_SOURCE_ONLY=1 and exercises each against doctored copies of the
+# pin files, records and netlists, plus `--help`, which also runs klt-free.
 set -uo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
@@ -148,6 +151,90 @@ check "an evidence entry naming no file exits non-zero" "$?" "1"
 ( attest_envelopes "$AE" absent.json ) >/dev/null 2>"$tmp/log"
 check "a manifest that cannot be read exits non-zero" "$?" "1"
 grep -q "Traceback" "$tmp/log"; check "a derivation failure is reported, not crashed on" "$?" "1"
+
+# --- check_netlist_identities: the item-5 records' netlist_identity gate -----
+# Issue #170: the manifest's item-5 citation pins only the top deck (its
+# content_hash is netlist_sha256); the 40 cell netlists are pinned by each
+# functional record's environment.netlist_closure, summarized in
+# environment.netlist_identity -- and nothing resolved either against the
+# tree. The gate recomputes the identity from the working tree over each
+# record's own closure. It needs the same read-only clone treatment as
+# check_attest_pins: the records, the top decks and the netlists, no klt.
+
+NI="$tmp/ni"
+mkdir -p "$NI"
+cp -r "$ROOT/design" "$ROOT/verification" "$NI/"
+
+( check_netlist_identities "$NI" ) >"$tmp/log" 2>&1
+check "the committed records' netlist identities recompute" "$?" "0"
+grep -q "corners.report.json" "$tmp/log"
+check "the ok line names a record it re-checked" "$?" "0"
+grep -q "records/functional.tt.json" "$tmp/log"
+check "a record with no netlist_identity is not selected" "$?" "1"
+
+# s5l_a21o_1.spice is in all three closures; doctoring it exercises the gate.
+NET="$NI/design/netlists/s5l_a21o_1.spice"
+
+sed -i 's/w=1480n/w=1500n/' "$NET"
+( check_netlist_identities "$NI" ) >/dev/null 2>"$tmp/log"
+check "an electrical netlist change exits non-zero" "$?" "1"
+grep -q "corners.report.json" "$tmp/log"
+check "that failure names a record" "$?" "0"
+grep -q "sha256:" "$tmp/log"
+check "that failure names both hashes" "$?" "0"
+
+# A comment-only regeneration (the PR #168 shape) must stay green: the
+# identity drops `*` lines, so the raw byte pins go stale with no signal.
+# Back to the committed netlist first -- the electrical change above is still
+# in the clone.
+cp "$ROOT/design/netlists/s5l_a21o_1.spice" "$NET"
+sed -i '2s/./* header regenerated, comment-only change./' "$NET"
+( check_netlist_identities "$NI" ) >"$tmp/log" 2>&1
+check "a comment-only netlist change stays green" "$?" "0"
+
+# A closure entry whose file is gone is a failure, never a silent pass.
+rm "$NET"
+( check_netlist_identities "$NI" ) >/dev/null 2>"$tmp/log"
+check "a missing closure file exits non-zero" "$?" "1"
+grep -q "s5l_a21o_1.spice" "$tmp/log"
+check "that failure names the missing file" "$?" "0"
+
+# Zero records under the glob would make the re-check cover nothing; the
+# attest_envelopes precedent says that is a failure, not a pass.
+mv "$NI/verification/functional/records" "$NI/verification/functional/records.away"
+( check_netlist_identities "$NI" ) >/dev/null 2>"$tmp/log"
+check "a glob selecting zero records exits non-zero" "$?" "1"
+grep -q "selected no record" "$tmp/log"; check "that failure is loud, not silent" "$?" "0"
+mv "$NI/verification/functional/records.away" "$NI/verification/functional/records"
+
+# A record whose identity klt could not compute (netlist_identity_error, set
+# whenever a closure cannot be fully read) must fail, never falsely match.
+cp "$NI/verification/functional/records/corners.report.json" "$tmp/corners.pristine"
+python3 -I - "$NI/verification/functional/records/corners.report.json" <<'PY'
+import json, sys
+
+with open(sys.argv[1], "rb") as handle:
+    report = json.loads(handle.read().decode("utf-8"))
+env = report["environment"]
+env["netlist_identity"] = None
+env["netlist_identity_error"] = "include(s) resolved by the executing host are not hashable: models.cir"
+with open(sys.argv[1], "w", encoding="utf-8") as handle:
+    json.dump(report, handle)
+PY
+( check_netlist_identities "$NI" ) >/dev/null 2>"$tmp/log"
+check "a record with netlist_identity_error exits non-zero" "$?" "1"
+grep -q "corners.report.json" "$tmp/log"
+check "that failure names the record" "$?" "0"
+cp "$tmp/corners.pristine" "$NI/verification/functional/records/corners.report.json"
+
+# Discovery is by rule, not a hand-kept list, so a fourth record is covered
+# automatically -- including a broken one, which fails rather than passes.
+printf 'not json\n' >"$NI/verification/functional/records/bogus.report.json"
+( check_netlist_identities "$NI" ) >/dev/null 2>"$tmp/log"
+check "an unreadable fourth record exits non-zero" "$?" "1"
+grep -q "bogus.report.json" "$tmp/log"
+check "that failure names the broken record" "$?" "0"
+rm "$NI/verification/functional/records/bogus.report.json"
 
 # --- usage(): --help is the whole header comment -----------------------------
 # The help text was a hardcoded `sed -n '2,13p'` line range, so it silently

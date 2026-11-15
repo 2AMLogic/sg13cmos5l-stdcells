@@ -177,6 +177,204 @@ for t1_item, inventory, envelope in sorted(rows):
 ENV
 }
 
+# check_netlist_identities <repo-root>: item 5's `klt sim` report cites the
+# three-corner characterization run, and the manifest's citation pins only the
+# top deck (`content_hash` = `netlist_sha256` = closure entry [0]); the 40 cell
+# netlists are pinned by `environment.netlist_closure` alone, and the one gate
+# that grades the citation (`klt signoff`) never sees them -- so a netlist that
+# moved electrically left every recorded arc delay citing stale inputs with no
+# signal (issue #170, the #133 shape again). Re-check the evidence the recorded
+# numbers actually depend on: `environment.netlist_identity`, klt's sha256 over
+# the normalized text of every closure file in recorded order.
+#
+# The normalization here is klayout-tools' `sim_staging._normalized_netlist_text`
+# (the pin of record, layout/toolchain.json), reimplemented because this gate
+# must run with no klt and no network. It drops `*` comment lines and blank
+# lines, strips trailing `;`/`$` comments, folds `+` continuations, collapses
+# whitespace, case-folds, and reduces an `.include`/`.inc` target to the
+# directive name -- so a comment-only netlist regeneration (PR #168's kind)
+# stays green while any electrical change goes red. The raw `netlist_closure`
+# byte pins are left alone on purpose: they are byte-level provenance and may
+# legitimately stop resolving after a comment-only regeneration (auditable at
+# the old sha through git history); a hand-maintained exception list for that
+# would be a gate that accumulates exceptions.
+#
+# This check is self-validating: it recomputes identities recorded by klt on an
+# untouched tree, so if this copy of the normalization ever drifts from klt's,
+# the committed records stop reproducing and it goes red immediately -- the
+# place a klt pin bump that changes the normalization surfaces first.
+#
+# Records are discovered by rule, never a hand-kept list: every
+# verification/functional/records/*.report.json carrying `netlist_identity`.
+# A re-check that silently covers nothing is the bug this replaces, so a glob
+# that selects zero records is a failure, not a pass.
+check_netlist_identities() {
+  python3 -I - "${1:-.}" <<'PY'
+import glob
+import hashlib
+import json
+import os
+import re
+import sys
+
+ROOT = sys.argv[1]
+RECORDS_GLOB = "verification/functional/records/*.report.json"
+
+_INLINE_COMMENT_RE = re.compile(r"(?:^|\s)[;$].*$")
+_INCLUDE_RE = re.compile(
+    r"^(?P<prefix>\s*\.(?:include|inc)\s+)(?P<target>\S.*?)\s*$", re.IGNORECASE
+)
+
+
+def load(path):
+    """The parsed JSON at ROOT/path, or None if it is missing or is not JSON --
+    reported as a failure by the caller, never raised, so a broken record
+    names itself instead of printing a traceback."""
+    try:
+        with open(f"{ROOT}/{path}", "rb") as handle:
+            return json.loads(handle.read().decode("utf-8"))
+    except (OSError, UnicodeDecodeError, ValueError):
+        return None
+
+
+def read_text(raw):
+    """klt's `_read_text`: UTF-8 when it decodes, else a lossy latin-1 read."""
+    try:
+        return raw.decode("utf-8")
+    except UnicodeDecodeError:
+        return raw.decode("latin-1")
+
+
+def fold_spice_continuations(lines):
+    """klt's `_paths.fold_spice_continuations`: a `+` line folds onto its
+    predecessor; an orphan `+` line is kept verbatim."""
+    folded = []
+    for line in lines:
+        stripped = line.lstrip()
+        if stripped.startswith("+") and folded:
+            folded[-1] = f"{folded[-1]} {stripped[1:].strip()}"
+        else:
+            folded.append(line)
+    return folded
+
+
+def normalized(text):
+    """klt's `_normalized_netlist_text`, reduced to what the identity hashes."""
+    lines = []
+    for raw in text.splitlines():
+        line = _INLINE_COMMENT_RE.sub("", raw).strip()
+        if not line or line.startswith("*"):
+            continue
+        lines.append(line)
+    out = []
+    for line in fold_spice_continuations(lines):
+        match = _INCLUDE_RE.match(line)
+        if match:
+            line = match.group("prefix")
+        out.append(" ".join(line.lower().split()))
+    return "\n".join(out)
+
+
+def identity(closure_paths):
+    """klt's `netlist_identity` over a recorded closure: sha256 of each file's
+    normalized text in closure order, a NUL between files. Returns
+    `(identity, None)`, or `(None, why)` when the tree cannot produce one."""
+    digest = hashlib.sha256()
+    for rel in closure_paths:
+        try:
+            with open(f"{ROOT}/{rel}", "rb") as handle:
+                text = read_text(handle.read())
+        except OSError:
+            return None, rel
+        digest.update(normalized(text).encode("utf-8"))
+        digest.update(b"\0")
+    return f"sha256:{digest.hexdigest()}", None
+
+
+def fail(record, message):
+    print(f"error: {record}: {message}", file=sys.stderr)
+    return 1
+
+
+broken = 0
+checked = []
+for path in sorted(glob.glob(f"{ROOT}/{RECORDS_GLOB}")):
+    record = os.path.relpath(path, ROOT)
+    report = load(record)
+    if not isinstance(report, dict) or not isinstance(report.get("environment"), dict):
+        broken += fail(record, "is missing or has no readable environment map")
+        continue
+    env = report["environment"]
+    error = env.get("netlist_identity_error")
+    if error is not None:
+        broken += fail(
+            record,
+            f"klt could not compute its netlist_identity ({error}), so there "
+            "is nothing to re-check -- the record must not cite an identity",
+        )
+        continue
+    recorded = env.get("netlist_identity")
+    if not isinstance(recorded, str):
+        continue
+    closure = env.get("netlist_closure")
+    if not isinstance(closure, list) or not closure:
+        broken += fail(record, "records a netlist_identity but no netlist_closure")
+        continue
+    paths = []
+    skipped = False
+    for entry in closure:
+        rel = entry.get("path") if isinstance(entry, dict) else None
+        if not isinstance(rel, str) or entry.get("sha256") is None:
+            broken += fail(
+                record,
+                f"has an unhashed closure entry ({entry!r}), which its "
+                "netlist_identity could not have included",
+            )
+            skipped = True
+            break
+        paths.append(rel)
+    if skipped:
+        continue
+    computed, missing = identity(paths)
+    if computed is None:
+        broken += fail(
+            record, f"closure names {missing}, which is missing from the tree"
+        )
+        continue
+    if computed != recorded:
+        broken += fail(
+            record,
+            f"netlist_identity is {recorded}, but the tree's closure "
+            f"recomputes to {computed} -- a netlist's electrical content "
+            "moved after this record was written",
+        )
+        continue
+    checked.append(record)
+
+if broken:
+    print(
+        "The functional records must describe the netlists they simulated. "
+        "Re-run the affected characterization (a klt sim corners campaign, "
+        "never a hand-edit of the records -- they are append-only evidence), "
+        "or revert the netlist change.",
+        file=sys.stderr,
+    )
+    sys.exit(1)
+if not checked:
+    print(
+        f"error: {RECORDS_GLOB} selected no record carrying "
+        "environment.netlist_identity, so the re-check would report success "
+        "without checking one",
+        file=sys.stderr,
+    )
+    sys.exit(1)
+print(
+    f"ok: {len(checked)} functional records' netlist identities recompute "
+    f"from the tree ({', '.join(os.path.basename(r) for r in checked)})"
+)
+PY
+}
+
 # Lets scripts/test_check_signoff.sh exercise check_attest_pins and
 # attest_envelopes without uvx, the network or a klt install.
 if [ "${CHECK_SIGNOFF_SOURCE_ONLY:-0}" = "1" ]; then return 0 2>/dev/null || exit 0; fi
@@ -200,6 +398,11 @@ cd "$(dirname "$0")/.." || exit 1
 # Cheapest gate first: no network, no klt. A drifted pin copy invalidates the
 # committed envelope, so there is no point re-checking it until this agrees.
 check_attest_pins . || exit 1
+
+# Same tier: the item-5 records' netlist identities, recomputed from the tree.
+# A netlist that moved electrically invalidates the cited evidence before any
+# klt run could grade it, so there is no point re-grading until this agrees.
+check_netlist_identities . || exit 1
 
 RECORD="manifests/sg13cmos5l-stdcells.signoff.json"
 
