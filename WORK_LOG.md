@@ -5,6 +5,8 @@ Maintained by the Guide triage role.
 
 ### 2026-11-15
 
+- **PR #182**: test(signoff): make the netlist-identity self-test assertions able to fail
+- **Issue #176** (closed): test_check_signoff.sh: three new netlist-identity assertions cannot fail (vacuous grep + cumulative clone state)
 - **PR #168**: refactor(design): generate netlists with the pinned upstream generator
 - **PR #178**: fix: anchor reuse-lock self-test oracle's lock read to repo root
 - **PR #150**: docs: roadmap as of 2026-11-13
