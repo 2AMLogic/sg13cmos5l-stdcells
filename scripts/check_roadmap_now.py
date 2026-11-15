@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-"""Fail when ROADMAP.md `## Now` carries a hand-written numbered work row (issue #186).
+"""Fail when ROADMAP.md `## Now` carries a hand-written work row (issues #186, #192).
 
 `## Now` is a pointer, not a second work queue: what can start today lives
 in WORK_PLAN.md, regenerated from live GitHub label state, so it cannot go
 stale. A hand-written Now row is built and closed within the hour — stale
-by the time it merges — so any numbered row under `## Now` is rejected,
-whether or not it cites an issue number. Prose references inside the
-pointer text (#129, #28) and PR references are not work rows and pass.
+by the time it merges — so any work row under `## Now` is rejected, numbered
+(`1.`) or bulleted (`-`, `*`, `+`), indented or not, whether or not it cites
+an issue number. Prose references inside the pointer text (#129, #28) and PR
+references are not work rows and pass.
 
 Hermetic by construction: reads the file, no network, no gh call.
 """
@@ -19,7 +20,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 NOW_HEADING = re.compile(r"^##\s+Now\s*$")
 NEXT_HEADING = re.compile(r"^##\s")
-NUMBERED_ROW = re.compile(r"^[0-9]+\.\s")
+WORK_ROW = re.compile(r"^\s*([0-9]+\.|[-*+])\s")
 
 
 def now_section(text):
@@ -48,10 +49,10 @@ def check(text):
                 "(rename the section back or update this script)"]
     start, body = sec
     for offset, line in enumerate(body):
-        if NUMBERED_ROW.match(line):
+        if WORK_ROW.match(line):
             lineno = start + offset
             errors.append(f"line {lineno}: ## Now carries a hand-written "
-                          "numbered work row; ## Now is a pointer to "
+                          "work row; ## Now is a pointer to "
                           "WORK_PLAN.md, not a queue — remove the row")
     return errors
 
