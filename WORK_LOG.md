@@ -5,6 +5,8 @@ Maintained by the Guide triage role.
 
 ### 2026-11-15
 
+- **PR #195**: docs: describe roadmap gate as rejecting numbered or bulleted rows
+- **Issue #194** (closed): ROADMAP.md's `## Now` prose says the gate rejects only numbered rows; it now rejects any list row
 - **PR #193**: fix: make the ROADMAP ## Now gate reject bulleted rows; FAIL text matches
 - **PR #191**: docs: make ROADMAP ## Now a WORK_PLAN.md pointer; gate rejects numbered rows
 - **PR #185**: fix(design): raise the row-fit rule instead of asserting it, and pin it with tests

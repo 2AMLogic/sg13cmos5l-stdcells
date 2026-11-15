@@ -27,29 +27,25 @@ _None._
 
 Human-approved issues ready for implementation (`loom:issue`).
 
-- **#172**: test_check_reuse_lock.sh's lock-coverage assertion is cwd-dependent: a misplaced `cd $ROOT` sends the oracle's read to the caller's directory
+_None._
 
 ## In Progress
 
 Issues currently being built (`loom:building`).
 
-- **#152**: README status and repo-layout block no longer match the committed records
-- **#165**: Replace local design/gen_netlists.py with the pinned upstream generator (0003 follow-up): 40/40 netlist bodies already identical
-- **#170**: Item-5 functional records' netlist_closure hashes no longer resolve to the tree (120 entries), and no gate notices
+- **#189**: Decision record 0006 still describes the row-fit rule as an `assert` after #185 raised it
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#150**: docs: roadmap as of 2026-11-13
-- **#168**: refactor(design): generate netlists with the pinned upstream generator
+- **#197**: docs(spec): append addendum to record 0006 — row-fit rule is raised, not asserted
 
 ## Approved (Awaiting Merge)
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#171**: docs: update README status and repo layout to the committed records
-- **#173**: gate: re-check functional records' netlist identities from the tree
+_None._
 
 ## Proposed
 
@@ -59,9 +55,8 @@ Issues carrying `loom:curated`.
 - **#26**: T1 item 4 (LVS clean): klt lvs match of every generated cell against its item-1 netlist *(curated)*
 - **#28**: T1 item 6 (Monte Carlo): bound not_applicable statement accounting for every ratified row *(curated)*
 - **#87**: T1 item 5f: cite the three-corner report as item-5 evidence and regenerate the verdict of record *(curated)*
-- **#152**: README status and repo-layout block no longer match the committed records *(curated)*
-- **#170**: Item-5 functional records' netlist_closure hashes no longer resolve to the tree (120 entries), and no gate notices *(curated)*
-- **#172**: test_check_reuse_lock.sh's lock-coverage assertion is cwd-dependent: a misplaced `cd $ROOT` sends the oracle's read to the caller's directory *(curated)*
+- **#109**: Characterization records were produced with an unpinned host klt; align the klt pin via a decision record *(curated)*
+- **#189**: Decision record 0006 still describes the row-fit rule as an `assert` after #185 raised it *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -80,11 +75,11 @@ _None._
 | Operator merge-risk holds | 0 |
 | Very important | 1 |
 | Important | 2 |
-| Ready (`loom:issue`) | 1 |
-| In Progress (`loom:building`) | 3 |
-| PRs awaiting review | 2 |
-| Approved PRs awaiting merge | 2 |
-| Curated | 7 |
+| Ready (`loom:issue`) | 0 |
+| In Progress (`loom:building`) | 1 |
+| PRs awaiting review | 1 |
+| Approved PRs awaiting merge | 0 |
+| Curated | 6 |
 | Architect / Hermit proposals | 3 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
