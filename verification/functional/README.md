@@ -26,8 +26,8 @@ T1 item 5 functional evidence. Everything here is **simulated**, never measured.
 - `test_functional.sh` — freshness (`gen_functional.py --check` **and**
   `compare.py --check`), all-40-cells coverage, real pass, the wrong-truth-table
   negative control, a stale-record negative control for the gate itself, then
-  `test_arcs.py`. It only reads the records; a passing or failing run leaves
-  `git status` clean.
+  `test_arcs.py` and finally `test_arcs.py --negative-control`. It only reads
+  the records; a passing or failing run leaves `git status` clean.
 - `test_arcs.py` — cross-checks the derived arc list two ways: the evaluator
   that derives it (`design/gen_netlists.py`'s `evaluate`, behind the one shared
   Liberty-function parser the RTL models are generated from too) must reproduce
@@ -50,6 +50,56 @@ T1 item 5 functional evidence. Everything here is **simulated**, never measured.
   It also prints the per-corner comparison below — the state spread, and the
   run-to-run spread on the single-state arcs that bounds it — so those numbers
   are re-derived on every run rather than transcribed here.
+- `test_arcs.py --negative-control` — the committed negative controls for the
+  two all-state assertion blocks (issue #148), the third control family here
+  alongside `compare.py`'s wrong-truth-table control and `test_functional.sh`'s
+  stale-record control. Those assertions were justified by controls reported
+  in a PR description and committed nowhere, so nothing re-checked that they
+  still bit after a later edit; these are them, re-derived and committed. Nine
+  mutations, each applied to a **deep copy in memory** — of the enumeration, or
+  of the parsed report — so unlike the stale-record control this doctors no
+  file and needs no restore, and a run leaves `git status` clean. Five
+  reproduce a silent failure of the enumeration (`check_arc_states`):
+  - `dropped_state` — `arc_states()` stops emitting one of a multi-state arc's
+    states, so the sweep measures fewer states than propagate the arc.
+  - `unate_flattening` — a non-unate arc's states all claim the same output
+    direction. This is the mutation an earlier draft of the test *accepted*,
+    because it derived non-unateness from the same `out_on_rise` field it was
+    checking; the RTL oracle is what fixed it.
+  - `inverted_directions` — every state's `out_on_rise` is inverted, so the
+    deck measures each delay from the wrong input edge.
+  - `swapped_states` — two states of one arc come out of
+    `propagating_states()` order, so `state_index` no longer names the state
+    the measurement name says it holds.
+  - `name_collision` — two states of one arc produce the same `.meas` name, so
+    one silently overwrites the other and a state goes unmeasured while the
+    count still looks right.
+
+  and four a silent failure of the recorded report (`check_state_report`,
+  which takes the parsed report as a parameter precisely so a control can
+  inject a mutated copy):
+  - `missing_triple_at_ss` — one (arc, state, output edge) is absent at the
+    slow corner, so SS bounds one delay fewer than the rollup claims.
+  - `missing_spec_row` — a measurement is not tagged with the spec row it
+    bounds, so it is evidence for nothing the spec asked for.
+  - `missing_limits_max` — a measurement carries no upper bound, so `klt sim`
+    grades it `no_limits_checked` and its pass verdict means nothing.
+  - `missing_corner` — a ratified corner is absent, so the all-state claim
+    covers fewer corners than the spec ratified.
+
+  **A control that merely exits nonzero is not accepted.** Each one declares
+  the diagnosis it expects and is failed if a *different* assertion catches
+  it, because four of the five enumeration mutations are caught by the same
+  oracle state-list comparison and a mutation rejected for the wrong reason
+  proves nothing about the assertion it targets. The run ends with two
+  self-checks of that machinery: the table is run twice in one process and
+  must give the same nine verdicts (no control leaks into another's inputs),
+  and a **shadow probe** — the `name_collision` control built the obvious way,
+  by mutating `side` rather than `side_order` — must be reported *shadowed*
+  rather than rejected, since the oracle comparison reads `side` and catches
+  it before the name-uniqueness check it nominally targets. Refused with
+  `--checks`: a control run asserts the checks *fail*, so its exit code means
+  the opposite of a normal pass's.
 - `records/tt.report.json` — `klt sim` report (klt 0.9.1, ngspice 46 per `environment.engine_version`, TT 1.20 V 25 C). The repo pin (`sim/toolchain.json`) is ngspice 47, so this record was not produced at the pin.
 - `records/functional.tt.json` — per-cell, per-vector pass/fail (356 checks, 40/40 pass).
 
@@ -194,6 +244,14 @@ append-only: `corners.*` is byte-for-byte unchanged by this work.
   low. `_s_` separates arc from state, and the level is its own `_` field
   because every pin name already ends in a digit (`a2_1`, not `a21`). All
   416 names are unique, asserted.
+- **The assertions carry their own controls.** Both all-state assertion
+  blocks — the enumeration against the RTL oracle, and the report's coverage
+  and shape — are backed by nine committed negative controls
+  (`test_arcs.py --negative-control`, issue #148), each of which must be
+  rejected by the assertion it names rather than merely making the check exit
+  nonzero. They are listed above; `test_functional.sh` runs them on every
+  pass, so weakening one of these assertions fails the suite instead of going
+  quietly green.
 - **Same deck, longer list.** `tb_corner_states.cir` is `tb_corners.cir`'s
   generator over `arc_states()` instead of `arcs()`, and both enumerations
   read one shared `propagating_states()` helper, so they cannot disagree
