@@ -17,7 +17,7 @@ sequence and its reasons. Every number below is simulated; nothing is measured.
 On the README's maturity ladder the position still reads **spec ratified**,
 even though the retarget has begun: the first generated cell is on `main`.
 
-The signoff record grades **3 of 11 T1 items met** (klt 0.9.1):
+The signoff record grades **3 of 11 T1 items met** (klt 0.9.2):
 
 | # | Item | Verdict of record | Evidence on `main` | Open issue |
 |---|---|---|---|---|
@@ -123,10 +123,6 @@ ratified spec to make a result pass.
   decision record.
 - **#105, #117, #134:** removal proposals (vendored `sim/harness`, vendored
   tiers document, cocotb harness).
-
-Waiting on an upstream release: **#109**, the characterization klt pin. The
-Liberty records were made with an unreleased host klt because `--split-grid`,
-`--resume` and `--wait-for-capacity` are not in the pinned 0.9.1.
 
 ## Not planned
 

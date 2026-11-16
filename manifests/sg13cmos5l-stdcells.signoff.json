@@ -9,13 +9,13 @@
   "source_doc": "manifests/design-evidence-tiers.md",
   "source_doc_content_hash": "sha256:a26b90262320d0fbd32b3f549a02b6300832706041797a559d8bf6bdb62efdc7",
   "build": {
-    "version": "0.9.1",
-    "package_version": "0.9.1",
-    "git_commit": "4d0d29be4fd991f499d59e783a908082d5e24c56",
-    "git_tag": "v0.9.1",
+    "version": "0.9.2",
+    "package_version": "0.9.2",
+    "git_commit": "046ba74652fc096bd97071fc3237f7159dd40183",
+    "git_tag": "v0.9.2",
     "dirty": false,
     "is_release": true,
-    "grading_ruleset_id": "sha256:22c42b66c4d1f99b5c00f6bf53d80b20fa8365860d857a921508ca5ab5f3771b"
+    "grading_ruleset_id": "sha256:2b5ecfa0c14c8cde59e16d6955130ba040938a82e42b77381d5c355fdcb67af0"
   },
   "items": [
     {
@@ -858,7 +858,7 @@
         "command": null,
         "kind": "generic",
         "check_status": "pass",
-        "content_hash": "sha256:e0d99250b4f68ee9050a60df0254dfc82147d7f03ec35efe8339acbce7d93739",
+        "content_hash": "sha256:8f58c3d4546b3c95368bb67179b352f3c28b8bba3f5cecc0d894b7872c20bd38",
         "input_verified": true,
         "exit_status": 0,
         "artifact_binding": {
@@ -867,7 +867,7 @@
             "path": "sim/attest/item9.inventory.json",
             "scope": "repo"
           },
-          "content_hash": "sha256:e0d99250b4f68ee9050a60df0254dfc82147d7f03ec35efe8339acbce7d93739",
+          "content_hash": "sha256:8f58c3d4546b3c95368bb67179b352f3c28b8bba3f5cecc0d894b7872c20bd38",
           "input_verified": true,
           "summary": "T1 item 9 (Testbenches shipped): 9/9 attestation checks passed (klt signoff --attest)",
           "source": "sim/attest/item9.inventory.json",
