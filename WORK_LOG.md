@@ -5,6 +5,10 @@ Maintained by the Guide triage role.
 
 ### 2026-11-16
 
+- **PR #203**: docs(layout): record klt 0.9.2 LVS match beside the 0.7.1.dev mismatch evidence
+- **PR #199**: feat(sim): pin klt 0.9.2 with a decision record; regenerate the attest chain
+- **Issue #201** (closed): layout/smoke LVS evidence records mismatch; LVS now matches at the 0.9.2 pin and klayout-tools#3831 is closed
+- **Issue #109** (closed): Characterization records were produced with an unpinned host klt; align the klt pin via a decision record
 - **PR #202**: docs: date-stamp the two present-tense pin claims in functional verification
 - **Issue #200** (closed): verification/functional/README.md still calls klt 0.9.1 "the layout/toolchain.json pin"
 
