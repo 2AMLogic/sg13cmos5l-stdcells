@@ -33,8 +33,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#109**: Characterization records were produced with an unpinned host klt; align the klt pin via a decision record
-- **#201**: layout/smoke LVS evidence records mismatch; LVS now matches at the 0.9.2 pin and klayout-tools#3831 is closed
+_None._
 
 ## PRs Awaiting Review
 
@@ -46,8 +45,7 @@ _None._
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-- **#199**: feat(sim): pin klt 0.9.2 with a decision record; regenerate the attest chain
-- **#203**: docs(layout): record klt 0.9.2 LVS match beside the 0.7.1.dev mismatch evidence
+_None._
 
 ## Proposed
 
@@ -57,8 +55,6 @@ Issues carrying `loom:curated`.
 - **#26**: T1 item 4 (LVS clean): klt lvs match of every generated cell against its item-1 netlist *(curated)*
 - **#28**: T1 item 6 (Monte Carlo): bound not_applicable statement accounting for every ratified row *(curated)*
 - **#87**: T1 item 5f: cite the three-corner report as item-5 evidence and regenerate the verdict of record *(curated)*
-- **#109**: Characterization records were produced with an unpinned host klt; align the klt pin via a decision record *(curated)*
-- **#201**: layout/smoke LVS evidence records mismatch; LVS now matches at the 0.9.2 pin and klayout-tools#3831 is closed *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -78,10 +74,10 @@ _None._
 | Very important | 1 |
 | Important | 2 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 2 |
+| In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
-| Approved PRs awaiting merge | 2 |
-| Curated | 6 |
+| Approved PRs awaiting merge | 0 |
+| Curated | 4 |
 | Architect / Hermit proposals | 3 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
