@@ -101,7 +101,7 @@ T1 item 5 functional evidence. Everything here is **simulated**, never measured.
   it before the name-uniqueness check it nominally targets. Refused with
   `--checks`: a control run asserts the checks *fail*, so its exit code means
   the opposite of a normal pass's.
-- `records/tt.report.json` — `klt sim` report (klt 0.9.1, ngspice 46 per `environment.engine_version`, TT 1.20 V 25 C). The repo pin (`sim/toolchain.json`) is ngspice 47, so this record was not produced at the pin.
+- `records/tt.report.json` — `klt sim` report (klt 0.9.1, ngspice 46 per `environment.engine_version`, TT 1.20 V 25 C). The repo pin (`sim/toolchain.json`) was ngspice 47 at the time of that run, so this record was not produced at the pin.
 - `records/functional.tt.json` — per-cell, per-vector pass/fail (356 checks, 40/40 pass).
 
 Reproduce: `source .cache/env.sh; klt sim verification/functional/tt.request.json --backend local -o <out> --report-out verification/functional/records/tt.report.json; python3 verification/functional/compare.py --report verification/functional/records/tt.report.json --out verification/functional/records/functional.tt.json; verification/functional/test_functional.sh`
@@ -259,10 +259,11 @@ append-only: `corners.*` is byte-for-byte unchanged by this work.
   about what propagates. One self-contained job keeps every per-arc
   state comparison inside a single deck, environment and solver run.
 - `records/corner_states.report.json` — the recorded three-corner `klt sim`
-  report (klt 0.9.1 client — the `layout/toolchain.json` pin, run via
-  `uvx --from klayout-tools==0.9.1` — fleet runner 0.9.0, `major.minor`
-  match, ngspice 47, batch job `klt-sim-5a89364ff41a`, 73 s, 64.4–64.6 s per
-  corner). 416 delays per corner, all 416 carrying `limits` and the spec row.
+  report (klt 0.9.1 client — the `layout/toolchain.json` pin at the time of
+  that run, run via `uvx --from klayout-tools==0.9.1` — fleet runner 0.9.0,
+  `major.minor` match, ngspice 47, batch job `klt-sim-5a89364ff41a`, 73 s,
+  64.4–64.6 s per corner). 416 delays per corner, all 416 carrying `limits`
+  and the spec row.
 
 ### Recorded result — `fail`, the same 5 of 1248 delays over the bound
 
