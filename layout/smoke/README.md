@@ -14,12 +14,15 @@ about any cell this repo designs, and nothing here is a measurement.
 | `lvs_request.json` | the `klt lvs` request |
 | `reports/drc_sg13cmos5l_inv_1.json` | `klt drc --deck sg13cmos5l --top sg13cmos5l_inv_1` envelope |
 | `reports/lvs_sg13cmos5l_inv_1.json` | `klt lvs lvs_request.json` envelope |
+| `reports/lvs_sg13cmos5l_inv_1.klt-0.9.2.json` | `klt lvs lvs_request.json` envelope, produced with klt `0.9.2` |
 
 Reproduce (after `scripts/setup-env.sh` and `source .cache/env.sh`), from this
 directory: `klt drc --deck sg13cmos5l --top sg13cmos5l_inv_1 sg13cmos5l_inv_1.gds --format json`
 and `klt lvs lvs_request.json --format json`. klt is pinned in
-[`layout/toolchain.json`](../toolchain.json). The recorded evidence below was
-produced with klt `0.7.1.dev1755+gdce956c3c399`, klayout `0.30.12`. The deck is the curated
+[`layout/toolchain.json`](../toolchain.json). The evidence in the DRC and first
+LVS sections was produced with klt `0.7.1.dev1755+gdce956c3c399`, klayout `0.30.12`;
+the later LVS section names its own build. Each section attributes the evidence
+it describes. The deck is the curated
 `sg13cmos5l` deck, content hash `sha256:f31d94eb2324a5db7b20b286760312e0835eb1dbaae4a46fc05699c4a52619d3`,
 `released: false`.
 
@@ -70,13 +73,47 @@ Six of the runset's rule-deck includes are relative symlinks into the
 `known_incomplete` in `sim/pdk.json`). That run produced no verdict and no
 envelope is committed for it.
 
+## LVS at klt 0.9.2: `match`
+
+Recorded 2026-11-16 with klt `0.9.2` (`klayout-tools==0.9.2`, git
+`046ba74652fc…`) on the klayout `0.30.13` engine, from the same request, layout
+and reference files as the record above; the envelope is committed unedited as
+[`reports/lvs_sg13cmos5l_inv_1.klt-0.9.2.json`](reports/lvs_sg13cmos5l_inv_1.klt-0.9.2.json).
+`2` entries, `0` errors: {"device.body_unverified": 2}. Nets {"layout": 4, "reference": 4, "matched": 4},
+devices {"layout": 2, "reference": 2, "matched": 2}, pins {"layout": 1, "reference": 4, "matched": 4}.
+This is a different build, not a regeneration of the `mismatch` record: the
+curated deck moved between the builds too (content hash `sha256:8b005441…`,
+`released: true`, against the 0.7.1.dev record's `sha256:f31d94eb…`,
+`released: false`), and the envelope flags `klayout_version_mismatch: true` --
+the `0.30.13` engine differs from the `0.30.12` this klt build was tested
+against. The `device.body_unverified` warnings persist in both records, and
+`pins.layout` is still 1 against the reference's 4; what moved is the rest --
+the unmatched device pair and the merged/split nets of the 0.7.1.dev build are
+gone (`nets` and `devices` fully matched). The `mismatch` section above stays
+untouched: it is the evidence of its own build, and each verdict belongs to
+the build that produced it.
+
 ## Gaps for klayout-tools
 
-Filed on 2AMLogic/klayout-tools, worded generically:
+Filed on 2AMLogic/klayout-tools, worded generically. Statuses checked
+2026-11-16: all three are closed upstream, for three different reasons.
 
 - [#3831](https://github.com/2AMLogic/klayout-tools/issues/3831): the curated
   `sg13cmos5l` LVS does not match the PDK's own reference inverter.
+  **Resolved upstream** -- closed 2026-10-18 by
+  [PR #3862](https://github.com/2AMLogic/klayout-tools/pull/3862) ("derive
+  sg13cmos5l well ties from pSD absence"), a real deck fix; the 0.9.2 LVS
+  record above is a `match` at that build.
 - [#3832](https://github.com/2AMLogic/klayout-tools/issues/3832): dangling
   sibling links leave the PDK-native LVS runset unrunnable.
+  **Closed upstream, reporting half only** -- closed 2026-10-17 by
+  [PR #3847](https://github.com/2AMLogic/klayout-tools/pull/3847), which makes
+  the fetch script's dangling-link warning name the breakage. The dangling
+  symlinks themselves are a PDK-release fact (`known_incomplete` in
+  `sim/pdk.json`), and **the PDK-native runset is still unrunnable**; the
+  paragraph above stands unchanged.
 - [#2727](https://github.com/2AMLogic/klayout-tools/issues/2727) (existing,
-  commented): the batch backend refuses `ihp-sg13cmos5l` (see `sim/smoke/README.md`).
+  commented): the batch backend refuses `ihp-sg13cmos5l` (see
+  `sim/smoke/README.md`). **Resolved upstream** -- closed 2026-11-11; the
+  batch backend accepts `ihp-sg13cmos5l`, as already recorded in
+  `sim/smoke/README.md`.

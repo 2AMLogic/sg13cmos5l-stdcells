@@ -24,7 +24,7 @@ The signoff record grades **3 of 11 T1 items met** (klt 0.9.1):
 | 1 | Design sources | met | `design/cells.json`, `design/gen_netlists.py`, 40 netlists, 40 `rtl/` models, `verification/item1-attest.json` | — |
 | 2 | Layout | unmet (`no_evidence`) | first generated cell `layout/gds/s5l_inv_1.gds` on `main`; no item-2 evidence in the manifest yet | #24 |
 | 3 | DRC clean | unmet (`no_evidence`) | smoke: `klt drc` clean on the reference inverter | #25 |
-| 4 | LVS clean | unmet (`no_evidence`) | smoke: `klt lvs` mismatch on the reference inverter | #26 |
+| 4 | LVS clean | unmet (`no_evidence`) | smoke: `klt lvs` mismatch on the reference inverter (klt-`0.7.1.dev`-build envelope); `match` recorded at the klt `0.9.2` build | #26 |
 | 5 | Corner verification | unmet (`check_failed`) | Liberty at TT, FF and SS for all 40 cells (`sim/characterize/records/`), 356-vector functional record, three-corner limit-checked sweeps — one propagating state per arc (`verification/functional/records/corners.report.json`) and every propagating state (`verification/functional/records/corner_states.report.json`) — both recorded **fail**: 2 of 3 corners pass | #27, #87, #129 |
 | 6 | Monte Carlo | unmet (`no_evidence`) | `verification/item6-not-applicable.{md,json}`, drift-checked in CI, not yet cited | #28 |
 | 7 | Post-layout verification | unmet (`no_evidence`) | none | #29 |
@@ -82,8 +82,9 @@ Unblocked by a named item above.
   filed against `sg13g2-stdcells` — never hand-drawn here.
 - **DRC and LVS on every generated cell** (#25, #26, after #24): `klt drc`
   clean with coverage quoted; `klt lvs` match against the item-1 netlists. The
-  smoke already records an LVS mismatch on the PDK's own inverter, so expect
-  tool or deck findings first.
+  smoke already records an LVS mismatch on the PDK's own inverter (klt
+  0.7.1.dev build; a later klt 0.9.2 run of the same compare is a `match`),
+  so expect tool or deck findings first.
 - **Power delivery** (#32, after #24 and #26): `klt erc` supply spec, LVS
   carrying the supplies.
 - **Post-layout re-characterization** (#29, after #24, #26 and #27), then the

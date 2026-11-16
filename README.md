@@ -167,8 +167,9 @@ the one tool it does not provide: install it from the distro.
 
 Smoke evidence: [`sim/smoke`](sim/smoke/README.md) (inverter simulation;
 single-corner probe plus the five-corner transient and DC records, simulated)
-and [`layout/smoke`](layout/smoke/README.md) (`klt drc` clean, `klt lvs` mismatch
-on the PDK's own reference inverter).
+and [`layout/smoke`](layout/smoke/README.md) (`klt drc` clean; `klt lvs`
+mismatch in the committed klt-`0.7.1.dev`-build envelope and `match` in the
+later klt-`0.9.2`-build envelope, both on the PDK's own reference inverter).
 
 ## Reproduce
 
