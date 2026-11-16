@@ -3,8 +3,15 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-16
+
+- **PR #202**: docs: date-stamp the two present-tense pin claims in functional verification
+- **Issue #200** (closed): verification/functional/README.md still calls klt 0.9.1 "the layout/toolchain.json pin"
+
 ### 2026-11-15
 
+- **PR #197**: docs(spec): append addendum to record 0006 — row-fit rule is raised, not asserted
+- **Issue #189** (closed): Decision record 0006 still describes the row-fit rule as an `assert` after #185 raised it
 - **PR #195**: docs: describe roadmap gate as rejecting numbered or bulleted rows
 - **Issue #194** (closed): ROADMAP.md's `## Now` prose says the gate rejects only numbered rows; it now rejects any list row
 - **PR #193**: fix: make the ROADMAP ## Now gate reject bulleted rows; FAIL text matches
