@@ -5,6 +5,7 @@ Maintained by the Guide triage role.
 
 ### 2026-11-16
 
+- **PR #206**: chore(loom): resync installed Loom to v0.19.1302
 - **PR #203**: docs(layout): record klt 0.9.2 LVS match beside the 0.7.1.dev mismatch evidence
 - **PR #199**: feat(sim): pin klt 0.9.2 with a decision record; regenerate the attest chain
 - **Issue #201** (closed): layout/smoke LVS evidence records mismatch; LVS now matches at the 0.9.2 pin and klayout-tools#3831 is closed
