@@ -33,19 +33,21 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#189**: Decision record 0006 still describes the row-fit rule as an `assert` after #185 raised it
+- **#109**: Characterization records were produced with an unpinned host klt; align the klt pin via a decision record
+- **#201**: layout/smoke LVS evidence records mismatch; LVS now matches at the 0.9.2 pin and klayout-tools#3831 is closed
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#197**: docs(spec): append addendum to record 0006 — row-fit rule is raised, not asserted
+_None._
 
 ## Approved (Awaiting Merge)
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-_None._
+- **#199**: feat(sim): pin klt 0.9.2 with a decision record; regenerate the attest chain
+- **#203**: docs(layout): record klt 0.9.2 LVS match beside the 0.7.1.dev mismatch evidence
 
 ## Proposed
 
@@ -56,7 +58,7 @@ Issues carrying `loom:curated`.
 - **#28**: T1 item 6 (Monte Carlo): bound not_applicable statement accounting for every ratified row *(curated)*
 - **#87**: T1 item 5f: cite the three-corner report as item-5 evidence and regenerate the verdict of record *(curated)*
 - **#109**: Characterization records were produced with an unpinned host klt; align the klt pin via a decision record *(curated)*
-- **#189**: Decision record 0006 still describes the row-fit rule as an `assert` after #185 raised it *(curated)*
+- **#201**: layout/smoke LVS evidence records mismatch; LVS now matches at the 0.9.2 pin and klayout-tools#3831 is closed *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -76,9 +78,9 @@ _None._
 | Very important | 1 |
 | Important | 2 |
 | Ready (`loom:issue`) | 0 |
-| In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 1 |
-| Approved PRs awaiting merge | 0 |
+| In Progress (`loom:building`) | 2 |
+| PRs awaiting review | 0 |
+| Approved PRs awaiting merge | 2 |
 | Curated | 6 |
 | Architect / Hermit proposals | 3 |
 | Active epics | 0 |
