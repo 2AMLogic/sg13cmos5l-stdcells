@@ -33,7 +33,7 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-- **#215**: Merge queue: add the merge_group trigger to the required-check workflow(s)
+_None._
 
 ## PRs Awaiting Review
 
@@ -55,7 +55,6 @@ Issues carrying `loom:curated`.
 - **#26**: T1 item 4 (LVS clean): klt lvs match of every generated cell against its item-1 netlist *(curated)* *(held)*
 - **#28**: T1 item 6 (Monte Carlo): bound not_applicable statement accounting for every ratified row *(curated)* *(held)*
 - **#87**: T1 item 5f: cite the three-corner report as item-5 evidence and regenerate the verdict of record *(curated)* *(held)*
-- **#215**: Merge queue: add the merge_group trigger to the required-check workflow(s) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -75,10 +74,10 @@ _None._
 | Very important | 1 |
 | Important | 2 |
 | Ready (`loom:issue`, net of holds/building/merge-pending) | 0 |
-| In Progress (`loom:building`) | 1 |
+| In Progress (`loom:building`) | 0 |
 | PRs awaiting review | 0 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 5 |
+| Curated | 4 |
 | Architect / Hermit proposals | 3 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
