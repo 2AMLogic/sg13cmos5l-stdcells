@@ -4,6 +4,7 @@ Roadmap generated from GitHub label state by the Guide triage role.
 Only the region between the markers is machine-generated.
 
 <!-- guide:plan-body:start -->
+_Generated: 2026-11-19T03:02:00Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
@@ -21,7 +22,7 @@ _None._
 `loom:important`; taken before unlabelled work.
 
 - **#27**: T1 item 5 (corner verification): Liberty characterization of the 40 cells at the ratified corners with a per-corner timing-margin metric *(held)*
-- **#129**: T1 item 5h: decide how item 5 reaches met (5 SS rise arcs exceed the ratified grid-validity bound) *(held)*
+- **#129**: T1 item 5h: decide how item 5 reaches met (5 SS rise arcs exceed the ratified grid-validity bound)
 
 ## Ready
 
@@ -33,13 +34,13 @@ _None._
 
 Issues currently being built (`loom:building`).
 
-_None._
+- **#129**: T1 item 5h: decide how item 5 reaches met (5 SS rise arcs exceed the ratified grid-validity bound)
 
 ## PRs Awaiting Review
 
 PRs waiting on Judge (`loom:review-requested`).
 
-_None._
+- **#224**: spec: propose record 0008 closing the item-5 margin gap by widening the failing cells' PMOS pull-up
 
 ## Approved (Awaiting Merge)
 
@@ -55,6 +56,7 @@ Issues carrying `loom:curated`.
 - **#26**: T1 item 4 (LVS clean): klt lvs match of every generated cell against its item-1 netlist *(curated)* *(held)*
 - **#28**: T1 item 6 (Monte Carlo): bound not_applicable statement accounting for every ratified row *(curated)* *(held)*
 - **#87**: T1 item 5f: cite the three-corner report as item-5 evidence and regenerate the verdict of record *(curated)* *(held)*
+- **#129**: T1 item 5h: decide how item 5 reaches met (5 SS rise arcs exceed the ratified grid-validity bound) *(curated)*
 
 ## Proposed (Architect / Hermit)
 
@@ -74,10 +76,10 @@ _None._
 | Very important | 1 |
 | Important | 2 |
 | Ready (`loom:issue`, net of holds/building/merge-pending) | 0 |
-| In Progress (`loom:building`) | 0 |
-| PRs awaiting review | 0 |
+| In Progress (`loom:building`) | 1 |
+| PRs awaiting review | 1 |
 | Approved PRs awaiting merge | 0 |
-| Curated | 4 |
+| Curated | 5 |
 | Architect / Hermit proposals | 3 |
 | Active epics | 0 |
 <!-- guide:plan-body:end -->
