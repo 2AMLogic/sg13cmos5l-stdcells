@@ -4,12 +4,12 @@ Roadmap generated from GitHub label state by the Guide triage role.
 Only the region between the markers is machine-generated.
 
 <!-- guide:plan-body:start -->
-_Generated: 2026-11-19T03:02:00Z (snapshot; compare against live labels)_
+_Generated: 2026-11-19T06:28:32Z (snapshot; compare against live labels)_
 ## Operator Attention: Merge-Risk-Hold Pileup
 
 Judge-approved PRs under a hold (`loom:blocked` or `loom:operator`) — only a human merge decision is missing.
 
-_None._
+- **#224**: spec: propose record 0008 closing the item-5 margin gap by widening the failing cells' PMOS pull-up
 
 ## Very Important
 
@@ -40,13 +40,13 @@ Issues currently being built (`loom:building`).
 
 PRs waiting on Judge (`loom:review-requested`).
 
-- **#224**: spec: propose record 0008 closing the item-5 margin gap by widening the failing cells' PMOS pull-up
+_None._
 
 ## Approved (Awaiting Merge)
 
 PRs that passed review and are queued for Champion auto-merge (`loom:pr`).
 
-_None._
+- **#224**: spec: propose record 0008 closing the item-5 margin gap by widening the failing cells' PMOS pull-up — closes #129
 
 ## Proposed
 
@@ -72,13 +72,13 @@ _None._
 
 | Bucket | Count |
 |------|-------|
-| Operator merge-risk holds | 0 |
+| Operator merge-risk holds | 1 |
 | Very important | 1 |
 | Important | 2 |
 | Ready (`loom:issue`, net of holds/building/merge-pending) | 0 |
 | In Progress (`loom:building`) | 1 |
-| PRs awaiting review | 1 |
-| Approved PRs awaiting merge | 0 |
+| PRs awaiting review | 0 |
+| Approved PRs awaiting merge | 1 |
 | Curated | 5 |
 | Architect / Hermit proposals | 3 |
 | Active epics | 0 |
