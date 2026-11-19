@@ -1,0 +1,5 @@
+# Regenerated per-run decks and requests (gen_probe.py writes them; the
+# committed decks embed absolute paths of the host worktree that ran them,
+# so they are evidence of the run, not repo material). Regenerate before a
+# re-run: python3 sim/characterize/probe_item5_sizing/gen_probe.py
+gen/

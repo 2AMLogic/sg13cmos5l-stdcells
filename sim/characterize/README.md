@@ -91,6 +91,21 @@ It is left as it is: the metric is not retuned to make it pass, and
 `margin.py` therefore exits 1 over `records/*.lib`. Narrowing it needs
 either a ratified delay budget or a grid change, both decision records.
 
+## Sizing probe for the margin gap (issue #129, additive)
+
+The operator ruling of 2026-11-18 (#129) chose closing the five-arc gap by
+drive strengths; the feasibility probe lived in
+[`probe_item5_sizing/`](probe_item5_sizing/) — variant netlists derived from
+`design/netlists` (never edited), one single-corner local `klt sim` run per
+variant, outcome **(i): a resized `_1` clears the bound** — output PMOS
+1120n → 1680n ng=2 on the three failing cells passes all their arcs at all
+three corners, worst margin +0.4113 ns at the failing point, with the
+baseline reproducing the recorded SS corner to within 0.16 ps. Numbers and
+commands: [`probe_item5_sizing/results.md`](probe_item5_sizing/results.md);
+the decision this feeds is `spec/decision-records/0008-item-5-margin-gap.md`
+(proposed). The recorded `.lib` files and `LIMIT_NS` are untouched by the
+probe; re-characterization of the resized cells is follow-on work.
+
 ## `klt sta` `netlist_estimate` on a per-cell wrapper (checked)
 
 Run once, locally (single unit), 2026-11-12, `klt 0.9.2.dev768`, OpenROAD
