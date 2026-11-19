@@ -35,7 +35,7 @@ Everything is SIMULATED, never measured. The bound 2.5074e-9 s is quoted from
 spec/decision-records/0005 (the ratified grid-validity bound); it is not
 redefined here and `margin.py` is not touched. Run one variant:
 
-    klt sim sim/characterize/probe_item5_sizing/gen/v0_baseline/probe.request.json \
+    klt sim sim/characterize/probe_item5_sizing/gen/v0_baseline/probe.ss.request.json \
         --backend local --pdk-root "$PDK_ROOT" -o <scratch dir>
 """
 from __future__ import annotations
@@ -44,8 +44,8 @@ import json
 import pathlib
 import re
 
-HERE = pathlib.Path(__file__).resolve().parent
-REPO = HERE.parent.parent.parent          # .../sim/characterize/probe_item5_sizing
+HERE = pathlib.Path(__file__).resolve().parent  # .../sim/characterize/probe_item5_sizing
+REPO = HERE.parent.parent.parent                # repo root
 NETLISTS = REPO / "design" / "netlists"
 
 CELLS = ["s5l_nand3_1", "s5l_nand3b_1", "s5l_nand4_1"]

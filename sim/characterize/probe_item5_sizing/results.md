@@ -77,8 +77,8 @@ directly comparable with the record.
 | `s5l_nand4_1_y_b_r` | 2.51515 | 2.51506 | +0.09 | fail |
 | `s5l_nand4_1_y_c_f` | 1.81134 | 1.81137 | -0.03 | pass |
 | `s5l_nand4_1_y_c_r` | 2.53946 | 2.53934 | +0.12 | fail |
-| `s5l_nand4_1_y_f` | 1.73874 | 1.73875 | -0.01 | pass |
-| `s5l_nand4_1_y_r` | 2.56233 | 2.56217 | +0.16 | fail |
+| `s5l_nand4_1_y_d_f` | 1.73874 | 1.73875 | -0.01 | pass |
+| `s5l_nand4_1_y_d_r` | 2.56233 | 2.56217 | +0.16 | fail |
 
 ## v4_pmos_1680 (recommended), per corner
 
@@ -104,8 +104,8 @@ directly comparable with the record.
 | `s5l_nand4_1_y_b_r` | 2.06546 | +0.4419 | pass |
 | `s5l_nand4_1_y_c_f` | 1.81470 | +0.6927 | pass |
 | `s5l_nand4_1_y_c_r` | 2.08136 | +0.4260 | pass |
-| `s5l_nand4_1_y_f` | 1.74180 | +0.7656 | pass |
-| `s5l_nand4_1_y_r` | 2.09609 | +0.4113 | pass |
+| `s5l_nand4_1_y_d_f` | 1.74180 | +0.7656 | pass |
+| `s5l_nand4_1_y_d_r` | 2.09609 | +0.4113 | pass |
 
 ### TT / 1.20 V / 25 C
 
@@ -129,8 +129,8 @@ directly comparable with the record.
 | `s5l_nand4_1_y_b_r` | 1.62346 | +0.8839 | pass |
 | `s5l_nand4_1_y_c_f` | 1.28216 | +1.2252 | pass |
 | `s5l_nand4_1_y_c_r` | 1.63823 | +0.8692 | pass |
-| `s5l_nand4_1_y_f` | 1.19576 | +1.3116 | pass |
-| `s5l_nand4_1_y_r` | 1.65189 | +0.8555 | pass |
+| `s5l_nand4_1_y_d_f` | 1.19576 | +1.3116 | pass |
+| `s5l_nand4_1_y_d_r` | 1.65189 | +0.8555 | pass |
 
 ### FF / 1.32 V / −40 C
 
@@ -154,8 +154,8 @@ directly comparable with the record.
 | `s5l_nand4_1_y_b_r` | 1.22055 | +1.2868 | pass |
 | `s5l_nand4_1_y_c_f` | 0.91423 | +1.5932 | pass |
 | `s5l_nand4_1_y_c_r` | 1.23455 | +1.2728 | pass |
-| `s5l_nand4_1_y_f` | 0.81814 | +1.6893 | pass |
-| `s5l_nand4_1_y_r` | 1.24766 | +1.2597 | pass |
+| `s5l_nand4_1_y_d_f` | 0.81814 | +1.6893 | pass |
+| `s5l_nand4_1_y_d_r` | 1.24766 | +1.2597 | pass |
 
 ## v1_pmos_2240 (alternative), SS — the failing point
 
@@ -179,8 +179,8 @@ directly comparable with the record.
 | `s5l_nand4_1_y_b_r` | 1.81434 | +0.6931 | pass |
 | `s5l_nand4_1_y_c_f` | 1.82184 | +0.6856 | pass |
 | `s5l_nand4_1_y_c_r` | 1.82862 | +0.6788 | pass |
-| `s5l_nand4_1_y_f` | 1.74860 | +0.7588 | pass |
-| `s5l_nand4_1_y_r` | 1.84169 | +0.6657 | pass |
+| `s5l_nand4_1_y_d_f` | 1.74860 | +0.7588 | pass |
+| `s5l_nand4_1_y_d_r` | 1.84169 | +0.6657 | pass |
 
 ## Environment
 
@@ -200,5 +200,8 @@ klt sim sim/characterize/probe_item5_sizing/gen/<variant>/probe.<corner>.request
 
 TT / FF numbers are corroborating evidence only (the row binds at SS): the
 re-characterization follow-on records the resized cells properly, append-only.
-At SS the fall-side arcs move by ≤ +6 ps (larger PMOS gate cap on Y); the
-rise-side arcs improve by ~0.4–0.5 ns.
+At SS the fall-side arcs move +2.9 to +4.8 ps (added drain capacitance on Y),
+except `s5l_nand3b_1_y_a_n_f` at +27.4 ps: the wider output PMOS adds gate load
+to the internal `A_N_b` node driven by the cell's own inverter, which that one
+arc's path crosses (v0 1.42359 → v4 1.45103 ns; it still passes at +1.0564 ns
+of margin); the rise-side arcs improve by ~0.4–0.5 ns.

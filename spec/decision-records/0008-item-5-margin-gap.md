@@ -64,8 +64,11 @@ variant (one `--backend local` run per corner; no grid). Full tables:
   all three ratified corners; at the failing point the worst arc is
   `s5l_nand4_1` `Y<-D` rise at 2.09609 ns, **margin +0.4113 ns** (TT worst
   +0.8555 ns, FF worst +1.2597 ns). The finger stays under the 1200 nm PMOS
-  finger cap and the row-fit rule of 0006 is untouched; the fall-side arcs
-  move by ≤ +6 ps.
+  finger cap and the row-fit rule of 0006 is untouched. At SS the fall-side
+  arcs move +2.9 to +4.8 ps from the added drain capacitance on `Y`, except
+  `s5l_nand3b_1` `Y<-A_N` fall at +27.4 ps: the wider output PMOS adds gate
+  load to the internal `A_N_b` node driven by the cell's own inverter, which
+  that arc's path crosses (it still passes with +1.0564 ns of margin).
 - **Alternative probed.** Doubling the PMOS (2240n ng=2, 1120n per finger)
   clears everywhere with worst SS margin +0.5393 ns, at twice the added
   P-diffusion width.
