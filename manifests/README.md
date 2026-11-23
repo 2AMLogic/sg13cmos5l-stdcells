@@ -5,9 +5,12 @@
   produces it.
 - `sg13cmos5l-stdcells.signoff.json`: the committed `klt signoff` output, the
   tier verdict of record. CI regenerates it and fails on any difference.
-- `design-evidence-tiers.md`: the T1 checklist, vendored from
-  `https://github.com/2AMLogic/klayout-tools/blob/267ea83a0510bcb61d2956058095201c0f481ff7/docs/design-evidence-tiers.md`
-  (commit `267ea83a0510bcb61d2956058095201c0f481ff7`).
+- T1 checklist: shipped by the `klayout-tools` release pinned in
+  `layout/toolchain.json` (not vendored locally; per the 2026-11-23 operator
+  ruling on issue #117). Read it at the pinned tag in
+  [`docs/design-evidence-tiers.md` (`v0.9.2`)](https://github.com/2AMLogic/klayout-tools/blob/v0.9.2/docs/design-evidence-tiers.md);
+  its digest is recorded as `source_doc_content_hash` in
+  `sg13cmos5l-stdcells.signoff.json`.
 
 ## `kind`
 
@@ -152,7 +155,7 @@ through a decision record and regenerates the signoff output in the same PR.
 klt has one pin of record, `klt.install_spec` in `layout/toolchain.json`.
 `scripts/check_signoff.sh` reads it, so there is no second version to keep in
 step by hand (issue #112; the hand-synced copy had drifted). Change the
-manifest, the tiers doc, or the pin, then regenerate with the pinned klt and
+manifest or the pin, then regenerate with the pinned klt and
 commit the result in the same PR:
 
 ```
