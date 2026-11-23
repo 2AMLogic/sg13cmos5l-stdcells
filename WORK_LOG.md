@@ -3,6 +3,16 @@
 Chronological record of merged PRs and closed issues, newest first.
 Maintained by the Guide triage role.
 
+### 2026-11-23
+
+- **PR #228**: chore(signoff): drop vendored tiers doc and grade against pinned klt
+- **Issue #117** (closed): Remove the vendored manifests/design-evidence-tiers.md: a second tiers-doc pin that has drifted from the copy the pinned klt ships (1,053 lines)
+
+### 2026-11-22
+
+- **PR #224**: spec: propose record 0008 closing the item-5 margin gap by widening the failing cells' PMOS pull-up
+- **Issue #129** (closed): T1 item 5h: decide how item 5 reaches met (5 SS rise arcs exceed the ratified grid-validity bound)
+
 ### 2026-11-18
 
 - **PR #216**: ci: add the merge_group trigger to the required-check workflow
