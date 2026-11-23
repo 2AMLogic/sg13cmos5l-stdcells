@@ -420,11 +420,10 @@ trap 'rm -f "$fresh"' EXIT
 rc=0
 uvx --from "$KLT_SPEC" klt signoff \
   --manifest "$MANIFEST" \
-  --tiers-doc manifests/design-evidence-tiers.md \
   --format json > "$fresh" || rc=$?
 # 0 = every T1 item met; 3 = grader ran clean, some item unmet. Both are valid.
 if [ "$rc" -ne 0 ] && [ "$rc" -ne 3 ]; then
-  echo "error: klt signoff exited $rc (expected 0 or 3): manifest or tiers doc is broken" >&2
+  echo "error: klt signoff exited $rc (expected 0 or 3): manifest is broken or klt failed" >&2
   exit 1
 fi
 
