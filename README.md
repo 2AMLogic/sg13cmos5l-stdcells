@@ -33,10 +33,12 @@ issue each waits on:
   [`sim/characterize/records/`](sim/characterize/records), and the
   three-corner limit-checked functional sweep is recorded in
   [`verification/functional/records/corners.report.json`](verification/functional/records/corners.report.json) —
-  status `fail`, 2 of 3 corners pass. Item 5 waits on #87 (cite the report as
-  item-5 evidence and regenerate the verdict of record) and #129 (the ruling
-  on the five SS rise arcs over the bound ratified by
-  [decision record 0005](spec/decision-records/0005-timing-margin-spec-row.md)).
+  TT and FF pass. At SS, five rise arcs exceed the bound in
+  [decision record 0005](spec/decision-records/0005-timing-margin-spec-row.md).
+  The signoff record cites this sweep and grades item 5 `unmet` (`check_failed`).
+  [Proposed decision record 0008](spec/decision-records/0008-item-5-margin-gap.md)
+  reports that widening the output PMOS in three cells cleared the bound in a
+  simulation probe. The sizing change in #219 awaits ratification.
 - **Monte Carlo (item 6, issue #28):** the not_applicable statement covering
   every ratified row is committed
   ([`verification/item6-not-applicable.md`](verification/item6-not-applicable.md)),
@@ -134,7 +136,7 @@ rtl/           functional Verilog models of each cell (model tests in rtl/tests/
 sim/           per-cell SPICE characterization + PVT corner results (ngspice)
 verification/  committed verification records: netlist-vs-RTL functional and three-corner sweeps, tier evidence
 layout/        SG13CMOS5L generator config + vendored origin generators, generated GDS, DRC/LVS smoke
-manifests/     evidence-tier definitions + the graded signoff record
+manifests/     block manifest, evidence citations and graded signoff record
 scripts/       bring-up (setup-env.sh) + the check:ci gate scripts
 measurements/  silicon characterization (empty until tape-out)
 ```
